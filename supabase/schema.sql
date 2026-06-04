@@ -99,8 +99,5 @@ create or replace function next_edition_number()
 returns integer
 language sql stable
 as $$
-    select coalesce(max(
-        (row_number() over (order by published_at))::integer
-    ), 0) + 1
-    from posts;
+    select count(*)::integer + 1 from posts;
 $$;
