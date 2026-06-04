@@ -1,7 +1,7 @@
 """
 agent/writer/claude_client.py
 
-Async wrapper around the Anthropic SDK for Nexus Digest.
+Async wrapper around the Anthropic SDK for First Cup.
 
 Features:
   - Automatic retry with exponential back-off (3 attempts: 1 s, 2 s, 4 s)

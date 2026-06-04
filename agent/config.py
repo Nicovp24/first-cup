@@ -1,7 +1,7 @@
 """
 agent/config.py
 
-Centralised configuration for Nexus Digest.
+Centralised configuration for First Cup.
 All settings are loaded from environment variables (or a .env file).
 A single `settings` singleton is exported so every module imports from here.
 """
@@ -99,7 +99,7 @@ class Settings(BaseSettings):
         description="Reddit OAuth2 client secret.",
     )
     reddit_user_agent: str = Field(
-        default="nexus-digest/1.0",
+        default="first-cup/1.0",
         description="User-agent string for Reddit API requests.",
     )
 
@@ -111,7 +111,7 @@ class Settings(BaseSettings):
         description="Resend API key for transactional email delivery.",
     )
     email_from: str = Field(
-        default="newsletter@nexusdigest.com",
+        default="hola@firstcup.dev",
         description="Sender address used for outgoing newsletters.",
     )
 
@@ -123,7 +123,7 @@ class Settings(BaseSettings):
         description="Telegram Bot API token from @BotFather.",
     )
     telegram_channel_id: str = Field(
-        default="@nexusdigest",
+        default="@firstcup_dev",
         description="Public channel username or numeric chat ID.",
     )
     telegram_premium_group_id: str | None = Field(
@@ -168,7 +168,7 @@ class Settings(BaseSettings):
     )
     blog_github_repo: str = Field(
         ...,
-        description="GitHub repo slug for the blog, e.g. usuario/nexus-digest-blog.",
+        description="GitHub repo slug for the blog, e.g. usuario/first-cup.",
     )
     blog_github_token: str = Field(
         ...,
@@ -242,7 +242,7 @@ class Settings(BaseSettings):
         if "/" not in v or v.startswith("/") or v.endswith("/"):
             raise ValueError(
                 "BLOG_GITHUB_REPO must be in 'owner/repo' format "
-                "(e.g. usuario/nexus-digest-blog)."
+                "(e.g. usuario/first-cup)."
             )
         return v
 

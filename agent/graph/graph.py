@@ -1,7 +1,7 @@
 """
 agent/graph/graph.py
 
-Assembles and compiles the LangGraph StateGraph for Nexus Digest.
+Assembles and compiles the LangGraph StateGraph for First Cup.
 
 Pipeline:
     scrape --> write --> publish --> END
@@ -23,7 +23,7 @@ logger = structlog.get_logger(__name__)
 
 def build_graph() -> CompiledGraph:
     """
-    Construct, wire, and compile the Nexus Digest LangGraph pipeline.
+    Construct, wire, and compile the First Cup LangGraph pipeline.
 
     Returns:
         A compiled :class:`~langgraph.graph.graph.CompiledGraph` ready for

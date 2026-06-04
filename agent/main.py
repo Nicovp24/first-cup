@@ -1,7 +1,7 @@
 """
 agent/main.py
 
-Entry point for a single Nexus Digest run.
+Entry point for a single First Cup run.
 
 Usage:
     python -m agent.main          # run once and exit
@@ -32,7 +32,7 @@ logger = structlog.get_logger(__name__)
 
 async def run_agent() -> None:
     """
-    Execute a full Nexus Digest pipeline run.
+    Execute a full First Cup pipeline run.
 
     Steps:
       1. Build an initial :class:`~agent.graph.nodes.AgentState`.
@@ -97,7 +97,7 @@ async def run_agent() -> None:
             errors=errors,
         )
         raise RuntimeError(
-            f"Nexus Digest run failed with {len(errors)} error(s): {errors}"
+            f"First Cup run failed with {len(errors)} error(s): {errors}"
         )
 
 

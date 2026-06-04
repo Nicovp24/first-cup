@@ -1,7 +1,7 @@
 """
 agent/db/supabase_client.py
 
-Supabase singleton client for Nexus Digest.
+Supabase singleton client for First Cup.
 
 Tables used by the system:
   - posts:          id, title, slug, content, source_urls (jsonb), tags (jsonb),

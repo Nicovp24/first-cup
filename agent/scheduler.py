@@ -1,7 +1,7 @@
 """
 agent/scheduler.py
 
-APScheduler-based daily scheduler for Nexus Digest.
+APScheduler-based daily scheduler for First Cup.
 
 The scheduler runs ``run_agent()`` once per day at the time configured via
 ``settings.DAILY_RUN_HOUR`` and ``settings.DAILY_RUN_MINUTE`` in the
@@ -74,7 +74,7 @@ def _build_scheduler() -> AsyncIOScheduler:
         _scheduled_job,
         trigger=trigger,
         id="daily_digest",
-        name="Nexus Digest — daily run",
+        name="First Cup — daily run",
         replace_existing=True,
         misfire_grace_time=60 * 30,   # 30-minute grace window
         coalesce=True,                 # run at most once if multiple misfires

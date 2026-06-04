@@ -51,7 +51,7 @@ class ScrapedItem:
 
 class ScraperBase(ABC):
     """
-    Abstract base class for all NEXUS DIGEST scrapers.
+    Abstract base class for all FIRST CUP scrapers.
 
     Subclasses must implement :meth:`scrape` and may call :meth:`_fetch`
     for raw HTML / text retrieval over HTTPS.

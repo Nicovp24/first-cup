@@ -66,8 +66,8 @@ APScheduler  /  GitHub Actions (Mon–Fri 07:00 Madrid)
 ### 1. Clone
 
 ```bash
-git clone https://github.com/your-username/nexus-digest.git
-cd nexus-digest
+git clone https://github.com/your-username/first-cup.git
+cd first-cup
 ```
 
 ### 2. Virtual environment
@@ -182,7 +182,7 @@ VERCEL_DEPLOY_HOOK_URL
 ## Project Structure
 
 ```
-nexus-digest/
+first-cup/
 ├── agent/
 │   ├── config.py          # pydantic-settings singleton
 │   ├── main.py            # one-shot entry point
