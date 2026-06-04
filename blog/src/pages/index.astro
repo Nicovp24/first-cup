@@ -53,8 +53,14 @@ const ogImg = `${siteUrl}/og-default.svg`;
   <!-- ════════════ HERO ════════════ -->
   <section class="hero">
 
+    <!-- dot grid pattern -->
+    <div class="hero-bg-dots" aria-hidden="true"></div>
+    <!-- warm amber glow -->
     <div class="hero-bg-amber" aria-hidden="true"></div>
-    <div class="hero-bg-grid"  aria-hidden="true"></div>
+    <!-- decorative coffee rings -->
+    <div class="hero-ring hero-ring-a" aria-hidden="true"></div>
+    <div class="hero-ring hero-ring-b" aria-hidden="true"></div>
+    <div class="hero-ring hero-ring-c" aria-hidden="true"></div>
 
     <div class="container hero-container">
       <div class="hero-body">
@@ -71,13 +77,13 @@ const ogImg = `${siteUrl}/og-default.svg`;
           <!-- headline -->
           <h1 class="headline">
             <span class="hl-line anim-up" style="animation-delay:60ms">
-              Todo lo que importa
+              Tu primera taza
             </span>
             <span class="hl-line hl-accent anim-up" style="animation-delay:130ms">
-              en tech,
+              de tech
             </span>
             <span class="hl-line hl-small anim-up" style="animation-delay:200ms">
-              sin el ruido.
+              del día.
             </span>
           </h1>
 
@@ -490,39 +496,75 @@ const ogImg = `${siteUrl}/og-default.svg`;
 
   /* ── HERO ── */
   .hero {
-    padding: 5.5rem 0 0;
+    padding: 2.5rem 0 0;
     position: relative;
     overflow: hidden;
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
   }
 
-  .hero-container { position: relative; z-index: 1; }
+  .hero-container { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
-  .hero-bg-amber {
-    position: absolute;
-    top: -80px; left: -80px;
-    width: 640px; height: 520px;
-    background: radial-gradient(ellipse, rgba(92,47,14,0.06) 0%, transparent 65%);
-    pointer-events: none;
-  }
-
-  .hero-bg-grid {
+  /* Dot grid pattern */
+  .hero-bg-dots {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(92,47,14,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(92,47,14,.04) 1px, transparent 1px);
-    background-size: 40px 40px;
+    background-image: radial-gradient(circle, rgba(92,47,14,.13) 1px, transparent 1px);
+    background-size: 26px 26px;
     pointer-events: none;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 100%);
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 0%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 0%, transparent 85%);
+  }
+
+  /* Warm espresso glow */
+  .hero-bg-amber {
+    position: absolute;
+    top: -120px; left: -100px;
+    width: 720px; height: 600px;
+    background: radial-gradient(ellipse, rgba(139,85,51,0.09) 0%, transparent 62%);
+    pointer-events: none;
+  }
+
+  /* Decorative coffee ring stains */
+  .hero-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid rgba(92,47,14,.08);
+    pointer-events: none;
+  }
+  .hero-ring-a {
+    width: 320px; height: 320px;
+    top: -80px; right: 8%;
+    animation: ringFloat 12s ease-in-out infinite;
+  }
+  .hero-ring-b {
+    width: 180px; height: 180px;
+    top: 20px; right: 22%;
+    border-color: rgba(92,47,14,.05);
+    animation: ringFloat 16s ease-in-out infinite reverse;
+    animation-delay: -4s;
+  }
+  .hero-ring-c {
+    width: 90px; height: 90px;
+    top: 60px; left: 45%;
+    border-color: rgba(92,47,14,.06);
+    animation: ringFloat 10s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+
+  @keyframes ringFloat {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-12px) scale(1.02); }
   }
 
   .hero-body {
     display: grid;
     grid-template-columns: 56fr 44fr;
-    gap: 4rem;
+    gap: 3.5rem;
     align-items: center;
-    padding-bottom: 4.5rem;
+    padding-bottom: 3rem;
+    padding-top: 1.5rem;
   }
 
   .hero-text { display: flex; flex-direction: column; }
@@ -1218,14 +1260,20 @@ const ogImg = `${siteUrl}/og-default.svg`;
 
   /* ── RESPONSIVE ── */
   @media (max-width: 860px) {
+    .hero {
+      min-height: auto;
+      padding: 2rem 0 0;
+    }
     .hero-body {
       grid-template-columns: 1fr;
       gap: 2.5rem;
+      padding-top: 1rem;
     }
     .hero-visual { order: -1; padding-top: 0; }
     .hv-card { width: 100%; max-width: 320px; }
     .hv-cup :global(.cup-wrap) { width: 120px; height: 120px; }
     .hero-stats { gap: 1rem; }
+    .hero-ring { display: none; }
     .posts-grid { grid-template-columns: repeat(2,1fr); }
     .nl-in { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
     .nl-right { padding-top: 0; }
@@ -1234,9 +1282,9 @@ const ogImg = `${siteUrl}/og-default.svg`;
   @media (max-width: 560px) {
     .posts-grid { grid-template-columns: 1fr; }
     .foot-in { flex-direction: column; align-items: flex-start; }
-    .hl-line { font-size: clamp(2rem, 10vw, 2.8rem); }
-    .hl-accent { font-size: clamp(2.4rem, 12vw, 3.4rem); }
-    .hl-small { font-size: clamp(1.4rem, 7vw, 2rem); }
+    .hl-line { font-size: clamp(2.2rem, 10vw, 2.8rem); }
+    .hl-accent { font-size: clamp(2.6rem, 12vw, 3.4rem); }
+    .hl-small { font-size: clamp(1.6rem, 7vw, 2rem); }
     .hero-stats { flex-wrap: wrap; width: 100%; }
     .hstat-sep { display: none; }
     .hero-actions { flex-direction: column; align-items: flex-start; }

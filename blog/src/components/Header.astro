@@ -5,16 +5,19 @@ const p = Astro.url.pathname;
 <div id="scroll-progress"></div>
 
 <header class="hdr" id="hdr">
+  <div class="hdr-accent-line" aria-hidden="true"></div>
   <div class="container hdr-in">
 
     <a href="/" class="logo">
-      <span class="logo-n">FC</span>
+      <span class="logo-icon">☕</span>
       <span class="logo-txt">First<em>Cup</em></span>
     </a>
 
     <nav class="nav">
-      <a href="/" class={p==='/' ? 'nl active' : 'nl'}>Posts</a>
-      <a href="/subscribe" class="ncta">Suscribirse</a>
+      <a href="/" class={p==='/' ? 'nl active' : 'nl'}>Inicio</a>
+      <a href="/subscribe" class="ncta">
+        Suscribirse gratis
+      </a>
     </nav>
   </div>
 </header>
@@ -45,47 +48,54 @@ const p = Astro.url.pathname;
 <style>
   .hdr {
     position: sticky; top: 0; z-index: 100;
-    background: transparent;
+    background: rgba(242,234,216,.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid transparent;
-    transition: background .35s, border-color .35s;
+    transition: background .3s, border-color .3s, box-shadow .3s;
   }
   .hdr.solid {
-    background: rgba(242,234,216,.94);
-    backdrop-filter: blur(18px);
+    background: rgba(242,234,216,.95);
     border-color: var(--border);
+    box-shadow: 0 1px 0 var(--border), 0 4px 20px rgba(28,14,5,.06);
+  }
+
+  /* Espresso gradient accent line at top */
+  .hdr-accent-line {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--amber) 20%,
+      var(--accent) 50%,
+      var(--amber) 80%,
+      transparent 100%
+    );
+    opacity: .5;
   }
 
   .hdr-in {
     display: flex; align-items: center;
     justify-content: space-between;
-    height: 62px;
+    height: 60px;
   }
 
   .logo {
-    display: flex; align-items: center; gap: .6rem;
+    display: flex; align-items: center; gap: .5rem;
     text-decoration: none;
   }
 
-  .logo-n {
-    width: 34px; height: 28px;
-    background: var(--accent);
-    color: var(--bg);
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: .68rem;
-    letter-spacing: .02em;
-    border-radius: 5px;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform .4s var(--spring), opacity .2s;
+  .logo-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform .4s var(--spring);
   }
-  .logo:hover .logo-n {
-    transform: rotate(-6deg) scale(1.08);
-    opacity: .85;
-  }
+  .logo:hover .logo-icon { transform: rotate(-8deg) scale(1.12); }
 
   .logo-txt {
     font-family: var(--font-display);
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     font-weight: 400;
     color: var(--text);
     letter-spacing: -.01em;
@@ -93,13 +103,13 @@ const p = Astro.url.pathname;
   .logo-txt em {
     font-style: italic;
     color: var(--accent);
-    margin-left: .12em;
+    margin-left: .1em;
   }
 
   .nav { display: flex; align-items: center; gap: .25rem; }
 
   .nl {
-    font-size: .875rem;
+    font-size: .84rem;
     font-weight: 500;
     color: var(--text-2);
     padding: .38rem .75rem;
@@ -110,21 +120,31 @@ const p = Astro.url.pathname;
   .nl:hover, .nl.active { color: var(--text); background: var(--bg-hover); text-decoration: none; }
 
   .ncta {
-    font-size: .875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .84rem;
     font-weight: 600;
     color: var(--bg);
     background: var(--accent);
-    padding: .38rem .9rem;
-    border-radius: 6px;
-    margin-left: .3rem;
-    transition: opacity .15s, transform .25s var(--spring);
+    padding: .42rem 1rem;
+    border-radius: 7px;
+    margin-left: .35rem;
+    transition: opacity .15s, transform .25s var(--spring), box-shadow .25s;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(92,47,14,.2);
+  }
+  .ncta:hover {
+    opacity: .9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(92,47,14,.3);
     text-decoration: none;
   }
-  .ncta:hover { opacity: .85; transform: translateY(-1px); text-decoration: none; }
   .ncta:active { transform: scale(.97); }
 
   @media (max-width:480px) {
     .logo-txt { display: none; }
-    .logo-n { width: 32px; height: 32px; font-size: .95rem; }
+    .ncta { padding: .38rem .75rem; font-size: .8rem; }
+    .ncta span { display: none; }
   }
 </style>
