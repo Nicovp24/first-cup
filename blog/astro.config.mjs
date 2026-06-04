@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://nexusdigest.com',
+  site: 'https://firstcup.dev',
   output: 'hybrid',
   integrations: [mdx(), sitemap()],
 });

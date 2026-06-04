@@ -18,6 +18,8 @@ const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 7
 
 const T = 'First Cup — IA, Dev & Tech';
 const D = 'Tu café tech de cada mañana. IA, desarrollo y tecnología en tu inbox.';
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://firstcup.dev';
+const ogImg = `${siteUrl}/og-default.svg`;
 ---
 
 <!doctype html>
@@ -26,13 +28,20 @@ const D = 'Tu café tech de cada mañana. IA, desarrollo y tecnología en tu inb
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content={D}/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content={`${siteUrl}/`}/>
   <meta property="og:title" content={T}/>
   <meta property="og:description" content={D}/>
-  <meta property="og:type" content="website"/>
+  <meta property="og:image" content={ogImg}/>
+  <meta property="og:site_name" content="First Cup"/>
   <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content={T}/>
+  <meta name="twitter:description" content={D}/>
+  <meta name="twitter:image" content={ogImg}/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-  <link rel="canonical" href="https://firstcup.dev/"/>
+  <link rel="canonical" href={`${siteUrl}/`}/>
   <link rel="sitemap" href="/sitemap-index.xml"/>
+  <link rel="alternate" type="application/rss+xml" title="First Cup RSS" href="/rss.xml"/>
   <title>{T}</title>
 </head>
 

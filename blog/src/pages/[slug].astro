@@ -35,8 +35,9 @@ const formattedDate = date.toLocaleDateString('es-ES', {
   year: 'numeric', month: 'long', day: 'numeric',
 });
 const isoDate = date.toISOString();
-const canonicalUrl = `https://firstcup.es/${post.slug}`;
-const ogImage = 'https://firstcup.es/og-default.svg';
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://firstcup.dev';
+const canonicalUrl = `${siteUrl}/${post.slug}`;
+const ogImage = cover ?? `${siteUrl}/og-default.svg`;
 const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
 ---
 
@@ -56,8 +57,11 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   <meta name="twitter:title" content={`${title} – First Cup`} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
+  <meta property="og:site_name" content="First Cup" />
+  <meta name="twitter:site" content="@firstcup_dev" />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="alternate" type="application/rss+xml" title="First Cup RSS" href="/rss.xml" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{title} – First Cup</title>
 </head>
