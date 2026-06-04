@@ -1,0 +1,579 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const sorted = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return sorted.map((post, i) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      prev: sorted[i + 1] ?? null,
+      next: sorted[i - 1] ?? null,
+      editionNum: sorted.length - i,
+    },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  prev: CollectionEntry<'posts'> | null;
+  next: CollectionEntry<'posts'> | null;
+  editionNum: number;
+}
+
+const { post, prev, next, editionNum } = Astro.props;
+const { Content } = await post.render();
+const { title, date, description, tags, source_urls, cover } = post.data;
+
+const words = post.body.split(/\s+/).filter(Boolean).length;
+const readingTime = Math.max(1, Math.round(words / 200));
+
+const formattedDate = date.toLocaleDateString('es-ES', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+const isoDate = date.toISOString();
+const canonicalUrl = `https://firstcup.es/${post.slug}`;
+const ogImage = 'https://firstcup.es/og-default.svg';
+const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content={description} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={`${title} – First Cup`} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="article:published_time" content={isoDate} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={`${title} – First Cup`} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>{title} – First Cup</title>
+</head>
+
+<body>
+  <Header />
+
+  <main class="main">
+    <div class="container">
+
+      <a href="/" class="back-link">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M11 7H3M6 4L3 7l3 3" stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Todos los posts
+      </a>
+
+      <article class="post-article">
+
+        {cover && (
+          <div class="post-cover">
+            <img src={cover} alt="" loading="eager" decoding="async" />
+          </div>
+        )}
+
+        <header class="post-header anim-up">
+          <div class="post-eyebrow">
+            <span class="edition-pill">{editionLabel}</span>
+            <time class="post-date" datetime={isoDate}>{formattedDate}</time>
+            <span class="eyebrow-sep" aria-hidden="true">·</span>
+            <span class="reading-time">{readingTime} min de lectura</span>
+          </div>
+
+          <h1 class="post-title">{title}</h1>
+          <p class="post-description">{description}</p>
+
+          {tags.length > 0 && (
+            <div class="post-tags">
+              {tags.map(t => <span class="tag">{t}</span>)}
+            </div>
+          )}
+        </header>
+
+        <div class="prose post-content">
+          <Content />
+        </div>
+
+        {source_urls && source_urls.length > 0 && (
+          <aside class="sources-section">
+            <h2 class="sources-title">Fuentes</h2>
+            <ul class="sources-list">
+              {source_urls.map((url, i) => {
+                let domain = url;
+                try { domain = new URL(url).hostname.replace('www.', ''); } catch {}
+                return (
+                  <li>
+                    <a href={url} target="_blank" rel="noopener noreferrer" class="source-link">
+                      <span class="source-num">{i + 1}</span>
+                      <span class="source-domain">{domain}</span>
+                      <span class="source-url">{url}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </aside>
+        )}
+
+      </article>
+
+      <!-- Prev / Next navigation -->
+      <nav class="post-nav" aria-label="Navegación de posts">
+        {prev ? (
+          <a href={`/${prev.slug}`} class="nav-post nav-prev">
+            <span class="nav-dir">← Anterior</span>
+            <span class="nav-ptitle">{prev.data.title}</span>
+          </a>
+        ) : <div />}
+        {next ? (
+          <a href={`/${next.slug}`} class="nav-post nav-next">
+            <span class="nav-dir">Siguiente →</span>
+            <span class="nav-ptitle">{next.data.title}</span>
+          </a>
+        ) : <div />}
+      </nav>
+
+      <!-- Subscribe CTA -->
+      <div class="post-cta">
+        <div class="cta-inner">
+          <p class="cta-label">¿Te ha gustado este análisis?</p>
+          <h3 class="cta-h">El café llega cada mañana.</h3>
+          <p class="cta-p">Suscríbete gratis y recibe el digest de IA y tech en tu inbox.</p>
+          <a href="/subscribe" class="cta-btn">Suscribirme gratis →</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer">
+    <div class="container footer-inner">
+      <a href="/" class="footer-brand">
+        <span class="footer-fc">FC</span>
+        First<em>Cup</em>
+      </a>
+      <span class="footer-copy">© {new Date().getFullYear()} · Hecho con Astro</span>
+    </div>
+  </footer>
+
+  <!-- Focus mode toggle -->
+  <button class="fab focus-fab" id="focus-btn" aria-label="Modo lectura" title="Modo lectura">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+      <path d="M1 5V2h3M12 2h3v3M1 11v3h3M12 14h3v-3"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <!-- Back to top -->
+  <button class="fab btt" id="btt" aria-label="Volver arriba" title="Volver arriba">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+      <path d="M8 12V4M4 7l4-4 4 4"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</body>
+</html>
+
+<script>
+  // ── Scroll progress scoped to article ──
+  const bar = document.getElementById('scroll-progress');
+  const article = document.querySelector<HTMLElement>('.post-article');
+  if (bar && article) {
+    window.addEventListener('scroll', () => {
+      const rect = article.getBoundingClientRect();
+      const total = article.offsetHeight - window.innerHeight;
+      const scrolled = Math.max(0, -rect.top);
+      bar.style.width = total > 0 ? Math.min(100, (scrolled / total) * 100) + '%' : '0%';
+    }, { passive: true });
+  }
+
+  // ── Back to top ──
+  const btt = document.getElementById('btt');
+  window.addEventListener('scroll', () => {
+    btt?.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  btt?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // ── Focus mode ──
+  const focusBtn = document.getElementById('focus-btn');
+  const hdr = document.querySelector<HTMLElement>('header.hdr');
+  const footer = document.getElementById('site-footer');
+  focusBtn?.addEventListener('click', () => {
+    const active = document.body.classList.toggle('focus-mode');
+    if (hdr)    hdr.style.display    = active ? 'none' : '';
+    if (footer) footer.style.display = active ? 'none' : '';
+    focusBtn.classList.toggle('is-active', active);
+    focusBtn.title = active ? 'Salir del modo lectura' : 'Modo lectura';
+  });
+</script>
+
+<style>
+  .main { padding: 2rem 0 5rem; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--text-2);
+    margin-bottom: 2.5rem;
+    transition: color .15s;
+    text-decoration: none;
+    letter-spacing: .02em;
+  }
+  .back-link:hover { color: var(--amber); text-decoration: none; }
+
+  /* ── Article ── */
+  .post-article {
+    max-width: 700px;
+    margin-bottom: 4rem;
+  }
+
+  /* ── Cover image ── */
+  .post-cover {
+    height: 340px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+  }
+  .post-cover img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* ── Header ── */
+  .post-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+
+  .edition-pill {
+    font-family: var(--font-mono);
+    font-size: .64rem;
+    font-weight: 600;
+    color: var(--amber);
+    background: var(--amber-dim);
+    border: 1px solid rgba(201,165,116,.28);
+    border-radius: 4px;
+    padding: .1rem .42rem;
+    letter-spacing: .04em;
+  }
+
+  .post-date {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    color: var(--text-2);
+    letter-spacing: .02em;
+  }
+
+  .eyebrow-sep { color: var(--text-3); font-size: .75rem; }
+
+  .reading-time {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    color: var(--text-3);
+    letter-spacing: .02em;
+  }
+
+  .post-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.18;
+    letter-spacing: -.02em;
+    margin-bottom: 1rem;
+  }
+
+  .post-description {
+    font-size: 1.05rem;
+    color: var(--text-2);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    max-width: 620px;
+  }
+
+  .post-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+  /* ── Content ── */
+  .post-content { margin-bottom: 3rem; }
+
+  /* ── Sources ── */
+  .sources-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .sources-title {
+    font-family: var(--font-mono);
+    font-size: .67rem;
+    font-weight: 600;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: .9rem;
+  }
+
+  .sources-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+
+  .source-link {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    text-decoration: none;
+    padding: .3rem 0;
+  }
+  .source-link:hover .source-domain { color: var(--amber); }
+
+  .source-num {
+    font-family: var(--font-mono);
+    font-size: .64rem;
+    color: var(--amber);
+    background: var(--amber-dim);
+    border: 1px solid rgba(201,165,116,.2);
+    border-radius: 3px;
+    padding: .05rem .3rem;
+    flex-shrink: 0;
+    min-width: 1.4rem;
+    text-align: center;
+  }
+
+  .source-domain {
+    font-size: .875rem;
+    font-weight: 500;
+    color: var(--text);
+    flex-shrink: 0;
+    transition: color .15s;
+  }
+
+  .source-url {
+    font-size: .72rem;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── Prev / Next ── */
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 700px;
+    margin-bottom: 3rem;
+  }
+
+  .nav-post {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: border-color .2s, background .2s;
+  }
+  .nav-post:hover {
+    border-color: rgba(201,165,116,.35);
+    background: var(--bg-hover);
+    text-decoration: none;
+  }
+  .nav-next { text-align: right; }
+
+  .nav-dir {
+    font-family: var(--font-mono);
+    font-size: .63rem;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  .nav-ptitle {
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--text-2);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── Subscribe CTA ── */
+  .post-cta { max-width: 700px; margin-bottom: 3rem; }
+
+  .cta-inner {
+    background: var(--surface);
+    border: 1px solid var(--border-mid);
+    border-radius: 12px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--amber) 0%, transparent 55%);
+    opacity: .5;
+  }
+
+  .cta-label {
+    font-family: var(--font-mono);
+    font-size: .63rem;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: .6rem;
+  }
+
+  .cta-h {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -.01em;
+    margin-bottom: .45rem;
+  }
+
+  .cta-p {
+    font-size: .88rem;
+    color: var(--text-2);
+    line-height: 1.65;
+    margin-bottom: 1.4rem;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: .875rem;
+    padding: .65rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity .15s, transform .25s var(--spring);
+  }
+  .cta-btn:hover { opacity: .85; transform: translateY(-1px); text-decoration: none; }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    font-family: var(--font-display);
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text-2);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .footer-brand:hover { color: var(--text); text-decoration: none; }
+  .footer-brand em { font-style: italic; color: var(--amber); }
+
+  .footer-fc {
+    width: 26px; height: 20px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-body);
+    font-size: .58rem;
+    font-weight: 700;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-copy { font-size: .75rem; color: var(--text-3); }
+
+  /* ── Floating buttons ── */
+  .fab {
+    position: fixed;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border-mid);
+    background: rgba(242,234,216,.92);
+    backdrop-filter: blur(12px);
+    color: var(--text-2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color .2s, border-color .2s, transform .25s var(--spring), opacity .2s;
+    z-index: 200;
+  }
+  .fab:hover {
+    color: var(--amber);
+    border-color: rgba(201,165,116,.4);
+    transform: scale(1.1);
+  }
+
+  .btt {
+    bottom: 2rem; right: 1.5rem;
+    opacity: 0; pointer-events: none;
+    transform: translateY(10px);
+  }
+  .btt.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+  .focus-fab { bottom: 2rem; left: 1.5rem; }
+  .focus-fab.is-active {
+    color: var(--amber);
+    border-color: rgba(201,165,116,.5);
+    background: rgba(201,165,116,.1);
+  }
+
+  @media (max-width: 600px) {
+    .post-nav { grid-template-columns: 1fr; }
+    .nav-next { text-align: left; }
+    .cta-inner { padding: 1.75rem; }
+  }
+</style>

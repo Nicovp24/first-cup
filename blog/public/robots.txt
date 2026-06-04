@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nexusdigest.com/sitemap-index.xml

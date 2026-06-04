@@ -1,0 +1,71 @@
+name: Daily Digest Agent
+
+on:
+  schedule:
+    # 07:00 Europe/Madrid (UTC+2 summer / UTC+1 winter) → 05:00 UTC
+    - cron: '0 5 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (scrape + write, skip git push)'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  run-agent:
+    name: Run digest agent
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BLOG_GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install --no-cache-dir -r requirements.txt
+
+      - name: Run agent
+        env:
+          ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_URL:           ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:           ${{ secrets.SUPABASE_KEY }}
+          GITHUB_TOKEN:           ${{ secrets.GH_TOKEN }}
+          BLOG_GITHUB_REPO:       ${{ secrets.BLOG_GITHUB_REPO }}
+          BLOG_GITHUB_TOKEN:      ${{ secrets.BLOG_GITHUB_TOKEN }}
+          BLOG_REPO_PATH:         ${{ github.workspace }}/blog
+          REDDIT_CLIENT_ID:       ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET:   ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USER_AGENT:      first-cup/1.0
+          DAILY_RUN_HOUR:         '7'
+          DAILY_RUN_MINUTE:       '0'
+          TIMEZONE:               Europe/Madrid
+        run: python -m agent.main
+
+      - name: Verify new posts
+        run: |
+          COUNT=$(git diff --name-only HEAD | grep "blog/src/content/posts/" | wc -l)
+          echo "New posts staged: $COUNT"
+          git status --short
+
+      - name: Commit and push new posts
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name  "First Cup Bot"
+          git config user.email "bot@firstcup.dev"
+          git add blog/src/content/posts/
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — no new posts today."
+          else
+            git commit -m "chore(agent): add daily digest posts $(date -u '+%Y-%m-%d')"
+            git push
+          fi

@@ -1,0 +1,44 @@
+name: Deploy Blog to Vercel
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'blog/src/content/posts/**'
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: blog/package-lock.json
+
+      - name: Install blog dependencies
+        working-directory: blog
+        run: npm ci
+
+      - name: Build blog
+        working-directory: blog
+        run: npm run build
+
+      - name: Trigger Vercel deploy hook
+        run: |
+          curl -s -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" \
+            --fail \
+            --max-time 30 \
+            -o /dev/null \
+            -w "HTTP status: %{http_code}\n"
+
+      - name: Deploy complete
+        run: echo "Deploy triggered successfully at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"

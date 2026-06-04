@@ -1,0 +1,198 @@
+---
+// Animated SVG coffee cup — fills on load, steam rises after fill
+---
+
+<div class="cup-wrap" aria-hidden="true">
+  <svg
+    class="cup-svg"
+    viewBox="0 0 80 100"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+  >
+    <defs>
+      <!-- Cup interior clip -->
+      <clipPath id="pt-cup-clip">
+        <path d="M18 78 L62 78 L72 20 L8 20 Z"/>
+      </clipPath>
+
+      <!-- Coffee gradient (amber → dark brown) -->
+      <linearGradient id="pt-coffee" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#F59E0B" stop-opacity="0.9"/>
+        <stop offset="55%"  stop-color="#D97706"/>
+        <stop offset="100%" stop-color="#92400E"/>
+      </linearGradient>
+
+      <!-- Crema/foam gradient -->
+      <linearGradient id="pt-foam" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#FDE68A" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.2"/>
+      </linearGradient>
+
+      <!-- Ambient glow filter -->
+      <filter id="pt-glow" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+        <feColorMatrix in="blur" type="matrix"
+          values="1 0.6 0 0 0  0.7 0.4 0 0 0  0 0 0 0 0  0 0 0 0.6 0"
+          result="amber"/>
+        <feMerge><feMergeNode in="amber"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- ── STEAM (appears after fill completes) ── -->
+    <path class="steam st1" d="M29 18 C26 12 32 7 29 1"
+      stroke="#F5EED8" stroke-width="1.5" stroke-linecap="round"/>
+    <path class="steam st2" d="M40 15 C37 9 43 4 40 -2"
+      stroke="#F5EED8" stroke-width="1.5" stroke-linecap="round"/>
+    <path class="steam st3" d="M51 18 C48 12 54 7 51 1"
+      stroke="#F5EED8" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- ── COFFEE FILL (clipped, slides up) ── -->
+    <g clip-path="url(#pt-cup-clip)">
+      <!-- Main liquid -->
+      <rect
+        class="coffee-fill"
+        x="5" y="40" width="70" height="40"
+        fill="url(#pt-coffee)"
+      />
+      <!-- Crema surface (appears after fill) -->
+      <ellipse
+        class="foam"
+        cx="40" cy="40" rx="21" ry="2.8"
+        fill="url(#pt-foam)"
+      />
+      <!-- Subtle surface reflection -->
+      <ellipse
+        class="reflect"
+        cx="34" cy="40" rx="7" ry="1.2"
+        fill="rgba(255,255,255,0.18)"
+      />
+    </g>
+
+    <!-- ── CUP OUTLINE (drawn over fill) ── -->
+    <path
+      class="cup-line"
+      d="M18 78 L62 78 L72 20 L8 20 Z"
+      stroke-width="1.6"
+      stroke-linejoin="round"
+    />
+
+    <!-- Interior left-wall highlight -->
+    <line
+      x1="11" y1="24" x2="21" y2="74"
+      stroke="rgba(255,255,255,0.18)"
+      stroke-width="3"
+      stroke-linecap="round"
+      clip-path="url(#pt-cup-clip)"
+    />
+
+    <!-- ── RIM ── -->
+    <path
+      class="cup-rim"
+      d="M6 20 L74 20"
+      stroke-width="2"
+      stroke-linecap="round"
+    />
+
+    <!-- ── HANDLE ── -->
+    <path
+      class="cup-handle"
+      d="M62 41 C80 41 80 62 62 62"
+      stroke-width="1.6"
+      stroke-linecap="round"
+    />
+
+    <!-- ── SAUCER ── -->
+    <ellipse
+      class="cup-saucer"
+      cx="40" cy="82" rx="36" ry="4.5"
+      stroke-width="1.2"
+    />
+    <ellipse
+      class="cup-saucer-inner"
+      cx="40" cy="84" rx="24" ry="2"
+      stroke-width="1"
+    />
+
+    <!-- ── AMBIENT GLOW dot ── -->
+    <circle cx="40" cy="55" r="18" fill="rgba(245,158,11,0.06)" filter="url(#pt-glow)"/>
+
+  </svg>
+</div>
+
+<style>
+  .cup-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Warm coffee halo */
+  .cup-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -30px;
+    background: radial-gradient(
+      circle at center 60%,
+      rgba(245,158,11,0.1) 0%,
+      transparent 68%
+    );
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  .cup-svg {
+    overflow: visible;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 6px 18px rgba(146,64,14,0.15));
+  }
+
+  /* Cup outline strokes — warm cream on dark bg */
+  .cup-line   { stroke: rgba(245,238,216,0.45); fill: none; }
+  .cup-rim    { stroke: rgba(245,238,216,0.70); fill: none; }
+  .cup-handle { stroke: rgba(245,238,216,0.38); fill: none; }
+  .cup-saucer       { stroke: rgba(245,238,216,0.22); fill: none; }
+  .cup-saucer-inner { stroke: rgba(245,238,216,0.10); fill: none; }
+
+  /* ── Coffee liquid slides up from below cup ── */
+  .coffee-fill {
+    transform: translateY(40px);
+    animation: fillCup 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+  }
+  @keyframes fillCup {
+    to { transform: translateY(0); }
+  }
+
+  /* ── Foam & reflection appear when fill lands ── */
+  .foam, .reflect {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: foamIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 3s both;
+  }
+  .reflect { animation-delay: 3.1s; }
+
+  @keyframes foamIn {
+    from { opacity: 0; transform: scaleX(0.2); }
+    to   { opacity: 1; transform: scaleX(1); }
+  }
+
+  /* ── Steam wisps float up infinitely (start after fill) ── */
+  .steam {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    animation: steamRise 3s ease-in-out infinite;
+  }
+  .st1 { animation-delay: 3.4s; }
+  .st2 { animation-delay: 4.0s; }
+  .st3 { animation-delay: 4.6s; }
+
+  @keyframes steamRise {
+    0%   { opacity: 0;   transform: translateY(5px)  scaleX(1); }
+    15%  { opacity: 0.8; }
+    60%  { opacity: 0.3; transform: translateY(-6px) scaleX(1.15); }
+    100% { opacity: 0;   transform: translateY(-14px) scaleX(0.7); }
+  }
+</style>

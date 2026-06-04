@@ -1,0 +1,217 @@
+---
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<div class="subscribe-wrapper">
+  <form
+    id="subscribe-form"
+    class="subscribe-form"
+    novalidate
+    aria-label="Formulario de suscripción"
+  >
+    <div class="form-row">
+      <label for="email-input" class="sr-only">Tu dirección de email</label>
+      <input
+        id="email-input"
+        type="email"
+        name="email"
+        placeholder="tu@email.com"
+        autocomplete="email"
+        required
+        class="email-input"
+      />
+      <button type="submit" class="submit-btn">
+        <span class="btn-text">Suscribirme</span>
+        <span class="btn-loading" hidden>Enviando…</span>
+      </button>
+    </div>
+    <p class="form-error" id="form-error" role="alert" hidden></p>
+  </form>
+
+  <div
+    id="subscribe-success"
+    class="subscribe-success"
+    role="status"
+    aria-live="polite"
+    hidden
+  >
+    <span class="success-check">✓</span>
+    <div>
+      <strong>Suscripción confirmada</strong>
+      <p>Revisa tu bandeja de entrada para confirmar.</p>
+    </div>
+  </div>
+
+  {!compact && (
+    <p class="form-note">Sin spam · Cancela en cualquier momento · Gratis</p>
+  )}
+</div>
+
+<script>
+  const form = document.getElementById('subscribe-form') as HTMLFormElement | null;
+  const successEl = document.getElementById('subscribe-success') as HTMLElement | null;
+  const errorEl = document.getElementById('form-error') as HTMLElement | null;
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!errorEl || !successEl) return;
+
+      const emailInput = form.querySelector<HTMLInputElement>('#email-input');
+      const btnText = form.querySelector<HTMLElement>('.btn-text');
+      const btnLoading = form.querySelector<HTMLElement>('.btn-loading');
+      const submitBtn = form.querySelector<HTMLButtonElement>('.submit-btn');
+
+      if (!emailInput) return;
+      const email = emailInput.value.trim();
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorEl.textContent = 'Por favor introduce un email válido.';
+        errorEl.hidden = false;
+        emailInput.focus();
+        return;
+      }
+
+      errorEl.hidden = true;
+      if (btnText) btnText.hidden = true;
+      if (btnLoading) btnLoading.hidden = false;
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error((data as { message?: string }).message || `Error ${res.status}`);
+        }
+
+        form.hidden = true;
+        successEl.hidden = false;
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Algo salió mal. Inténtalo de nuevo.';
+        errorEl.textContent = message;
+        errorEl.hidden = false;
+        if (btnText) btnText.hidden = false;
+        if (btnLoading) btnLoading.hidden = true;
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .subscribe-wrapper { width: 100%; }
+
+  .subscribe-form { width: 100%; }
+
+  .form-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .email-input {
+    flex: 1;
+    min-width: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-mid);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 0.92rem;
+    font-family: var(--font-body);
+    padding: 0 1rem;
+    height: 44px;
+    outline: none;
+    transition: border-color 0.12s;
+  }
+
+  .email-input::placeholder { color: var(--text-muted); }
+
+  .email-input:focus {
+    border-color: var(--accent);
+  }
+
+  .submit-btn {
+    height: 44px;
+    padding: 0 1.25rem;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.12s;
+  }
+
+  .submit-btn:hover { opacity: 0.88; }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .form-error {
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    color: #f87171;
+  }
+
+  .subscribe-success {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-mid);
+    border-radius: var(--radius);
+  }
+
+  .success-check {
+    color: #4ade80;
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .subscribe-success strong {
+    display: block;
+    color: var(--text);
+    font-size: 0.9rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .subscribe-success p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .form-note {
+    margin-top: 0.6rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    letter-spacing: 0.01em;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 480px) {
+    .form-row { flex-direction: column; }
+    .submit-btn { width: 100%; height: 44px; }
+  }
+</style>
