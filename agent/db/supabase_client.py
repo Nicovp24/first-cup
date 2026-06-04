@@ -45,7 +45,7 @@ def get_client() -> Client:
     )
 
     try:
-        _client = create_client(settings.supabase_url, settings.supabase_key)
+        _client = create_client(settings.supabase_url, settings.supabase_service_key)
         logger.info("supabase_client_ready", url=settings.supabase_url)
     except Exception as exc:
         logger.error(

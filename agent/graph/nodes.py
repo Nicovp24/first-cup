@@ -66,10 +66,14 @@ except ImportError:
 
 try:
     from agent.writer.writer import DigestWriter  # type: ignore[import]
-    from agent.writer.claude_client import ClaudeClient as _ClaudeClient  # type: ignore[import]
+    from agent.writer.gemini_client import GeminiClient as _AIClient  # type: ignore[import]
 except ImportError:
-    DigestWriter = None  # type: ignore[assignment,misc]
-    _ClaudeClient = None  # type: ignore[assignment,misc]
+    try:
+        from agent.writer.writer import DigestWriter  # type: ignore[import]
+        from agent.writer.claude_client import ClaudeClient as _AIClient  # type: ignore[import]
+    except ImportError:
+        DigestWriter = None  # type: ignore[assignment,misc]
+        _AIClient = None  # type: ignore[assignment,misc]
 
 logger = structlog.get_logger(__name__)
 
@@ -221,7 +225,7 @@ async def write_node(state: AgentState) -> dict[str, Any]:
         log.warning("write_node_skipped", reason="no scraped items")
         return {"written_posts": [], "errors": errors}
 
-    if DigestWriter is None or _ClaudeClient is None:
+    if DigestWriter is None or _AIClient is None:
         msg = "DigestWriter module not available — skipping write step"
         log.error("writer_unavailable")
         errors.append(msg)
@@ -229,7 +233,7 @@ async def write_node(state: AgentState) -> dict[str, Any]:
 
     written_posts: list[PublishedPost] = []
     try:
-        writer = DigestWriter(client=_ClaudeClient())
+        writer = DigestWriter(client=_AIClient())
         written_posts = await writer.write_digest(scraped_items)
         log.info("write_node_done", post_count=len(written_posts))
     except Exception as exc:

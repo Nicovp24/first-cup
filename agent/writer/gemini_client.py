@@ -1,0 +1,64 @@
+"""
+agent/writer/gemini_client.py
+
+Async wrapper around the Google Gemini SDK for First Cup.
+Drop-in replacement for ClaudeClient — same complete(prompt, system) interface.
+"""
+
+from __future__ import annotations
+
+import asyncio
+
+import structlog
+import google.generativeai as genai
+
+from agent.config import settings
+
+logger = structlog.get_logger(__name__)
+
+MODEL = "models/gemini-2.5-flash"
+MAX_TOKENS = 4096
+_RETRY_ATTEMPTS = 3
+_BACKOFF_BASE = 1.0
+
+
+class GeminiClient:
+    """
+    Thin async wrapper around google.generativeai.
+    Matches the ClaudeClient.complete(prompt, system) interface exactly.
+    """
+
+    def __init__(self) -> None:
+        genai.configure(api_key=settings.gemini_api_key)
+        self._log = structlog.get_logger(self.__class__.__name__)
+
+    async def complete(self, prompt: str, system: str = "") -> str:
+        full_prompt = f"{system}\n\n{prompt}" if system else prompt
+
+        last_exc: Exception | None = None
+        backoff = _BACKOFF_BASE
+
+        for attempt in range(1, _RETRY_ATTEMPTS + 1):
+            log = self._log.bind(model=MODEL, attempt=attempt, prompt_chars=len(full_prompt))
+            try:
+                log.debug("gemini_request_start")
+                model = genai.GenerativeModel(
+                    MODEL,
+                    generation_config=genai.GenerationConfig(max_output_tokens=MAX_TOKENS),
+                )
+                response = await model.generate_content_async(full_prompt)
+                text = response.text
+                log.info("gemini_request_ok", output_chars=len(text))
+                return text
+
+            except Exception as exc:
+                log.warning("gemini_request_error", error=str(exc), attempt=attempt)
+                last_exc = exc
+
+            if attempt < _RETRY_ATTEMPTS:
+                log.info("gemini_retry_backoff", wait_seconds=backoff)
+                await asyncio.sleep(backoff)
+                backoff *= 2
+
+        self._log.error("gemini_all_retries_failed", attempts=_RETRY_ATTEMPTS, error=str(last_exc))
+        raise last_exc  # type: ignore[misc]

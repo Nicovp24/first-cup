@@ -26,8 +26,7 @@ from agent.publisher.markdown import MarkdownPublisher
 
 logger = structlog.get_logger(__name__)
 
-# Path inside the repo where Astro stores blog posts
-_POSTS_SUBDIR = Path("src") / "content" / "posts"
+# Default path inside the repo where Astro stores blog posts (overridden by settings)
 
 
 class GitPublisher:
@@ -40,6 +39,7 @@ class GitPublisher:
 
     def __init__(self) -> None:
         self._repo_path = Path(settings.blog_repo_path)
+        self._posts_subdir = Path(settings.blog_posts_subdir)
         self._remote_url = self._authenticated_url(
             settings.blog_github_repo,
             settings.blog_github_token,
@@ -69,7 +69,7 @@ class GitPublisher:
             return []
 
         published_slugs: list[str] = []
-        output_dir = self._repo_path / _POSTS_SUBDIR
+        output_dir = self._repo_path / self._posts_subdir
 
         # --- Generate .md files (sync I/O, offloaded to thread) ----------
         saved_paths: list[Path] = []

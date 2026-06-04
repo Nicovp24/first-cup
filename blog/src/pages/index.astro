@@ -53,10 +53,8 @@ const ogImg = `${siteUrl}/og-default.svg`;
   <!-- ════════════ HERO ════════════ -->
   <section class="hero">
 
-    <!-- atmospheric background layers -->
-    <div class="hero-bg-dots"    aria-hidden="true"></div>
-    <div class="hero-bg-amber"   aria-hidden="true"></div>
-    <div class="hero-bg-violet"  aria-hidden="true"></div>
+    <div class="hero-bg-amber" aria-hidden="true"></div>
+    <div class="hero-bg-grid"  aria-hidden="true"></div>
 
     <div class="container hero-container">
       <div class="hero-body">
@@ -67,30 +65,58 @@ const ogImg = `${siteUrl}/og-default.svg`;
           <!-- pill eyebrow -->
           <div class="eyebrow-pill anim-up" style="animation-delay:0ms">
             <span class="pulse"></span>
-            Tu café tech de cada mañana
+            Newsletter · IA &amp; Desarrollo
           </div>
 
           <!-- headline -->
           <h1 class="headline">
-            <span class="hl-line anim-up" style="animation-delay:80ms">
-              Inteligencia
+            <span class="hl-line anim-up" style="animation-delay:60ms">
+              Todo lo que importa
             </span>
-            <span class="hl-line hl-accent anim-up" style="animation-delay:150ms">
-              Artificial,
+            <span class="hl-line hl-accent anim-up" style="animation-delay:130ms">
+              en tech,
             </span>
-            <span class="hl-line hl-small anim-up" style="animation-delay:220ms">
-              Dev &amp; Tech.
+            <span class="hl-line hl-small anim-up" style="animation-delay:200ms">
+              sin el ruido.
             </span>
           </h1>
 
           <!-- sub -->
-          <p class="hero-sub anim-up" style="animation-delay:300ms">
-            Un agente analiza GitHub, Hacker News, ArXiv, Reddit y los mejores blogs
-            de IA cada mañana y te entrega solo lo que vale la pena.
+          <p class="hero-sub anim-up" style="animation-delay:280ms">
+            Un agente de IA analiza cada mañana GitHub Trending, Hacker News, ArXiv,
+            Reddit y los mejores blogs del sector — y te entrega solo lo que merece
+            tu atención.
           </p>
 
+          <!-- feature pills -->
+          <div class="hero-features anim-up" style="animation-delay:340ms">
+            <span class="hf-item">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M4 6.5l1.8 1.8L9 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              15+ fuentes curadas
+            </span>
+            <span class="hf-sep"></span>
+            <span class="hf-item">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M4 6.5l1.8 1.8L9 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Publicado cada mañana
+            </span>
+            <span class="hf-sep"></span>
+            <span class="hf-item">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M4 6.5l1.8 1.8L9 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              100% automatizado
+            </span>
+          </div>
+
           <!-- stats row -->
-          <div class="hero-stats anim-up" style="animation-delay:380ms">
+          <div class="hero-stats anim-up" style="animation-delay:400ms">
             <div class="hstat">
               <span class="hstat-n">
                 <span class="count" data-target="15">0</span><span class="hstat-s">+</span>
@@ -99,20 +125,22 @@ const ogImg = `${siteUrl}/og-default.svg`;
             </div>
             <div class="hstat-sep"></div>
             <div class="hstat">
-              <span class="hstat-n">7/7</span>
-              <span class="hstat-l">días a la semana</span>
+              <span class="hstat-n">
+                <span class="count" data-target={total}>0</span>
+              </span>
+              <span class="hstat-l">posts publicados</span>
             </div>
             <div class="hstat-sep"></div>
             <div class="hstat">
               <span class="hstat-n">
                 <span class="count" data-target="100">0</span><span class="hstat-s">%</span>
               </span>
-              <span class="hstat-l">automatizado</span>
+              <span class="hstat-l">IA generado</span>
             </div>
           </div>
 
           <!-- CTA row -->
-          <div class="hero-actions anim-up" style="animation-delay:460ms">
+          <div class="hero-actions anim-up" style="animation-delay:470ms">
             <a href="/subscribe" class="hero-cta">
               Suscribirme gratis
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -120,7 +148,7 @@ const ogImg = `${siteUrl}/og-default.svg`;
                   stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
-            <a href="#posts" class="hero-ghost">Ver posts →</a>
+            <a href="#posts" class="hero-ghost">Ver los posts →</a>
           </div>
 
           <!-- Topic tags -->
@@ -135,37 +163,62 @@ const ogImg = `${siteUrl}/og-default.svg`;
 
         </div>
 
-        <!-- RIGHT: coffee card widget -->
-        <div class="hero-visual anim-in" style="animation-delay:280ms">
+        <!-- RIGHT: digest preview card -->
+        <div class="hero-visual anim-in" style="animation-delay:260ms">
           <div class="hv-card">
-            <!-- decorative rings -->
             <div class="hv-ring hv-ring-1" aria-hidden="true"></div>
             <div class="hv-ring hv-ring-2" aria-hidden="true"></div>
 
             <!-- card header -->
             <div class="hv-head">
-              <span class="hv-brand">☕ First Cup</span>
+              <div class="hv-brand-block">
+                <span class="hv-icon">☕</span>
+                <span class="hv-brand-name">First Cup</span>
+              </div>
               <span class="hv-live">
                 <span class="hv-dot" aria-hidden="true"></span>
-                Diario
+                En vivo
               </span>
             </div>
 
-            <!-- coffee cup (DO NOT TOUCH CoffeeCup component) -->
+            <!-- coffee cup -->
             <div class="hv-cup">
               <CoffeeCup />
             </div>
 
-            <!-- card footer -->
-            <div class="hv-foot">
-              <p class="hv-label"><em>Listo cada mañana</em></p>
+            <!-- source pills -->
+            <div class="hv-sources-row">
+              <span class="hvs-label">Fuentes analizadas</span>
               <div class="hv-sources">
-                <span>HN</span>
-                <span>GH</span>
-                <span>arXiv</span>
-                <span>+12</span>
+                <span class="hvs-chip hvs-active">HN</span>
+                <span class="hvs-chip hvs-active">GitHub</span>
+                <span class="hvs-chip hvs-active">arXiv</span>
+                <span class="hvs-chip">Dev.to</span>
+                <span class="hvs-chip">RSS</span>
+                <span class="hvs-chip">+10</span>
               </div>
             </div>
+
+            <!-- divider -->
+            <div class="hv-divider"></div>
+
+            <!-- next run -->
+            <div class="hv-schedule">
+              <div class="hv-sched-row">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
+                  <path d="M6 3v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>
+                </svg>
+                <span class="hv-sched-text">Próxima edición · <strong>07:00</strong></span>
+              </div>
+              <div class="hv-sched-row">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
+                </svg>
+                <span class="hv-sched-text">Publicado automáticamente</span>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -439,21 +492,29 @@ const ogImg = `${siteUrl}/og-default.svg`;
   .hero {
     padding: 5.5rem 0 0;
     position: relative;
+    overflow: hidden;
   }
 
   .hero-container { position: relative; z-index: 1; }
 
-  /* Espresso atmospheric glow */
-  .hero-bg-dots  { display: none; }
-  .hero-bg-violet { display: none; }
-
-  /* Espresso warm glow — subtle depth on cream */
   .hero-bg-amber {
     position: absolute;
-    top: -100px; left: -60px;
-    width: 580px; height: 480px;
-    background: radial-gradient(ellipse, rgba(92,47,14,0.05) 0%, transparent 62%);
+    top: -80px; left: -80px;
+    width: 640px; height: 520px;
+    background: radial-gradient(ellipse, rgba(92,47,14,0.06) 0%, transparent 65%);
     pointer-events: none;
+  }
+
+  .hero-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(92,47,14,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(92,47,14,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 100%);
   }
 
   .hero-body {
@@ -502,35 +563,33 @@ const ogImg = `${siteUrl}/og-default.svg`;
     display: flex;
     flex-direction: column;
     gap: .02em;
-    margin-bottom: 1rem;
+    margin-bottom: 1.1rem;
   }
 
   .hl-line {
     display: block;
     font-family: var(--font-display);
-    font-size: clamp(2.8rem, 6.5vw, 5rem);
+    font-size: clamp(2.8rem, 6.2vw, 4.8rem);
     font-weight: 400;
     line-height: 1.06;
-    letter-spacing: -.02em;
+    letter-spacing: -.025em;
     color: var(--text);
   }
 
-  /* "Artificial," — italic, bigger, accent color */
   .hl-accent {
     font-style: italic;
     color: var(--amber);
-    font-size: clamp(3.4rem, 8vw, 6.4rem);
+    font-size: clamp(3.2rem, 7.5vw, 6rem);
     line-height: 1.0;
   }
 
-  /* "Dev & Tech." — smaller, grounded */
   .hl-small {
-    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
     color: var(--text-2);
     font-weight: 400;
   }
 
-  /* Steam cursor particles (created via JS) */
+  /* Steam cursor particles */
   :global(.steam-particle) {
     position: fixed;
     width: 5px; height: 5px;
@@ -541,22 +600,38 @@ const ogImg = `${siteUrl}/og-default.svg`;
     filter: blur(1.5px);
   }
 
-  /* Tagline */
-  .tagline {
-    font-family: var(--font-mono);
-    font-size: .72rem;
-    color: var(--text-3);
-    letter-spacing: .1em;
-    margin-bottom: 1.4rem;
-    text-transform: uppercase;
+  .hero-sub {
+    font-size: .96rem;
+    color: var(--text-2);
+    line-height: 1.85;
+    max-width: 480px;
+    margin-bottom: 1.5rem;
   }
 
-  .hero-sub {
-    font-size: .98rem;
-    color: var(--text-2);
-    line-height: 1.8;
-    max-width: 460px;
+  /* Feature pills row */
+  .hero-features {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
     margin-bottom: 2rem;
+  }
+
+  .hf-item {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-family: var(--font-mono);
+    font-size: .64rem;
+    color: var(--text-2);
+    letter-spacing: .02em;
+  }
+  .hf-item svg { color: var(--amber); flex-shrink: 0; }
+
+  .hf-sep {
+    width: 1px; height: 12px;
+    background: var(--border-mid);
+    flex-shrink: 0;
   }
 
   /* Stats row */
@@ -565,13 +640,18 @@ const ogImg = `${siteUrl}/og-default.svg`;
     align-items: center;
     gap: 1.5rem;
     margin-bottom: 2.25rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: fit-content;
   }
 
   .hstat { display: flex; flex-direction: column; gap: .1rem; }
 
   .hstat-n {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.55rem;
     font-weight: 400;
     color: var(--text);
     line-height: 1;
@@ -593,11 +673,12 @@ const ogImg = `${siteUrl}/og-default.svg`;
     color: var(--text-3);
     text-transform: uppercase;
     letter-spacing: .07em;
+    margin-top: .15rem;
   }
 
   .hstat-sep {
     width: 1px;
-    height: 28px;
+    height: 32px;
     background: var(--border-mid);
     flex-shrink: 0;
   }
@@ -607,6 +688,7 @@ const ogImg = `${siteUrl}/og-default.svg`;
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 1.75rem;
   }
 
   .hero-cta {
@@ -617,7 +699,7 @@ const ogImg = `${siteUrl}/og-default.svg`;
     color: var(--bg);
     font-weight: 600;
     font-size: .9rem;
-    padding: .75rem 1.5rem;
+    padding: .8rem 1.6rem;
     border-radius: 8px;
     text-decoration: none;
     transition: opacity .15s, transform .25s var(--spring), box-shadow .25s;
@@ -644,48 +726,48 @@ const ogImg = `${siteUrl}/og-default.svg`;
   .hero-visual {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 1.5rem;
   }
 
   .hv-card {
     position: relative;
     background: #1C0E05;
-    border-radius: 28px;
+    border-radius: 24px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0;
-    width: 288px;
+    width: 296px;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.08);
     box-shadow:
-      0 48px 96px rgba(28,14,5,.22),
-      0 16px 36px rgba(28,14,5,.16),
-      inset 0 1px 0 rgba(255,255,255,.07);
+      0 0 0 1px rgba(92,47,14,.12),
+      0 40px 80px rgba(18,10,3,.3),
+      0 12px 28px rgba(18,10,3,.2),
+      inset 0 1px 0 rgba(255,255,255,.06);
   }
 
-  /* Warm amber glow behind cup */
   .hv-card::before {
     content: '';
     position: absolute;
-    top: 48%; left: 50%;
+    top: 45%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(139,85,51,.16) 0%, transparent 65%);
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(139,85,51,.18) 0%, transparent 65%);
     pointer-events: none;
     z-index: 0;
   }
 
-  /* Decorative concentric rings */
   .hv-ring {
     position: absolute;
     border-radius: 50%;
     border: 1px solid rgba(255,255,255,.04);
     pointer-events: none;
-    top: 48%; left: 50%;
+    top: 44%; left: 50%;
   }
-  .hv-ring-1 { width: 240px; height: 240px; transform: translate(-50%, -52%); }
-  .hv-ring-2 { width: 380px; height: 380px; transform: translate(-50%, -52%); }
+  .hv-ring-1 { width: 220px; height: 220px; transform: translate(-50%, -52%); }
+  .hv-ring-2 { width: 360px; height: 360px; transform: translate(-50%, -52%); }
 
   .hv-head {
     display: flex;
@@ -693,15 +775,26 @@ const ogImg = `${siteUrl}/og-default.svg`;
     justify-content: space-between;
     position: relative;
     z-index: 1;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 
-  .hv-brand {
-    font-family: var(--font-mono);
-    font-size: .62rem;
+  .hv-brand-block {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+
+  .hv-icon {
+    font-size: .95rem;
+    line-height: 1;
+  }
+
+  .hv-brand-name {
+    font-family: var(--font-display);
+    font-size: .82rem;
     font-weight: 600;
-    color: rgba(245,238,216,.42);
-    letter-spacing: .08em;
+    color: rgba(245,238,216,.65);
+    letter-spacing: -.01em;
   }
 
   .hv-live {
@@ -709,10 +802,10 @@ const ogImg = `${siteUrl}/og-default.svg`;
     align-items: center;
     gap: .3rem;
     font-family: var(--font-mono);
-    font-size: .58rem;
-    color: var(--amber);
-    background: rgba(139,85,51,.18);
-    border: 1px solid rgba(139,85,51,.28);
+    font-size: .56rem;
+    color: #4ade80;
+    background: rgba(74,222,128,.1);
+    border: 1px solid rgba(74,222,128,.22);
     border-radius: 4px;
     padding: .1rem .42rem;
     letter-spacing: .06em;
@@ -722,7 +815,7 @@ const ogImg = `${siteUrl}/og-default.svg`;
   .hv-dot {
     width: 5px; height: 5px;
     border-radius: 50%;
-    background: var(--amber);
+    background: #4ade80;
     flex-shrink: 0;
     animation: breathe 2.5s ease-in-out infinite;
   }
@@ -733,49 +826,91 @@ const ogImg = `${siteUrl}/og-default.svg`;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 0 1.25rem;
+    padding: 0 0 1rem;
   }
 
   .hv-cup :global(.cup-wrap) {
-    width: 156px;
-    height: 156px;
+    width: 150px;
+    height: 150px;
   }
 
-  .hv-foot {
+  /* Sources row */
+  .hv-sources-row {
     position: relative;
     z-index: 1;
-    border-top: 1px solid rgba(255,255,255,.06);
-    padding-top: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: .5rem;
+    margin-bottom: 1rem;
   }
 
-  .hv-label {
-    font-family: var(--font-display);
-    font-size: .92rem;
-    font-weight: 400;
-    color: rgba(245,238,216,.82);
-    letter-spacing: -.01em;
+  .hvs-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: .54rem;
+    color: rgba(245,238,216,.3);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: .45rem;
   }
 
   .hv-sources {
     display: flex;
-    gap: .22rem;
-    flex-shrink: 0;
+    gap: .3rem;
+    flex-wrap: wrap;
   }
 
-  .hv-sources span {
+  .hvs-chip {
     font-family: var(--font-mono);
-    font-size: .54rem;
-    color: rgba(245,238,216,.38);
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.06);
-    border-radius: 3px;
-    padding: .08rem .28rem;
+    font-size: .55rem;
+    border-radius: 4px;
+    padding: .1rem .35rem;
     letter-spacing: .04em;
     text-transform: uppercase;
+    color: rgba(245,238,216,.35);
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    transition: all .2s;
+  }
+
+  .hvs-chip.hvs-active {
+    color: rgba(245,238,216,.75);
+    background: rgba(139,85,51,.2);
+    border-color: rgba(139,85,51,.35);
+  }
+
+  .hv-divider {
+    height: 1px;
+    background: rgba(255,255,255,.06);
+    margin: 0 0 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Schedule row */
+  .hv-schedule {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+  }
+
+  .hv-sched-row {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+  }
+
+  .hv-sched-row svg { color: rgba(245,238,216,.4); flex-shrink: 0; }
+
+  .hv-sched-text {
+    font-family: var(--font-mono);
+    font-size: .62rem;
+    color: rgba(245,238,216,.45);
+    letter-spacing: .02em;
+  }
+
+  .hv-sched-text strong {
+    color: var(--amber);
+    font-weight: 600;
   }
 
   /* Topic tags */
@@ -784,7 +919,6 @@ const ogImg = `${siteUrl}/og-default.svg`;
     align-items: center;
     gap: .4rem;
     flex-wrap: wrap;
-    padding-top: .25rem;
   }
 
   .hero-topics-label {
@@ -1088,8 +1222,8 @@ const ogImg = `${siteUrl}/og-default.svg`;
       grid-template-columns: 1fr;
       gap: 2.5rem;
     }
-    .hero-visual { order: -1; }
-    .hv-card { width: 240px; }
+    .hero-visual { order: -1; padding-top: 0; }
+    .hv-card { width: 100%; max-width: 320px; }
     .hv-cup :global(.cup-wrap) { width: 120px; height: 120px; }
     .hero-stats { gap: 1rem; }
     .posts-grid { grid-template-columns: repeat(2,1fr); }
@@ -1100,12 +1234,13 @@ const ogImg = `${siteUrl}/og-default.svg`;
   @media (max-width: 560px) {
     .posts-grid { grid-template-columns: 1fr; }
     .foot-in { flex-direction: column; align-items: flex-start; }
-    .hl-line { font-size: clamp(2rem, 11vw, 2.8rem); }
-    .hl-accent { font-size: clamp(2.4rem, 13vw, 3.4rem); }
+    .hl-line { font-size: clamp(2rem, 10vw, 2.8rem); }
+    .hl-accent { font-size: clamp(2.4rem, 12vw, 3.4rem); }
     .hl-small { font-size: clamp(1.4rem, 7vw, 2rem); }
-    .hero-stats { flex-wrap: wrap; }
+    .hero-stats { flex-wrap: wrap; width: 100%; }
     .hstat-sep { display: none; }
     .hero-actions { flex-direction: column; align-items: flex-start; }
-    .hv-card { width: 100%; max-width: 320px; }
+    .hero-features { gap: .4rem; }
+    .hf-sep { display: none; }
   }
 </style>

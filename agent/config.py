@@ -60,11 +60,19 @@ class Settings(BaseSettings):
     )
 
     # ------------------------------------------------------------------
-    # Claude / Anthropic
+    # Claude / Anthropic (opcional si se usa Gemini)
     # ------------------------------------------------------------------
-    anthropic_api_key: str = Field(
-        ...,
+    anthropic_api_key: str | None = Field(
+        default=None,
         description="Anthropic API key. Get one at https://console.anthropic.com/",
+    )
+
+    # ------------------------------------------------------------------
+    # Google Gemini
+    # ------------------------------------------------------------------
+    gemini_api_key: str = Field(
+        ...,
+        description="Google AI Studio API key. Get one free at https://aistudio.google.com/",
     )
 
     # ------------------------------------------------------------------
@@ -76,7 +84,11 @@ class Settings(BaseSettings):
     )
     supabase_key: str = Field(
         ...,
-        description="Supabase service-role (or anon) key.",
+        description="Supabase anon key (for the blog subscribe endpoint).",
+    )
+    supabase_service_key: str = Field(
+        ...,
+        description="Supabase service_role key — bypasses RLS for the agent.",
     )
 
     # ------------------------------------------------------------------
@@ -166,6 +178,10 @@ class Settings(BaseSettings):
         default="/app/blog",
         description="Absolute path to the local clone of the blog repository.",
     )
+    blog_posts_subdir: str = Field(
+        default="src/content/posts",
+        description="Path inside blog_repo_path where .md posts live.",
+    )
     blog_github_repo: str = Field(
         ...,
         description="GitHub repo slug for the blog, e.g. usuario/first-cup.",
@@ -198,16 +214,6 @@ class Settings(BaseSettings):
     # ------------------------------------------------------------------
     # Validators
     # ------------------------------------------------------------------
-    @field_validator("anthropic_api_key")
-    @classmethod
-    def _validate_anthropic_key(cls, v: str) -> str:
-        if not v.startswith("sk-ant-"):
-            raise ValueError(
-                "ANTHROPIC_API_KEY must start with 'sk-ant-'. "
-                "Get a valid key at https://console.anthropic.com/"
-            )
-        return v
-
     @field_validator("supabase_url")
     @classmethod
     def _validate_supabase_url(cls, v: str) -> str:
