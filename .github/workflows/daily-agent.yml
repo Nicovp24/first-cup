@@ -36,13 +36,16 @@ jobs:
 
       - name: Run agent
         env:
+          GEMINI_API_KEY:         ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
           SUPABASE_URL:           ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:           ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY:   ${{ secrets.SUPABASE_SERVICE_KEY }}
           GITHUB_TOKEN:           ${{ secrets.GH_TOKEN }}
           BLOG_GITHUB_REPO:       ${{ secrets.BLOG_GITHUB_REPO }}
           BLOG_GITHUB_TOKEN:      ${{ secrets.BLOG_GITHUB_TOKEN }}
-          BLOG_REPO_PATH:         ${{ github.workspace }}/blog
+          BLOG_REPO_PATH:         ${{ github.workspace }}
+          BLOG_POSTS_SUBDIR:      blog/src/content/posts
           REDDIT_CLIENT_ID:       ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET:   ${{ secrets.REDDIT_CLIENT_SECRET }}
           REDDIT_USER_AGENT:      first-cup/1.0
