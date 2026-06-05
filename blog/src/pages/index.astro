@@ -23,7 +23,7 @@ const ogImg = `${siteUrl}/og-default.svg`;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="latte">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -50,267 +50,90 @@ const ogImg = `${siteUrl}/og-default.svg`;
 
 <main>
 
-  <!-- ════════════ HERO ════════════ -->
-  <section class="hero">
-
-    <!-- dark espresso base -->
-    <div class="hero-bg-base"  aria-hidden="true"></div>
-    <!-- dot grid -->
-    <div class="hero-bg-dots"  aria-hidden="true"></div>
-    <!-- warm glow centre -->
-    <div class="hero-bg-glow"  aria-hidden="true"></div>
-    <!-- decorative coffee rings -->
-    <div class="hero-ring hero-ring-a" aria-hidden="true"></div>
-    <div class="hero-ring hero-ring-b" aria-hidden="true"></div>
-    <div class="hero-ring hero-ring-c" aria-hidden="true"></div>
-    <!-- bottom fade to page bg -->
-    <div class="hero-bg-fade"  aria-hidden="true"></div>
-
-    <div class="container hero-container">
-      <div class="hero-body">
-
-        <!-- LEFT: text content -->
-        <div class="hero-text">
-
-          <!-- pill eyebrow -->
-          <div class="eyebrow-pill anim-up" style="animation-delay:0ms">
-            <span class="pulse"></span>
-            Newsletter · IA &amp; Desarrollo
-          </div>
-
-          <!-- headline -->
-          <h1 class="headline">
-            <span class="hl-line anim-up" style="animation-delay:60ms">
-              Tu primera taza
-            </span>
-            <span class="hl-line hl-accent anim-up" style="animation-delay:130ms">
-              de tech
-            </span>
-            <span class="hl-line hl-small anim-up" style="animation-delay:200ms">
-              del día.
-            </span>
-          </h1>
-
-          <!-- sub -->
-          <p class="hero-sub anim-up" style="animation-delay:280ms">
-            Un agente de IA analiza cada mañana GitHub Trending, Hacker News, ArXiv,
-            Reddit y los mejores blogs del sector — y te entrega solo lo que merece
-            tu atención.
-          </p>
-
-          <!-- feature pills -->
-          <div class="hero-features anim-up" style="animation-delay:340ms">
-            <span class="hf-item">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/>
-                <path d="M4 6.5l1.8 1.8L9 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              15+ fuentes curadas
-            </span>
-            <span class="hf-sep"></span>
-            <span class="hf-item">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/>
-                <path d="M4 6.5l1.8 1.8L9 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Publicado cada mañana
-            </span>
-            <span class="hf-sep"></span>
-            <span class="hf-item">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/>
-                <path d="M4 6.5l1.8 1.8L9 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              100% automatizado
-            </span>
-          </div>
-
-          <!-- stats row -->
-          <div class="hero-stats anim-up" style="animation-delay:400ms">
-            <div class="hstat">
-              <span class="hstat-n">
-                <span class="count" data-target="15">0</span><span class="hstat-s">+</span>
-              </span>
-              <span class="hstat-l">fuentes diarias</span>
-            </div>
-            <div class="hstat-sep"></div>
-            <div class="hstat">
-              <span class="hstat-n">
-                <span class="count" data-target={total}>0</span>
-              </span>
-              <span class="hstat-l">posts publicados</span>
-            </div>
-            <div class="hstat-sep"></div>
-            <div class="hstat">
-              <span class="hstat-n">
-                <span class="count" data-target="100">0</span><span class="hstat-s">%</span>
-              </span>
-              <span class="hstat-l">IA generado</span>
-            </div>
-          </div>
-
-          <!-- CTA row -->
-          <div class="hero-actions anim-up" style="animation-delay:470ms">
-            <a href="/subscribe" class="hero-cta">
-              Suscribirme gratis
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a href="#posts" class="hero-ghost">Ver los posts →</a>
-          </div>
-
-          <!-- Topic tags -->
-          {topTags.length > 0 && (
-            <div class="hero-topics anim-up" style="animation-delay:530ms">
-              <span class="hero-topics-label">Temas:</span>
-              {topTags.map(t => (
-                <button class="hero-topic" data-topic={t}>{t}</button>
-              ))}
-            </div>
-          )}
-
-        </div>
-
-        <!-- RIGHT: digest preview card -->
-        <div class="hero-visual anim-in" style="animation-delay:260ms">
-          <div class="hv-card">
-            <div class="hv-ring hv-ring-1" aria-hidden="true"></div>
-            <div class="hv-ring hv-ring-2" aria-hidden="true"></div>
-
-            <!-- card header -->
-            <div class="hv-head">
-              <div class="hv-brand-block">
-                <span class="hv-icon">☕</span>
-                <span class="hv-brand-name">First Cup</span>
-              </div>
-              <span class="hv-live">
-                <span class="hv-dot" aria-hidden="true"></span>
-                En vivo
-              </span>
-            </div>
-
-            <!-- coffee cup -->
-            <div class="hv-cup">
-              <CoffeeCup />
-            </div>
-
-            <!-- source pills -->
-            <div class="hv-sources-row">
-              <span class="hvs-label">Fuentes analizadas</span>
-              <div class="hv-sources">
-                <span class="hvs-chip hvs-active">HN</span>
-                <span class="hvs-chip hvs-active">GitHub</span>
-                <span class="hvs-chip hvs-active">arXiv</span>
-                <span class="hvs-chip">Dev.to</span>
-                <span class="hvs-chip">RSS</span>
-                <span class="hvs-chip">+10</span>
-              </div>
-            </div>
-
-            <!-- divider -->
-            <div class="hv-divider"></div>
-
-            <!-- next run -->
-            <div class="hv-schedule">
-              <div class="hv-sched-row">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                  <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
-                  <path d="M6 3v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>
-                </svg>
-                <span class="hv-sched-text">Próxima edición · <strong>07:00</strong></span>
-              </div>
-              <div class="hv-sched-row">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                  <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
-                </svg>
-                <span class="hv-sched-text">Publicado automáticamente</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
+  <!-- ════════════ WIRE TICKER ════════════ -->
+  <div class="wire" aria-hidden="true">
+    <span class="wire-tag gz-mono">FUENTES</span>
+    <div class="wire-mask">
+      <div class="wire-track">
+        {['GitHub Trending', 'Hacker News', 'ArXiv Papers', 'Reddit r/ML', 'Dev.to', 'Product Hunt', 'GitHub API', 'RSS Feeds',
+          'GitHub Trending', 'Hacker News', 'ArXiv Papers', 'Reddit r/ML', 'Dev.to', 'Product Hunt', 'GitHub API', 'RSS Feeds',
+          'GitHub Trending', 'Hacker News', 'ArXiv Papers', 'Reddit r/ML', 'Dev.to', 'Product Hunt', 'GitHub API', 'RSS Feeds'].map(item => (
+          <>
+            <span class="wire-item gz-mono">{item}</span>
+            <span class="wire-sep" aria-hidden="true">◆</span>
+          </>
+        ))}
       </div>
     </div>
-
-    <div class="hero-rule"></div>
-  </section>
-
-  <!-- ════════════ SOURCES TICKER ════════════ -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-fade ticker-fade-l"></div>
-    <div class="ticker-inner">
-      <div class="ticker-track">
-        <span class="t-item">GitHub Trending</span><span class="t-sep">·</span>
-        <span class="t-item">Hacker News</span><span class="t-sep">·</span>
-        <span class="t-item">ArXiv Papers</span><span class="t-sep">·</span>
-        <span class="t-item">Reddit r/ML</span><span class="t-sep">·</span>
-        <span class="t-item">Dev.to</span><span class="t-sep">·</span>
-        <span class="t-item">Product Hunt</span><span class="t-sep">·</span>
-        <span class="t-item">GitHub API</span><span class="t-sep">·</span>
-        <span class="t-item">RSS Feeds</span><span class="t-sep">·</span>
-        <!-- duplicate for seamless loop -->
-        <span class="t-item">GitHub Trending</span><span class="t-sep">·</span>
-        <span class="t-item">Hacker News</span><span class="t-sep">·</span>
-        <span class="t-item">ArXiv Papers</span><span class="t-sep">·</span>
-        <span class="t-item">Reddit r/ML</span><span class="t-sep">·</span>
-        <span class="t-item">Dev.to</span><span class="t-sep">·</span>
-        <span class="t-item">Product Hunt</span><span class="t-sep">·</span>
-        <span class="t-item">GitHub API</span><span class="t-sep">·</span>
-        <span class="t-item">RSS Feeds</span><span class="t-sep">·</span>
-      </div>
-    </div>
-    <div class="ticker-fade ticker-fade-r"></div>
   </div>
 
 
   <!-- ════════════ POSTS ════════════ -->
-  <section class="posts-section" id="posts">
+  <section class="edition-section" id="posts">
     <div class="container">
 
       {posts.length === 0 ? (
         <div class="empty anim-up">
-          <p class="empty-label">Próximamente</p>
+          <span class="kicker">Próximamente</span>
           <h2 class="empty-h">El primer digest llega pronto</h2>
           <p class="empty-p">Suscríbete para recibirlo cuando salga.</p>
           <a href="/subscribe" class="pill-btn">Suscribirme gratis</a>
         </div>
       ) : (
         <>
-          {/* Featured post */}
+          {/* LEAD — featured post, newspaper front-page style */}
           {featured && (
-            <div class="featured-wrap anim-up" style="animation-delay:50ms">
-              <p class="section-label">Destacado</p>
-              <PostCard
-                title={featured.data.title}
-                slug={featured.slug}
-                date={featured.data.date}
-                description={featured.data.description}
-                tags={featured.data.tags}
-                featured={true}
-                editionNum={total}
-                cover={featured.data.cover}
-              />
+            <div class="lead-wrap anim-up">
+              <div class="lead-edition">
+                <span class="kicker">Última edición</span>
+                <span class="edition-num gz-mono">
+                  #{String(total).padStart(3, '0')}
+                </span>
+              </div>
+
+              <a href={`/${featured.slug}`} class="lead-link">
+                {featured.data.cover && (
+                  <div class="lead-img">
+                    <img src={featured.data.cover} alt="" loading="eager" decoding="async"/>
+                  </div>
+                )}
+                <div class="lead-body">
+                  <span class="kicker lead-kicker">
+                    {featured.data.tags[0] ?? 'Digest'}
+                  </span>
+                  <h2 class="lead-title">{featured.data.title}</h2>
+                  <p class="lead-stand">{featured.data.description}</p>
+                  <div class="lead-byline">
+                    <span class="byline gz-mono">
+                      <time datetime={featured.data.date.toISOString()}>
+                        {featured.data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                      </time>
+                    </span>
+                    <span class="lead-readon gz-mono">Leer artículo →</span>
+                  </div>
+                </div>
+              </a>
             </div>
           )}
 
           {/* Grid of the rest */}
           {rest.length > 0 && (
             <div class="grid-wrap">
-              <p class="section-label anim-up" style="animation-delay:80ms">
-                Publicaciones
-                <span class="section-count">{rest.length}</span>
-              </p>
-              {allTags.length > 0 && (
-                <div class="tag-filter" id="tag-filter">
-                  <button class="tf-btn active" data-tag="all">Todos</button>
-                  {allTags.map(t => (
-                    <button class="tf-btn" data-tag={t}>{t}</button>
-                  ))}
-                </div>
-              )}
+              <div class="grid-header">
+                <h2 class="section-head gz-mono">
+                  Publicaciones
+                  <span class="section-count">{rest.length}</span>
+                </h2>
+                {allTags.length > 0 && (
+                  <div class="tag-filter" id="tag-filter">
+                    <button class="tf-btn active gz-mono" data-tag="all">Todos</button>
+                    {allTags.map(t => (
+                      <button class="tf-btn gz-mono" data-tag={t}>{t}</button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <div class="posts-grid" id="posts-grid">
                 {rest.map((p, i) => (
                   <PostCard
@@ -335,29 +158,31 @@ const ogImg = `${siteUrl}/og-default.svg`;
 
 
   <!-- ════════════ NEWSLETTER ════════════ -->
-  <section class="nl">
+  <section class="nl-section">
     <div class="container">
-      <div class="nl-in">
+      <div class="nl-box">
+        <div class="nl-rule-top" aria-hidden="true"></div>
 
-        <div class="nl-left">
-          <span class="nl-badge">Newsletter · Free</span>
-          <h2 class="nl-h">
-            Todo lo importante,<br/>
-            <em>en tu inbox.</em>
-          </h2>
-          <p class="nl-p">
-            Sin spam. Sin relleno. Cancela cuando quieras.
-          </p>
-          <ul class="nl-list">
-            <li>GitHub Trending diario</li>
-            <li>Papers de ArXiv en lenguaje humano</li>
-            <li>Hacker News + Reddit curado</li>
-            <li>Los mejores blogs del sector</li>
-          </ul>
-        </div>
-
-        <div class="nl-right">
-          <SubscribeForm compact={false}/>
+        <div class="nl-inner">
+          <div class="nl-left">
+            <span class="kicker">Newsletter · Free</span>
+            <h2 class="nl-h">
+              Todo lo importante,<br/>
+              <em>en tu inbox.</em>
+            </h2>
+            <p class="nl-p">
+              Sin spam. Sin relleno. Cancela cuando quieras.
+            </p>
+            <ul class="nl-list">
+              <li>GitHub Trending diario</li>
+              <li>Papers de ArXiv en lenguaje humano</li>
+              <li>Hacker News + Reddit curado</li>
+              <li>Los mejores blogs del sector</li>
+            </ul>
+          </div>
+          <div class="nl-right">
+            <SubscribeForm compact={false}/>
+          </div>
         </div>
 
       </div>
@@ -367,88 +192,35 @@ const ogImg = `${siteUrl}/og-default.svg`;
 </main>
 
 <!-- ════════════ FOOTER ════════════ -->
-<footer class="foot">
-  <div class="container foot-in">
-    <span class="foot-brand">
-      <span class="foot-n">FC</span>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span class="footer-brand gz-mono">
+      <span class="footer-fc">FC</span>
       First Cup
     </span>
-    <nav class="foot-nav">
-      <a href="/">Posts</a>
-      <a href="/subscribe">Suscribirse</a>
+    <nav class="footer-nav">
+      <a href="/" class="gz-mono">Posts</a>
+      <a href="/subscribe" class="gz-mono">Suscribirse</a>
     </nav>
-    <span class="foot-c">© {new Date().getFullYear()} · Hecho con Astro</span>
+    <span class="footer-copy gz-mono">© {new Date().getFullYear()} · Hecho con Astro</span>
   </div>
 </footer>
 
 <script>
-  // ── Scroll progress bar ──
-  const bar = document.getElementById('scroll-progress');
-  const onScroll = () => {
-    if (!bar) return;
-    const d = document.documentElement;
-    bar.style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // ── Init theme from localStorage ──
+  const saved = localStorage.getItem('theme') ?? 'latte';
+  document.documentElement.setAttribute('data-theme', saved);
 
-  // ── Stats count-up on scroll ──
-  const countEls = document.querySelectorAll<HTMLElement>('.count[data-target]');
-  const countObs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target as HTMLElement;
-      const target = parseInt(el.dataset.target ?? '0');
-      const duration = 1400;
-      const start = performance.now();
-      const tick = (now: number) => {
-        const p = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
-        el.textContent = Math.round(eased * target).toString();
-        if (p < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-      countObs.unobserve(el);
-    });
-  }, { threshold: 0.6 });
-  countEls.forEach(el => countObs.observe(el));
-
-  // ── Card scroll reveal (staggered) ──
-  const cards = document.querySelectorAll<HTMLElement>('.card');
+  // ── Card scroll reveal ──
+  const cards = document.querySelectorAll<HTMLElement>('.story-card');
   const cardObs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       (entry.target as HTMLElement).classList.add('in-view');
       cardObs.unobserve(entry.target);
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
   cards.forEach(c => cardObs.observe(c));
-
-  // ── Magnetic buttons ──
-  document.querySelectorAll<HTMLElement>('.hero-cta, .ncta').forEach(btn => {
-    btn.addEventListener('mousemove', (e: MouseEvent) => {
-      const r = btn.getBoundingClientRect();
-      const dx = (e.clientX - (r.left + r.width / 2)) * 0.28;
-      const dy = (e.clientY - (r.top + r.height / 2)) * 0.28;
-      btn.style.transition = 'transform 0.1s ease';
-      btn.style.transform = `translate(${dx}px, ${dy}px)`;
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transition = 'transform 0.5s var(--spring, cubic-bezier(.16,1,.3,1))';
-      btn.style.transform = '';
-    });
-  });
-
-  // ── Hero topic tags → scroll + filter ──
-  document.querySelectorAll<HTMLButtonElement>('.hero-topic').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tag = btn.dataset.topic ?? '';
-      const filterBtn = document.querySelector<HTMLButtonElement>(`.tf-btn[data-tag="${tag}"]`);
-      if (filterBtn) {
-        filterBtn.click();
-        document.getElementById('posts')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
 
   // ── Tag filter ──
   const filterBtns = document.querySelectorAll<HTMLButtonElement>('.tf-btn');
@@ -457,17 +229,10 @@ const ogImg = `${siteUrl}/og-default.svg`;
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const tag = btn.dataset.tag ?? 'all';
-      document.querySelectorAll<HTMLElement>('.card:not(.card--featured)').forEach(card => {
+      document.querySelectorAll<HTMLElement>('.story-card').forEach(card => {
         const tags = card.getAttribute('data-tags')?.split(',') ?? [];
         card.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
       });
-      // Featured card
-      const featuredCard = document.querySelector<HTMLElement>('.card--featured');
-      if (featuredCard) {
-        const tags = featuredCard.getAttribute('data-tags')?.split(',') ?? [];
-        const wrap = featuredCard.closest<HTMLElement>('.featured-wrap');
-        if (wrap) wrap.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
-      }
     });
   });
 
@@ -475,839 +240,396 @@ const ogImg = `${siteUrl}/og-default.svg`;
   let lastParticle = 0;
   document.addEventListener('mousemove', (e: MouseEvent) => {
     const now = Date.now();
-    if (now - lastParticle < 55) return;
+    if (now - lastParticle < 60) return;
     lastParticle = now;
     const p = document.createElement('div');
     p.className = 'steam-particle';
-    const ox = (Math.random() - 0.5) * 12;
-    const oy = (Math.random() - 0.5) * 8;
+    const ox = (Math.random() - 0.5) * 10;
+    const oy = (Math.random() - 0.5) * 6;
     p.style.left = (e.clientX + ox) + 'px';
     p.style.top  = (e.clientY + oy) + 'px';
-    const dx = (Math.random() - 0.5) * 18;
+    const dx = (Math.random() - 0.5) * 14;
     document.body.appendChild(p);
     p.animate([
-      { opacity: 0.5, transform: 'translate(-50%,-50%) scale(1)' },
-      { opacity: 0,   transform: `translate(calc(-50% + ${dx}px), calc(-50% - 28px)) scale(0.2)` }
-    ], { duration: 950, easing: 'ease-out', fill: 'forwards' })
+      { opacity: 0.35, transform: 'translate(-50%,-50%) scale(1)' },
+      { opacity: 0,    transform: `translate(calc(-50% + ${dx}px), calc(-50% - 24px)) scale(0.2)` }
+    ], { duration: 900, easing: 'ease-out', fill: 'forwards' })
       .addEventListener('finish', () => p.remove());
   });
 </script>
 
-</body>
-</html>
-
 <style>
 
-  /* ── HERO ── */
-  .hero {
-    position: relative;
-    overflow: hidden;
-    min-height: calc(100vh - 60px);
+  /* ── WIRE TICKER ── */
+  .wire {
     display: flex;
-    flex-direction: column;
+    align-items: stretch;
+    border-bottom: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+    background: var(--paper-sink);
   }
 
-  .hero-container {
-    position: relative; z-index: 1;
-    flex: 1; display: flex; flex-direction: column; justify-content: center;
-    padding-top: 2rem; padding-bottom: 2rem;
-  }
-
-  /* ── Backgrounds ── */
-  .hero-bg-base {
-    position: absolute; inset: 0;
-    background: #120F0B;
-    pointer-events: none;
-  }
-
-  /* Dot grid — cream on dark */
-  .hero-bg-dots {
-    position: absolute; inset: 0;
-    background-image: radial-gradient(circle, rgba(245,238,216,.07) 1px, transparent 1px);
-    background-size: 28px 28px;
-    pointer-events: none;
-  }
-
-  /* Warm amber glow top-right */
-  .hero-bg-glow {
-    position: absolute;
-    top: -140px; right: -60px;
-    width: 700px; height: 600px;
-    background: radial-gradient(ellipse, rgba(139,85,51,.22) 0%, transparent 65%);
-    pointer-events: none;
-  }
-
-  /* Bottom fade to page cream */
-  .hero-bg-fade {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 120px;
-    background: linear-gradient(to bottom, transparent, #F2EAD8);
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  /* ── Decorative coffee rings ── */
-  .hero-ring {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    border: 1px solid rgba(201,165,116,.12);
-  }
-  .hero-ring-a {
-    width: 420px; height: 420px;
-    top: -120px; right: -60px;
-    animation: ringFloat 14s ease-in-out infinite;
-  }
-  .hero-ring-b {
-    width: 240px; height: 240px;
-    top: 30px; right: 16%;
-    border-color: rgba(201,165,116,.07);
-    animation: ringFloat 18s ease-in-out infinite reverse;
-    animation-delay: -5s;
-  }
-  .hero-ring-c {
-    width: 100px; height: 100px;
-    bottom: 20%; left: 52%;
-    border-color: rgba(201,165,116,.08);
-    animation: ringFloat 11s ease-in-out infinite;
-    animation-delay: -3s;
-  }
-
-  @keyframes ringFloat {
-    0%,100% { transform: translateY(0) scale(1); }
-    50%      { transform: translateY(-14px) scale(1.015); }
-  }
-
-  .hero-body {
-    display: grid;
-    grid-template-columns: 56fr 44fr;
-    gap: 3.5rem;
-    align-items: center;
-  }
-
-  .hero-text { display: flex; flex-direction: column; }
-
-  /* Pill eyebrow */
-  .eyebrow-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: .55rem;
-    background: rgba(201,165,116,0.1);
-    border: 1px solid rgba(201,165,116,0.3);
-    border-radius: 100px;
-    padding: .38rem .9rem;
-    font-family: var(--font-mono);
-    font-size: .65rem;
-    color: #C9A574;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    width: fit-content;
-    margin-bottom: 1.75rem;
-  }
-
-  .pulse {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--amber);
-    box-shadow: 0 0 6px var(--amber-glow);
-    animation: breathe 2.5s ease-in-out infinite;
+  .wire-tag {
     flex-shrink: 0;
-  }
-
-  @keyframes breathe {
-    0%,100% { transform:scale(1); opacity:1; }
-    50%      { transform:scale(.6); opacity:.4; }
-  }
-
-  .headline {
-    display: flex;
-    flex-direction: column;
-    gap: .02em;
-    margin-bottom: 1.1rem;
-  }
-
-  .hl-line {
-    display: block;
-    font-family: var(--font-display);
-    font-size: clamp(2.8rem, 6.2vw, 4.8rem);
-    font-weight: 400;
-    line-height: 1.06;
-    letter-spacing: -.025em;
-    color: rgba(245,238,216,.95);
-  }
-
-  .hl-accent {
-    font-style: italic;
-    color: #C9A574;
-    font-size: clamp(3.2rem, 7.5vw, 6rem);
-    line-height: 1.0;
-  }
-
-  .hl-small {
-    font-size: clamp(2rem, 4.2vw, 3.4rem);
-    color: rgba(245,238,216,.5);
-    font-weight: 400;
-  }
-
-  /* Steam cursor particles */
-  :global(.steam-particle) {
-    position: fixed;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: rgba(92,47,14,0.22);
-    pointer-events: none;
-    z-index: 9995;
-    filter: blur(1.5px);
-  }
-
-  .hero-sub {
-    font-size: .96rem;
-    color: rgba(245,238,216,.58);
-    line-height: 1.85;
-    max-width: 480px;
-    margin-bottom: 1.5rem;
-  }
-
-  /* Feature pills row */
-  .hero-features {
     display: flex;
     align-items: center;
-    gap: .5rem;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
-  }
-
-  .hf-item {
-    display: inline-flex;
-    align-items: center;
-    gap: .35rem;
-    font-family: var(--font-mono);
-    font-size: .64rem;
-    color: rgba(245,238,216,.5);
-    letter-spacing: .02em;
-  }
-  .hf-item svg { color: #C9A574; flex-shrink: 0; }
-
-  .hf-sep {
-    width: 1px; height: 12px;
-    background: rgba(245,238,216,.12);
-    flex-shrink: 0;
-  }
-
-  /* Stats row */
-  .hero-stats {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 2.25rem;
-    padding: 1rem 1.4rem;
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(245,238,216,.1);
-    border-radius: 10px;
-    width: fit-content;
-    backdrop-filter: blur(8px);
-  }
-
-  .hstat { display: flex; flex-direction: column; gap: .1rem; }
-
-  .hstat-n {
-    font-family: var(--font-display);
-    font-size: 1.55rem;
-    font-weight: 400;
-    color: rgba(245,238,216,.92);
-    line-height: 1;
-    display: flex;
-    align-items: baseline;
-    gap: .05em;
-  }
-
-  .hstat-s {
-    font-size: .8rem;
-    color: #C9A574;
-    font-family: var(--font-body);
-    font-weight: 600;
-  }
-
-  .hstat-l {
-    font-family: var(--font-mono);
-    font-size: .58rem;
-    color: rgba(245,238,216,.35);
-    text-transform: uppercase;
-    letter-spacing: .07em;
-    margin-top: .15rem;
-  }
-
-  .hstat-sep {
-    width: 1px;
-    height: 32px;
-    background: rgba(245,238,216,.1);
-    flex-shrink: 0;
-  }
-
-  /* CTA row */
-  .hero-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .hero-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    background: #C9A574;
-    color: #1C0E05;
+    background: var(--spot);
+    color: var(--paper);
+    font-size: 0.6rem;
     font-weight: 700;
-    font-size: .9rem;
-    padding: .8rem 1.6rem;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: opacity .15s, transform .25s var(--spring), box-shadow .25s;
-    box-shadow: 0 4px 20px rgba(201,165,116,.3);
-  }
-  .hero-cta:hover {
-    opacity: .9;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(201,165,116,.4);
-    text-decoration: none;
-  }
-  .hero-cta svg { transition: transform .25s var(--spring); }
-  .hero-cta:hover svg { transform: translateX(3px); }
-
-  .hero-ghost {
-    font-size: .875rem;
-    font-weight: 500;
-    color: rgba(245,238,216,.45);
-    text-decoration: none;
-    transition: color .15s;
-  }
-  .hero-ghost:hover { color: rgba(245,238,216,.8); text-decoration: none; }
-
-  /* ── COFFEE CARD WIDGET ── */
-  .hero-visual {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 1.5rem;
+    letter-spacing: 0.18em;
+    padding: 0 14px;
+    text-transform: uppercase;
   }
 
-  .hv-card {
-    position: relative;
-    background: #1C0E05;
-    border-radius: 24px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    width: 296px;
+  .wire-mask {
+    flex: 1;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,.08);
-    box-shadow:
-      0 0 0 1px rgba(92,47,14,.12),
-      0 40px 80px rgba(18,10,3,.3),
-      0 12px 28px rgba(18,10,3,.2),
-      inset 0 1px 0 rgba(255,255,255,.06);
+    padding: 0.55rem 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
   }
 
-  .hv-card::before {
-    content: '';
-    position: absolute;
-    top: 45%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(139,85,51,.18) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
+  .wire-track {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: max-content;
+    animation: wireScroll 42s linear infinite;
+  }
+  .wire-track:hover { animation-play-state: paused; }
+
+  @keyframes wireScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-33.33%); }
   }
 
-  .hv-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.04);
-    pointer-events: none;
-    top: 44%; left: 50%;
+  .wire-item {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    padding: 0 0.5rem;
   }
-  .hv-ring-1 { width: 220px; height: 220px; transform: translate(-50%, -52%); }
-  .hv-ring-2 { width: 360px; height: 360px; transform: translate(-50%, -52%); }
 
-  .hv-head {
+  .wire-sep {
+    color: var(--spot);
+    font-size: 0.45rem;
+    opacity: 0.6;
+    padding: 0 0.25rem;
+    flex-shrink: 0;
+  }
+
+
+  /* ── EDITION SECTION ── */
+  .edition-section { padding: 2.5rem 0 5rem; }
+
+  /* ── LEAD ── */
+  .lead-wrap {
+    margin-bottom: 0;
+    padding-bottom: 2.5rem;
+    border-bottom: 3px double var(--ink);
+    margin-bottom: 2.5rem;
+  }
+
+  .lead-edition {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
-  .hv-brand-block {
-    display: flex;
-    align-items: center;
-    gap: .4rem;
+  .edition-num {
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
   }
 
-  .hv-icon {
-    font-size: .95rem;
-    line-height: 1;
+  .lead-link {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    text-decoration: none;
+    color: inherit;
+  }
+  .lead-link:hover { text-decoration: none; }
+  @media (max-width: 780px) {
+    .lead-link { grid-template-columns: 1fr; gap: 1.5rem; }
   }
 
-  .hv-brand-name {
-    font-family: var(--font-display);
-    font-size: .82rem;
-    font-weight: 600;
-    color: rgba(245,238,216,.65);
-    letter-spacing: -.01em;
+  .lead-img {
+    overflow: hidden;
+    border: 1px solid var(--ink);
+    aspect-ratio: 16/9;
   }
-
-  .hv-live {
-    display: inline-flex;
-    align-items: center;
-    gap: .3rem;
-    font-family: var(--font-mono);
-    font-size: .56rem;
-    color: #4ade80;
-    background: rgba(74,222,128,.1);
-    border: 1px solid rgba(74,222,128,.22);
-    border-radius: 4px;
-    padding: .1rem .42rem;
-    letter-spacing: .06em;
-    text-transform: uppercase;
+  .lead-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--spring);
   }
+  .lead-link:hover .lead-img img { transform: scale(1.03); }
 
-  .hv-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #4ade80;
-    flex-shrink: 0;
-    animation: breathe 2.5s ease-in-out infinite;
-  }
-
-  .hv-cup {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 0 1rem;
-  }
-
-  .hv-cup :global(.cup-wrap) {
-    width: 150px;
-    height: 150px;
-  }
-
-  /* Sources row */
-  .hv-sources-row {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 1rem;
-  }
-
-  .hvs-label {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: .54rem;
-    color: rgba(245,238,216,.3);
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    margin-bottom: .45rem;
-  }
-
-  .hv-sources {
-    display: flex;
-    gap: .3rem;
-    flex-wrap: wrap;
-  }
-
-  .hvs-chip {
-    font-family: var(--font-mono);
-    font-size: .55rem;
-    border-radius: 4px;
-    padding: .1rem .35rem;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: rgba(245,238,216,.35);
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.07);
-    transition: all .2s;
-  }
-
-  .hvs-chip.hvs-active {
-    color: rgba(245,238,216,.75);
-    background: rgba(139,85,51,.2);
-    border-color: rgba(139,85,51,.35);
-  }
-
-  .hv-divider {
-    height: 1px;
-    background: rgba(255,255,255,.06);
-    margin: 0 0 1rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Schedule row */
-  .hv-schedule {
-    position: relative;
-    z-index: 1;
+  .lead-body {
     display: flex;
     flex-direction: column;
-    gap: .45rem;
+    gap: 0.9rem;
+    padding-top: 0.25rem;
   }
 
-  .hv-sched-row {
+  .lead-kicker { margin-bottom: 0.1rem; }
+
+  .lead-title {
+    font-family: 'Bodoni Moda', serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+    transition: color 0.18s;
+  }
+  .lead-link:hover .lead-title { color: var(--spot-deep); }
+
+  .lead-stand {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 55ch;
+  }
+
+  .lead-byline {
     display: flex;
     align-items: center;
-    gap: .45rem;
-  }
-
-  .hv-sched-row svg { color: rgba(245,238,216,.4); flex-shrink: 0; }
-
-  .hv-sched-text {
-    font-family: var(--font-mono);
-    font-size: .62rem;
-    color: rgba(245,238,216,.45);
-    letter-spacing: .02em;
-  }
-
-  .hv-sched-text strong {
-    color: var(--amber);
-    font-weight: 600;
-  }
-
-  /* Topic tags */
-  .hero-topics {
-    display: flex;
-    align-items: center;
-    gap: .4rem;
+    justify-content: space-between;
+    gap: 1rem;
     flex-wrap: wrap;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule);
   }
 
-  .hero-topics-label {
-    font-family: var(--font-mono);
-    font-size: .63rem;
-    color: rgba(245,238,216,.3);
-    letter-spacing: .06em;
+  .lead-readon {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--spot);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    flex-shrink: 0;
   }
 
-  .hero-topic {
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    color: rgba(245,238,216,.45);
-    background: none;
-    border: 1px solid rgba(245,238,216,.12);
-    border-radius: 4px;
-    padding: .2rem .55rem;
-    cursor: pointer;
-    transition: color .15s, border-color .15s, background .15s;
-    letter-spacing: .02em;
-  }
-  .hero-topic:hover {
-    color: #C9A574;
-    border-color: rgba(201,165,116,.35);
-    background: rgba(201,165,116,.08);
+
+  /* ── GRID OF POSTS ── */
+  .grid-wrap { }
+
+  .grid-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 1.75rem;
   }
 
-  .hero-rule {
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, var(--border-mid) 30%, transparent 70%);
-  }
-
-  /* ── SOURCES TICKER ── */
-  .ticker {
-    position: relative;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: .55rem 0;
-    overflow: hidden;
-    background: var(--bg-card);
-  }
-
-  .ticker-inner { overflow: hidden; }
-
-  .ticker-track {
+  .section-head {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
     display: flex;
     align-items: center;
-    gap: 1.8rem;
-    width: max-content;
-    animation: tickerScroll 28s linear infinite;
-  }
-  .ticker-track:hover { animation-play-state: paused; }
-
-  @keyframes tickerScroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    gap: 0.6rem;
   }
 
-  .t-item {
-    font-family: var(--font-mono);
-    font-size: .62rem;
-    color: var(--text-3);
-    text-transform: uppercase;
-    letter-spacing: .09em;
-    white-space: nowrap;
-    transition: color .15s;
+  .section-count {
+    font-size: 0.62rem;
+    color: var(--spot);
+    background: oklch(from var(--spot) l c h / .1);
+    border: 1px solid oklch(from var(--spot) l c h / .22);
+    border-radius: 2px;
+    padding: 0.06rem 0.38rem;
+    font-weight: 400;
   }
-  .ticker-track:hover .t-item { color: var(--text-2); }
-
-  .t-sep {
-    color: var(--accent);
-    font-size: .75rem;
-    opacity: .5;
-    flex-shrink: 0;
-  }
-
-  .ticker-fade {
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 80px;
-    z-index: 1;
-    pointer-events: none;
-  }
-  .ticker-fade-l {
-    left: 0;
-    background: linear-gradient(90deg, var(--bg-card) 0%, transparent 100%);
-  }
-  .ticker-fade-r {
-    right: 0;
-    background: linear-gradient(270deg, var(--bg-card) 0%, transparent 100%);
-  }
-
 
   /* ── TAG FILTER ── */
   .tag-filter {
     display: flex;
     align-items: center;
-    gap: .4rem;
+    gap: 0.35rem;
     flex-wrap: wrap;
-    margin-bottom: 1.5rem;
   }
 
   .tf-btn {
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    font-weight: 500;
-    color: var(--text-2);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: .28rem .65rem;
+    font-size: 0.62rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 0.22rem 0.55rem;
     cursor: pointer;
-    transition: color .15s, border-color .15s, background .15s;
-    letter-spacing: .03em;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    letter-spacing: 0.05em;
     text-transform: lowercase;
   }
   .tf-btn:hover {
-    color: var(--amber);
-    border-color: rgba(201,165,116,.35);
-    background: var(--amber-dim);
+    color: var(--spot);
+    border-color: oklch(from var(--spot) l c h / .4);
+    background: oklch(from var(--spot) l c h / .06);
   }
   .tf-btn.active {
-    color: #1A120A;
-    background: var(--accent);
-    border-color: var(--accent);
+    color: var(--paper);
+    background: var(--ink);
+    border-color: var(--ink);
   }
-
-  /* ── POSTS ── */
-  .posts-section { padding: 3.5rem 0 5rem; }
-
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    font-family: var(--font-mono);
-    font-size: .67rem;
-    font-weight: 500;
-    color: var(--text-2);
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    margin-bottom: 1.25rem;
-  }
-
-  .section-count {
-    font-size: .65rem;
-    color: var(--accent);
-    background: var(--amber-dim);
-    border: 1px solid rgba(201,165,116,.22);
-    border-radius: 3px;
-    padding: .08rem .4rem;
-  }
-
-  .featured-wrap { margin-bottom: 3.5rem; }
 
   .posts-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.1rem;
+    gap: 0;
+    border-left: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
   }
 
-  /* ── Empty ── */
+  /* ── EMPTY STATE ── */
   .empty {
     padding: 5rem 0;
-    border-top: 1px solid var(--border);
+    border-top: 3px double var(--ink);
     max-width: 480px;
-  }
-  .empty-label {
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    color: var(--amber);
-    text-transform: uppercase;
-    letter-spacing: .09em;
-    margin-bottom: .75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
   .empty-h {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -.02em;
-    margin-bottom: .5rem;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
   }
-  .empty-p { color: var(--text-2); font-size: .9rem; line-height: 1.65; margin-bottom: 1.5rem; }
+  .empty-p { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.65; }
   .pill-btn {
     display: inline-block;
-    background: var(--accent);
-    color: var(--bg);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
     font-weight: 700;
-    font-size: .875rem;
-    padding: .6rem 1.35rem;
-    border-radius: 7px;
+    font-size: 0.8rem;
+    padding: 0.6rem 1.35rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     text-decoration: none;
-    transition: opacity .15s;
+    transition: opacity 0.15s;
+    border-radius: 0;
+    width: fit-content;
+    margin-top: 0.5rem;
   }
-  .pill-btn:hover { opacity: .85; text-decoration: none; }
+  .pill-btn:hover { opacity: 0.8; text-decoration: none; }
 
 
   /* ── NEWSLETTER ── */
-  .nl { padding-bottom: 6rem; }
+  .nl-section { padding-bottom: 5rem; }
 
-  .nl-in {
+  .nl-box {
+    border: 1px solid var(--ink);
+    position: relative;
+  }
+
+  .nl-rule-top {
+    height: 3px;
+    background: linear-gradient(90deg, var(--spot) 0%, transparent 60%);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .nl-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5rem;
+    gap: 4rem;
     align-items: start;
-    padding: 3.5rem;
-    border: 1px solid var(--border-mid);
-    border-radius: 14px;
-    background: var(--surface);
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* amber top accent line */
-  .nl-in::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, var(--amber) 0%, transparent 55%);
-    opacity: .6;
-  }
-
-  .nl-badge {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: .66rem;
-    color: var(--accent);
-    border: 1px solid rgba(201,165,116,.28);
-    border-radius: 3px;
-    padding: .12rem .5rem;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
+    padding: 2.5rem;
   }
 
   .nl-h {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--text);
-    letter-spacing: -.03em;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.025em;
     line-height: 1.15;
-    margin-bottom: .75rem;
+    margin: 0.75rem 0;
   }
-  .nl-h em { font-style: normal; color: var(--amber); font-weight: 500; }
+  .nl-h em { font-style: italic; color: var(--spot); font-weight: 400; }
 
-  .nl-p { color: var(--text-2); font-size: .875rem; line-height: 1.7; margin-bottom: 1.5rem; }
+  .nl-p { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.25rem; }
 
-  .nl-list { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
+  .nl-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
   .nl-list li {
-    font-size: .85rem; color: var(--text-2);
+    font-size: 0.875rem; color: var(--ink-soft);
     padding-left: 1rem; position: relative;
   }
   .nl-list li::before {
     content: '·';
     position: absolute; left: 0;
-    color: var(--amber);
-    font-size: 1rem; line-height: 1.3;
+    color: var(--spot); font-size: 1rem; line-height: 1.3;
   }
 
-  .nl-right { padding-top: 4rem; }
+  .nl-right { padding-top: 2rem; }
 
 
   /* ── FOOTER ── */
-  .foot { border-top: 1px solid var(--border); padding: 1.5rem 0; }
+  .site-footer {
+    border-top: 3px double var(--ink);
+    padding: 1.25rem 0;
+    background: var(--paper-sink);
+  }
 
-  .foot-in {
+  .footer-inner {
     display: flex; align-items: center;
     justify-content: space-between;
     flex-wrap: wrap; gap: 1rem;
   }
 
-  .foot-brand {
-    display: flex; align-items: center; gap: .45rem;
-    font-family: var(--font-display);
-    font-size: .85rem; font-weight: 700;
-    color: var(--text-2);
+  .footer-brand {
+    display: flex; align-items: center; gap: 0.45rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  .foot-n {
-    width: 28px; height: 22px;
-    background: var(--accent); color: var(--bg);
-    font-size: .62rem; font-weight: 600;
-    border-radius: 4px;
+  .footer-fc {
+    width: 26px; height: 20px;
+    background: var(--ink); color: var(--paper);
+    font-size: 0.58rem; font-weight: 700;
     display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 2px;
   }
 
-  .foot-nav { display: flex; gap: 1.5rem; }
-  .foot-nav a { font-size: .82rem; color: var(--text-2); transition: color .15s; }
-  .foot-nav a:hover { color: var(--text); }
+  .footer-nav { display: flex; gap: 1.5rem; }
+  .footer-nav a {
+    font-size: 0.68rem; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    transition: color 0.15s;
+  }
+  .footer-nav a:hover { color: var(--ink); text-decoration: none; }
 
-  .foot-c { font-size: .74rem; color: var(--text-3); }
+  .footer-copy { font-size: 0.65rem; color: var(--ink-faint); letter-spacing: 0.06em; }
 
 
   /* ── RESPONSIVE ── */
   @media (max-width: 860px) {
-    .hero { min-height: auto; }
-    .hero-container { padding-top: 2.5rem; padding-bottom: 3rem; }
-    .hero-body {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-    .hero-visual { order: -1; padding-top: 0; }
-    .hv-card { width: 100%; max-width: 320px; }
-    .hv-cup :global(.cup-wrap) { width: 120px; height: 120px; }
-    .hero-stats { gap: 1rem; }
-    .hero-ring { display: none; }
-    .hero-bg-fade { height: 80px; }
-    .posts-grid { grid-template-columns: repeat(2,1fr); }
-    .nl-in { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+    .posts-grid { grid-template-columns: repeat(2, 1fr); }
+    .nl-inner { grid-template-columns: 1fr; gap: 2rem; padding: 1.75rem; }
     .nl-right { padding-top: 0; }
   }
 
   @media (max-width: 560px) {
     .posts-grid { grid-template-columns: 1fr; }
-    .foot-in { flex-direction: column; align-items: flex-start; }
-    .hl-line { font-size: clamp(2.2rem, 10vw, 2.8rem); }
-    .hl-accent { font-size: clamp(2.6rem, 12vw, 3.4rem); }
-    .hl-small { font-size: clamp(1.6rem, 7vw, 2rem); }
-    .hero-stats { flex-wrap: wrap; width: 100%; }
-    .hstat-sep { display: none; }
-    .hero-actions { flex-direction: column; align-items: flex-start; }
-    .hero-features { gap: .4rem; }
-    .hf-sep { display: none; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
   }
 </style>

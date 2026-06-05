@@ -30,6 +30,7 @@ const { title, date, description, tags, source_urls, cover } = post.data;
 
 const words = post.body.split(/\s+/).filter(Boolean).length;
 const readingTime = Math.max(1, Math.round(words / 200));
+const readCups = Math.min(5, Math.max(1, Math.round(readingTime / 2)));
 
 const formattedDate = date.toLocaleDateString('es-ES', {
   year: 'numeric', month: 'long', day: 'numeric',
@@ -42,7 +43,7 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="latte">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -58,7 +59,6 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
   <meta property="og:site_name" content="First Cup" />
-  <meta name="twitter:site" content="@firstcup_dev" />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="sitemap" href="/sitemap.xml" />
   <link rel="alternate" type="application/rss+xml" title="First Cup RSS" href="/rss.xml" />
@@ -72,47 +72,65 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   <main class="main">
     <div class="container">
 
-      <a href="/" class="back-link">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M11 7H3M6 4L3 7l3 3" stroke="currentColor" stroke-width="1.4"
-            stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Todos los posts
+      <a href="/" class="back-link gz-mono">
+        ← Todos los posts
       </a>
 
-      <article class="post-article">
+      <article class="article-wrap">
 
-        {cover && (
-          <div class="post-cover">
-            <img src={cover} alt="" loading="eager" decoding="async" />
-          </div>
-        )}
+        <!-- Article header -->
+        <header class="article-header anim-up">
+          <div class="article-rule-top" aria-hidden="true"></div>
 
-        <header class="post-header anim-up">
-          <div class="post-eyebrow">
-            <span class="edition-pill">{editionLabel}</span>
-            <time class="post-date" datetime={isoDate}>{formattedDate}</time>
-            <span class="eyebrow-sep" aria-hidden="true">·</span>
-            <span class="reading-time">{readingTime} min de lectura</span>
+          <div class="article-eyebrow">
+            <span class="kicker">{tags[0] ?? 'Digest'}</span>
+            <span class="eyebrow-sep gz-mono" aria-hidden="true">·</span>
+            <span class="kicker edition-label">{editionLabel}</span>
           </div>
 
-          <h1 class="post-title">{title}</h1>
-          <p class="post-description">{description}</p>
+          <h1 class="article-title">{title}</h1>
+          <p class="article-stand">{description}</p>
+
+          <div class="article-byline">
+            <div class="byline-left">
+              <span class="byline gz-mono">
+                <span class="byline-by">por </span>
+                <span class="byline-name">First Cup AI</span>
+              </span>
+              <span class="byline-sep gz-mono" aria-hidden="true">·</span>
+              <time class="byline gz-mono" datetime={isoDate}>{formattedDate}</time>
+            </div>
+            <div class="byline-right">
+              <span class="read-time gz-mono">
+                <span class="read-cups">{'☕'.repeat(readCups)}</span>
+                {readingTime} min
+              </span>
+            </div>
+          </div>
 
           {tags.length > 0 && (
-            <div class="post-tags">
+            <div class="article-tags">
               {tags.map(t => <span class="tag">{t}</span>)}
             </div>
           )}
         </header>
 
-        <div class="prose post-content">
+        <!-- Cover image -->
+        {cover && (
+          <figure class="article-cover">
+            <img src={cover} alt="" loading="eager" decoding="async" />
+          </figure>
+        )}
+
+        <!-- Body -->
+        <div class="prose article-content">
           <Content />
         </div>
 
+        <!-- Sources -->
         {source_urls && source_urls.length > 0 && (
           <aside class="sources-section">
-            <h2 class="sources-title">Fuentes</h2>
+            <h2 class="sources-title gz-mono">Fuentes</h2>
             <ul class="sources-list">
               {source_urls.map((url, i) => {
                 let domain = url;
@@ -120,9 +138,9 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
                 return (
                   <li>
                     <a href={url} target="_blank" rel="noopener noreferrer" class="source-link">
-                      <span class="source-num">{i + 1}</span>
+                      <span class="source-num gz-mono">{i + 1}</span>
                       <span class="source-domain">{domain}</span>
-                      <span class="source-url">{url}</span>
+                      <span class="source-url gz-mono">{url}</span>
                     </a>
                   </li>
                 );
@@ -134,7 +152,7 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
       </article>
 
       <!-- Prev / Next navigation -->
-      <nav class="post-nav" aria-label="Navegación de posts">
+      <nav class="post-nav gz-mono" aria-label="Navegación de posts">
         {prev ? (
           <a href={`/${prev.slug}`} class="nav-post nav-prev">
             <span class="nav-dir">← Anterior</span>
@@ -152,10 +170,11 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
       <!-- Subscribe CTA -->
       <div class="post-cta">
         <div class="cta-inner">
-          <p class="cta-label">¿Te ha gustado este análisis?</p>
+          <div class="cta-rule-top" aria-hidden="true"></div>
+          <span class="kicker">¿Te ha gustado este análisis?</span>
           <h3 class="cta-h">El café llega cada mañana.</h3>
           <p class="cta-p">Suscríbete gratis y recibe el digest de IA y tech en tu inbox.</p>
-          <a href="/subscribe" class="cta-btn">Suscribirme gratis →</a>
+          <a href="/subscribe" class="cta-btn gz-mono">Suscribirme gratis →</a>
         </div>
       </div>
 
@@ -164,36 +183,40 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
 
   <footer class="site-footer" id="site-footer">
     <div class="container footer-inner">
-      <a href="/" class="footer-brand">
+      <a href="/" class="footer-brand gz-mono">
         <span class="footer-fc">FC</span>
-        First<em>Cup</em>
+        First Cup
       </a>
-      <span class="footer-copy">© {new Date().getFullYear()} · Hecho con Astro</span>
+      <span class="footer-copy gz-mono">© {new Date().getFullYear()} · Hecho con Astro</span>
     </div>
   </footer>
 
-  <!-- Focus mode toggle -->
-  <button class="fab focus-fab" id="focus-btn" aria-label="Modo lectura" title="Modo lectura">
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-      <path d="M1 5V2h3M12 2h3v3M1 11v3h3M12 14h3v-3"
-        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Back to top -->
+  <button class="btt" id="btt" aria-label="Volver arriba" title="Volver arriba">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M8 12V4M4 7l4-4 4 4"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </button>
 
-  <!-- Back to top -->
-  <button class="fab btt" id="btt" aria-label="Volver arriba" title="Volver arriba">
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-      <path d="M8 12V4M4 7l4-4 4 4"
-        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Focus mode -->
+  <button class="focus-fab" id="focus-btn" aria-label="Modo lectura" title="Modo lectura">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M1 5V2h3M12 2h3v3M1 11v3h3M12 14h3v-3"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
   </button>
 </body>
 </html>
 
 <script>
+  // ── Init theme ──
+  const saved = localStorage.getItem('theme') ?? 'latte';
+  document.documentElement.setAttribute('data-theme', saved);
+
   // ── Scroll progress scoped to article ──
   const bar = document.getElementById('scroll-progress');
-  const article = document.querySelector<HTMLElement>('.post-article');
+  const article = document.querySelector<HTMLElement>('.article-wrap');
   if (bar && article) {
     window.addEventListener('scroll', () => {
       const rect = article.getBoundingClientRect();
@@ -212,12 +235,14 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
 
   // ── Focus mode ──
   const focusBtn = document.getElementById('focus-btn');
-  const hdr = document.querySelector<HTMLElement>('header.hdr');
+  const hdr = document.querySelector<HTMLElement>('.dateline');
+  const masthead = document.querySelector<HTMLElement>('.masthead');
   const footer = document.getElementById('site-footer');
   focusBtn?.addEventListener('click', () => {
     const active = document.body.classList.toggle('focus-mode');
-    if (hdr)    hdr.style.display    = active ? 'none' : '';
-    if (footer) footer.style.display = active ? 'none' : '';
+    if (hdr)      hdr.style.display      = active ? 'none' : '';
+    if (masthead) masthead.style.display  = active ? 'none' : '';
+    if (footer)   footer.style.display    = active ? 'none' : '';
     focusBtn.classList.toggle('is-active', active);
     focusBtn.title = active ? 'Salir del modo lectura' : 'Modo lectura';
   });
@@ -229,209 +254,218 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   .back-link {
     display: inline-flex;
     align-items: center;
-    gap: .4rem;
-    font-family: var(--font-mono);
-    font-size: .78rem;
-    color: var(--text-2);
-    margin-bottom: 2.5rem;
-    transition: color .15s;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+    transition: color 0.15s;
     text-decoration: none;
-    letter-spacing: .02em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
-  .back-link:hover { color: var(--amber); text-decoration: none; }
+  .back-link:hover { color: var(--spot); text-decoration: none; }
 
   /* ── Article ── */
-  .post-article {
-    max-width: 700px;
+  .article-wrap {
+    max-width: 720px;
     margin-bottom: 4rem;
   }
 
-  /* ── Cover image ── */
-  .post-cover {
-    height: 340px;
-    border-radius: 14px;
-    overflow: hidden;
+  /* ── Article header ── */
+  .article-header {
     margin-bottom: 2rem;
-    border: 1px solid var(--border);
-  }
-  .post-cover img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--rule);
   }
 
-  /* ── Header ── */
-  .post-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .post-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: .55rem;
-    flex-wrap: wrap;
+  .article-rule-top {
+    height: 3px;
+    background: linear-gradient(90deg, var(--spot) 0%, transparent 55%);
     margin-bottom: 1.25rem;
   }
 
-  .edition-pill {
-    font-family: var(--font-mono);
-    font-size: .64rem;
-    font-weight: 600;
-    color: var(--amber);
-    background: var(--amber-dim);
-    border: 1px solid rgba(201,165,116,.28);
-    border-radius: 4px;
-    padding: .1rem .42rem;
-    letter-spacing: .04em;
-  }
-
-  .post-date {
-    font-family: var(--font-mono);
-    font-size: .72rem;
-    color: var(--text-2);
-    letter-spacing: .02em;
-  }
-
-  .eyebrow-sep { color: var(--text-3); font-size: .75rem; }
-
-  .reading-time {
-    font-family: var(--font-mono);
-    font-size: .72rem;
-    color: var(--text-3);
-    letter-spacing: .02em;
-  }
-
-  .post-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.65rem, 4vw, 2.4rem);
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.18;
-    letter-spacing: -.02em;
+  .article-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     margin-bottom: 1rem;
   }
 
-  .post-description {
-    font-size: 1.05rem;
-    color: var(--text-2);
-    line-height: 1.7;
-    margin-bottom: 1.25rem;
-    max-width: 620px;
+  .edition-label { color: var(--ink-faint); }
+  .eyebrow-sep { color: var(--ink-faint); font-size: 0.7rem; }
+
+  .article-title {
+    font-family: 'Bodoni Moda', serif;
+    font-optical-sizing: auto;
+    font-size: clamp(1.75rem, 4.5vw, 2.8rem);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+    margin-bottom: 1rem;
   }
 
-  .post-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .article-stand {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    font-style: italic;
+    margin-bottom: 1.25rem;
+    max-width: 60ch;
+  }
+
+  .article-byline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+    margin-bottom: 1rem;
+  }
+
+  .byline-left {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .byline-sep { color: var(--rule); font-size: 0.7rem; }
+  .byline-by { color: var(--ink-faint); }
+  .byline-name { font-weight: 700; color: var(--ink); }
+
+  .read-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+  }
+
+  .read-cups {
+    letter-spacing: 1px;
+    color: var(--spot);
+    font-size: 0.65rem;
+  }
+
+  .article-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+  /* ── Cover image ── */
+  .article-cover {
+    margin-bottom: 2rem;
+    border: 1px solid var(--ink);
+    overflow: hidden;
+  }
+  .article-cover img {
+    width: 100%; height: auto;
+    display: block;
+  }
 
   /* ── Content ── */
-  .post-content { margin-bottom: 3rem; }
+  .article-content { margin-bottom: 2.5rem; }
 
   /* ── Sources ── */
   .sources-section {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--amber);
-    border-radius: 8px;
+    background: var(--paper-sink);
+    border: 1px solid var(--rule);
+    border-left: 3px double var(--spot);
     padding: 1.25rem 1.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
   }
 
   .sources-title {
-    font-family: var(--font-mono);
-    font-size: .67rem;
-    font-weight: 600;
-    color: var(--text-2);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--ink-soft);
     text-transform: uppercase;
-    letter-spacing: .1em;
-    margin-bottom: .9rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.9rem;
   }
 
   .sources-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: .4rem;
+    gap: 0.4rem;
   }
 
   .source-link {
     display: flex;
     align-items: center;
-    gap: .55rem;
+    gap: 0.55rem;
     text-decoration: none;
-    padding: .3rem 0;
+    padding: 0.3rem 0;
   }
-  .source-link:hover .source-domain { color: var(--amber); }
+  .source-link:hover .source-domain { color: var(--spot); }
 
   .source-num {
-    font-family: var(--font-mono);
-    font-size: .64rem;
-    color: var(--amber);
-    background: var(--amber-dim);
-    border: 1px solid rgba(201,165,116,.2);
-    border-radius: 3px;
-    padding: .05rem .3rem;
+    font-size: 0.6rem;
+    color: var(--spot);
+    background: oklch(from var(--spot) l c h / .1);
+    border: 1px solid oklch(from var(--spot) l c h / .2);
+    border-radius: 2px;
+    padding: 0.04rem 0.28rem;
     flex-shrink: 0;
     min-width: 1.4rem;
     text-align: center;
   }
 
   .source-domain {
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 500;
-    color: var(--text);
+    color: var(--ink);
     flex-shrink: 0;
-    transition: color .15s;
+    transition: color 0.15s;
   }
 
   .source-url {
-    font-size: .72rem;
-    color: var(--text-3);
-    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-faint);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  /* ── Prev / Next ── */
+  /* ── Post nav ── */
   .post-nav {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    max-width: 700px;
+    gap: 0;
+    max-width: 720px;
     margin-bottom: 3rem;
+    border: 1px solid var(--ink);
+    border-top: 3px double var(--ink);
   }
 
   .nav-post {
     display: flex;
     flex-direction: column;
-    gap: .3rem;
+    gap: 0.3rem;
     padding: 1rem 1.25rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
     text-decoration: none;
-    transition: border-color .2s, background .2s;
+    transition: background 0.2s;
+    border-right: 1px solid var(--rule);
   }
-  .nav-post:hover {
-    border-color: rgba(201,165,116,.35);
-    background: var(--bg-hover);
-    text-decoration: none;
-  }
+  .nav-post:last-child { border-right: none; }
+  .nav-post:hover { background: var(--paper-sink); text-decoration: none; }
   .nav-next { text-align: right; }
 
   .nav-dir {
-    font-family: var(--font-mono);
-    font-size: .63rem;
-    color: var(--amber);
+    font-size: 0.62rem;
+    color: var(--spot);
     text-transform: uppercase;
-    letter-spacing: .08em;
+    letter-spacing: 0.1em;
   }
 
   .nav-ptitle {
-    font-size: .85rem;
-    font-weight: 500;
-    color: var(--text-2);
-    line-height: 1.4;
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    line-height: 1.35;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -439,69 +473,64 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   }
 
   /* ── Subscribe CTA ── */
-  .post-cta { max-width: 700px; margin-bottom: 3rem; }
+  .post-cta { max-width: 720px; margin-bottom: 3rem; }
 
   .cta-inner {
-    background: var(--surface);
-    border: 1px solid var(--border-mid);
-    border-radius: 12px;
-    padding: 2.5rem;
+    background: var(--paper-sink);
+    border: 1px solid var(--ink);
+    padding: 2.25rem;
     position: relative;
-    overflow: hidden;
-  }
-  .cta-inner::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, var(--amber) 0%, transparent 55%);
-    opacity: .5;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
   }
 
-  .cta-label {
-    font-family: var(--font-mono);
-    font-size: .63rem;
-    color: var(--amber);
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    margin-bottom: .6rem;
+  .cta-rule-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--spot) 0%, transparent 55%);
   }
 
   .cta-h {
-    font-family: var(--font-display);
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -.01em;
-    margin-bottom: .45rem;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
   }
 
   .cta-p {
-    font-size: .88rem;
-    color: var(--text-2);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
     line-height: 1.65;
-    margin-bottom: 1.4rem;
+    font-style: italic;
   }
 
   .cta-btn {
     display: inline-flex;
     align-items: center;
-    gap: .4rem;
-    background: var(--accent);
-    color: var(--bg);
-    font-weight: 600;
-    font-size: .875rem;
-    padding: .65rem 1.4rem;
-    border-radius: 8px;
+    gap: 0.4rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.65rem 1.35rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     text-decoration: none;
-    transition: opacity .15s, transform .25s var(--spring);
+    transition: opacity 0.15s;
+    width: fit-content;
+    margin-top: 0.4rem;
+    border-radius: 0;
   }
-  .cta-btn:hover { opacity: .85; transform: translateY(-1px); text-decoration: none; }
+  .cta-btn:hover { opacity: 0.8; text-decoration: none; }
 
   /* ── Footer ── */
   .site-footer {
-    border-top: 1px solid var(--border);
-    padding: 1.5rem 0;
+    border-top: 3px double var(--ink);
+    padding: 1.25rem 0;
+    background: var(--paper-sink);
   }
 
   .footer-inner {
@@ -513,71 +542,68 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   .footer-brand {
     display: flex;
     align-items: center;
-    gap: .45rem;
-    font-family: var(--font-display);
-    font-size: .88rem;
+    gap: 0.45rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    color: var(--text-2);
+    color: var(--ink-soft);
     text-decoration: none;
-    transition: color .15s;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.15s;
   }
-  .footer-brand:hover { color: var(--text); text-decoration: none; }
-  .footer-brand em { font-style: italic; color: var(--amber); }
+  .footer-brand:hover { color: var(--ink); text-decoration: none; }
 
   .footer-fc {
     width: 26px; height: 20px;
-    background: var(--accent);
-    color: var(--bg);
-    font-family: var(--font-body);
-    font-size: .58rem;
-    font-weight: 700;
-    border-radius: 3px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.58rem; font-weight: 700;
+    border-radius: 2px;
+    display: inline-flex; align-items: center; justify-content: center;
   }
 
-  .footer-copy { font-size: .75rem; color: var(--text-3); }
+  .footer-copy { font-size: 0.65rem; color: var(--ink-faint); letter-spacing: 0.06em; }
 
   /* ── Floating buttons ── */
-  .fab {
+  .btt, .focus-fab {
     position: fixed;
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 1px solid var(--border-mid);
-    background: rgba(242,234,216,.92);
-    backdrop-filter: blur(12px);
-    color: var(--text-2);
+    width: 38px; height: 38px;
+    border: 1px solid var(--rule);
+    background: var(--paper-sink);
+    color: var(--ink-soft);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color .2s, border-color .2s, transform .25s var(--spring), opacity .2s;
+    transition: color 0.2s, border-color 0.2s, transform 0.25s var(--spring), opacity 0.2s;
     z-index: 200;
+    border-radius: 2px;
   }
-  .fab:hover {
-    color: var(--amber);
-    border-color: rgba(201,165,116,.4);
-    transform: scale(1.1);
+  .btt:hover, .focus-fab:hover {
+    color: var(--spot);
+    border-color: oklch(from var(--spot) l c h / .4);
+    transform: scale(1.08);
   }
 
   .btt {
     bottom: 2rem; right: 1.5rem;
     opacity: 0; pointer-events: none;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   .btt.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
   .focus-fab { bottom: 2rem; left: 1.5rem; }
   .focus-fab.is-active {
-    color: var(--amber);
-    border-color: rgba(201,165,116,.5);
-    background: rgba(201,165,116,.1);
+    color: var(--spot);
+    border-color: oklch(from var(--spot) l c h / .5);
+    background: oklch(from var(--spot) l c h / .08);
   }
 
   @media (max-width: 600px) {
     .post-nav { grid-template-columns: 1fr; }
+    .nav-post { border-right: none; border-bottom: 1px solid var(--rule); }
+    .nav-post:last-child { border-bottom: none; }
     .nav-next { text-align: left; }
-    .cta-inner { padding: 1.75rem; }
+    .cta-inner { padding: 1.5rem; }
   }
 </style>
