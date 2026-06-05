@@ -1,0 +1,81 @@
+<svg width="100%" viewBox="0 0 680 530.83" role="img" style="" xmlns="http://www.w3.org/2000/svg">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">First Cup logo</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Logo de First Cup: una taza de café humeante con texto estilizado</desc>
+
+  <defs>
+    <clipPath id="cupClip">
+      <rect x="220" y="210" width="240" height="180" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background circle (deep espresso) -->
+  <circle cx="340" cy="270" r="210" fill="#1A0A00" style="fill:rgb(26, 10, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Outer ring -->
+  <circle cx="340" cy="270" r="210" fill="none" stroke="#C8621A" stroke-width="3" style="fill:none;stroke:rgb(200, 98, 26);color:rgb(255, 255, 255);stroke-width:3px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Inner ring subtle -->
+  <circle cx="340" cy="270" r="198" fill="none" stroke="#3D1A00" stroke-width="1" style="fill:none;stroke:rgb(61, 26, 0);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ── STEAM WISPS ── -->
+  <!-- Steam 1 (left) -->
+  <path d="M295 210 C290 195 300 185 295 170 C290 155 300 145 295 130" fill="none" stroke="#E8A87C" stroke-width="3.5" stroke-linecap="round" opacity="0.7" style="fill:none;stroke:rgb(232, 168, 124);color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Steam 2 (center) -->
+  <path d="M340 205 C335 188 347 176 340 160 C333 144 345 132 340 116" fill="none" stroke="#E8A87C" stroke-width="4" stroke-linecap="round" opacity="0.85" style="fill:none;stroke:rgb(232, 168, 124);color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.85;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Steam 3 (right) -->
+  <path d="M385 210 C390 193 378 183 385 167 C392 151 380 141 385 125" fill="none" stroke="#E8A87C" stroke-width="3.5" stroke-linecap="round" opacity="0.7" style="fill:none;stroke:rgb(232, 168, 124);color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ── SAUCER ── -->
+  <ellipse cx="340" cy="405" rx="130" ry="16" fill="#2C1100" style="fill:rgb(44, 17, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="340" cy="403" rx="130" ry="16" fill="#3E1A00" style="fill:rgb(62, 26, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="340" cy="401" rx="128" ry="14" fill="#5C2800" style="fill:rgb(92, 40, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="340" cy="400" rx="126" ry="12" fill="#7A3B10" style="fill:rgb(122, 59, 16);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- saucer rim highlight -->
+  <ellipse cx="340" cy="396" rx="100" ry="6" fill="none" stroke="#C8621A" stroke-width="1" opacity="0.5" style="fill:none;stroke:rgb(200, 98, 26);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ── CUP BODY ── -->
+  <!-- Cup shadow base -->
+  <path d="M228 225 L252 395 Q340 410 428 395 L452 225 Z" fill="#3D1500" rx="4" style="fill:rgb(61, 21, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Cup main body -->
+  <path d="M232 222 L255 390 Q340 405 425 390 L448 222 Z" fill="#6B2E0A" style="fill:rgb(107, 46, 10);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Cup front face (lighter) -->
+  <path d="M238 222 L260 385 Q340 400 420 385 L442 222 Z" fill="#8B4020" style="fill:rgb(139, 64, 32);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Cup highlight stripe -->
+  <path d="M270 222 L278 365 Q340 378 402 365 L410 222 Z" fill="#A0501A" opacity="0.4" style="fill:rgb(160, 80, 26);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Liquid surface inside cup (top oval) -->
+  <ellipse cx="340" cy="222" rx="104" ry="14" fill="#2C0D00" style="fill:rgb(44, 13, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Coffee surface shine -->
+  <ellipse cx="340" cy="221" rx="100" ry="12" fill="#3D1500" style="fill:rgb(61, 21, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Crema swirl -->
+  <ellipse cx="340" cy="220" rx="96" ry="10" fill="#7A4010" style="fill:rgb(122, 64, 16);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path d="M300 219 Q320 214 340 219 Q360 224 380 219" fill="none" stroke="#C8853A" stroke-width="2" opacity="0.7" style="fill:none;stroke:rgb(200, 133, 58);color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path d="M315 221 Q332 217 348 222" fill="none" stroke="#E8A87C" stroke-width="1.5" opacity="0.5" style="fill:none;stroke:rgb(232, 168, 124);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Cup rim top -->
+  <ellipse cx="340" cy="222" rx="104" ry="14" fill="none" stroke="#C8621A" stroke-width="2" style="fill:none;stroke:rgb(200, 98, 26);color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <ellipse cx="340" cy="220" rx="102" ry="12" fill="none" stroke="#A84E0E" stroke-width="1" opacity="0.5" style="fill:none;stroke:rgb(168, 78, 14);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ── HANDLE ── -->
+  <path d="M425 270 C470 270 490 300 490 330 C490 370 465 390 430 385" fill="none" stroke="#5C2800" stroke-width="18" stroke-linecap="round" style="fill:none;stroke:rgb(92, 40, 0);color:rgb(255, 255, 255);stroke-width:18px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <path d="M425 270 C470 270 490 300 490 330 C490 370 465 390 430 385" fill="none" stroke="#7A3B10" stroke-width="13" stroke-linecap="round" style="fill:none;stroke:rgb(122, 59, 16);color:rgb(255, 255, 255);stroke-width:13px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- handle highlight -->
+  <path d="M428 278 C465 278 480 305 480 330 C480 362 460 382 432 378" fill="none" stroke="#A05020" stroke-width="4" stroke-linecap="round" opacity="0.5" style="fill:none;stroke:rgb(160, 80, 32);color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ── TEXT: FIRST CUP ── -->
+  <!-- "FIRST" -->
+  <text x="340" y="460" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="700" letter-spacing="14" text-anchor="middle" fill="#E8A87C" style="fill:rgb(232, 168, 124);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:38px;font-weight:700;text-anchor:middle;dominant-baseline:auto">FIRST</text>
+
+  <!-- "CUP" larger -->
+  <text x="340" y="498" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="400" letter-spacing="22" text-anchor="middle" fill="#C8621A" style="fill:rgb(200, 98, 26);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:28px;font-weight:400;text-anchor:middle;dominant-baseline:auto">CUP</text>
+
+  <!-- Decorative dots flanking title -->
+  <circle cx="195" cy="462" r="3" fill="#C8621A" opacity="0.7" style="fill:rgb(200, 98, 26);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="485" cy="462" r="3" fill="#C8621A" opacity="0.7" style="fill:rgb(200, 98, 26);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="203" cy="462" r="1.5" fill="#C8621A" opacity="0.4" style="fill:rgb(200, 98, 26);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="477" cy="462" r="1.5" fill="#C8621A" opacity="0.4" style="fill:rgb(200, 98, 26);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Tagline -->
+  <text x="340" y="518" font-family="Georgia, 'Times New Roman', serif" font-size="12" font-weight="400" letter-spacing="4" text-anchor="middle" fill="#7A5030" opacity="0.9" style="fill:rgb(122, 80, 48);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.9;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:auto">your morning dev digest</text>
+
+</svg>
