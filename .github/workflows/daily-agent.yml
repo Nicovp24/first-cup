@@ -2,14 +2,14 @@ name: Daily Digest Agent
 
 on:
   schedule:
-    # TEST: 09:12 Madrid (UTC+2) = 07:12 UTC
-    - cron: '12 7 * * *'
+    # TEST: 09:35 Madrid (UTC+2) = 07:35 UTC
+    - cron: '35 7 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
         description: 'Dry run (scrape + write, skip git push)'
         required: false
-        default: 'false'
+        default: false
         type: boolean
 
 jobs:
