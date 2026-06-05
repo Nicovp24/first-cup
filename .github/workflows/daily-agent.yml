@@ -12,6 +12,9 @@ on:
         default: false
         type: boolean
 
+permissions:
+  contents: write
+
 jobs:
   run-agent:
     name: Run digest agent
@@ -22,7 +25,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.BLOG_GITHUB_TOKEN }}
           fetch-depth: 1
 
       - name: Set up Python 3.12
@@ -56,8 +58,8 @@ jobs:
 
       - name: Verify new posts
         run: |
-          COUNT=$(git diff --name-only HEAD | grep "blog/src/content/posts/" | wc -l)
-          echo "New posts staged: $COUNT"
+          COUNT=$(git status --short | grep "blog/src/content/posts/" | wc -l)
+          echo "New posts found: $COUNT"
           git status --short
 
       - name: Commit and push new posts
