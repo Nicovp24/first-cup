@@ -61,7 +61,7 @@ Artículos fuente (array JSON):
 {items_json}
 
 Tarea:
-Agrupa los artículos anteriores en 2-4 temas coherentes según su contenido.
+Agrupa los artículos anteriores en 4-6 temas coherentes según su contenido.
 
 Devuelve un objeto JSON con este esquema exacto — sin texto antes ni después:
 
@@ -76,7 +76,7 @@ Devuelve un objeto JSON con este esquema exacto — sin texto antes ni después:
 
 Reglas:
 - Cada item debe aparecer en exactamente un grupo.
-- Prefiere menos grupos amplios antes que muchos grupos estrechos.
+- Apunta a 4-6 grupos. Divide temas amplios en sub-temas si tienes suficientes ítems.
 - Usa etiquetas temáticas claras y descriptivas en español
   (ej. "Nuevos modelos de lenguaje", "Herramientas para desarrolladores",
   "Seguridad e infraestructura").

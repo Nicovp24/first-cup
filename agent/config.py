@@ -25,11 +25,12 @@ MAX_TOKENS = 4096
 # ---------------------------------------------------------------------------
 RSS_FEEDS: List[str] = [
     "https://simonwillison.net/atom/everything/",
-    "https://www.deeplearning.ai/the-batch/feed/",
     "https://huggingface.co/blog/feed.xml",
-    "https://openai.com/blog/rss/",
-    "https://www.anthropic.com/rss.xml",
-    "https://feeds.feedburner.com/TowardsDataScience",
+    "https://techcrunch.com/feed/",
+    "https://www.theverge.com/rss/index.xml",
+    "https://feeds.arstechnica.com/arstechnica/index",
+    "https://github.blog/feed/",
+    "https://thenewstack.io/feed/",
 ]
 
 SUBREDDITS: List[str] = [

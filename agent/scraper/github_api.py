@@ -21,8 +21,8 @@ logger = structlog.get_logger(__name__)
 
 _SEARCH_URL = "https://api.github.com/search/repositories"
 _GITHUB_BASE = "https://github.com"
-_TOP_N = 10
-_MIN_STARS = 50
+_TOP_N = 15
+_MIN_STARS = 500
 
 
 class GitHubAPIScraper(ScraperBase):
@@ -73,11 +73,8 @@ class GitHubAPIScraper(ScraperBase):
         yesterday = (datetime.now(tz=timezone.utc) - timedelta(days=1)).strftime(
             "%Y-%m-%d"
         )
-        query = (
-            f"created:>{yesterday} "
-            f"stars:>{self._min_stars} "
-            f"language:python OR language:javascript"
-        )
+        # Repos pushed today with many stars = viral / suddenly active repos
+        query = f"pushed:>{yesterday} stars:>{self._min_stars}"
         params: dict[str, str] = {
             "q": query,
             "sort": "stars",

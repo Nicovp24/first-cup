@@ -25,7 +25,7 @@ _ARXIV_NS = "http://arxiv.org/schemas/atom"
 _OPENSEARCH_NS = "http://a9.com/-/spec/opensearch/1.1/"
 
 _QUERY = "cat:cs.AI OR cat:cs.LG OR cat:cs.CL"
-_MAX_RESULTS = 20
+_MAX_RESULTS = 8
 _LOOKBACK_HOURS = 24
 _ABSTRACT_MAX_CHARS = 400
 

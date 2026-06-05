@@ -19,8 +19,8 @@ logger = structlog.get_logger(__name__)
 
 _HN_ALGOLIA_URL = "https://hn.algolia.com/api/v1/search"
 _HN_ITEM_BASE = "https://news.ycombinator.com/item?id="
-_MIN_POINTS = 100
-_TOP_N = 10
+_MIN_POINTS = 50
+_TOP_N = 20
 
 
 class HackerNewsScraper(ScraperBase):
