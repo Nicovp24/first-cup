@@ -1,15 +1,15 @@
-            ---
-            title: "Renovables Superan Gas; S&P Mantiene Reglas; Crianza Retro-Tech"
-            date: "2026-06-05"
-            description: "La eólica y solar superan al gas en un hito energético global. S&P mantiene la cautela ante grandes IPOs y la sociedad cuestiona la tech en crianza."
-            tags: ["tendencias", "Dev", "infraestructura"]
-            source_urls:
-              - "https://www.bloomberg.com/news/articles/2026-06-04/s-p-dow-jones-keeps-megacap-ipo-rules-as-is-after-consultation"
+---
+title: "Renovables Superan Gas; S&P Mantiene Reglas; Crianza Retro-Tech"
+date: "2026-06-05"
+description: "La eólica y solar superan al gas en un hito energético global. S&P mantiene la cautela ante grandes IPOs y la sociedad cuestiona la tech en crianza."
+tags: ["tendencias", "Dev", "infraestructura"]
+cover: "https://picsum.photos/seed/renovables-superan-gas-s-p-mantiene-reglas-crianza-retro-tech-20260605/800/400"
+source_urls:
+  - "https://www.bloomberg.com/news/articles/2026-06-04/s-p-dow-jones-keeps-megacap-ipo-rules-as-is-after-consultation"
   - "https://electrek.co/2026/05/20/in-a-first-wind-solar-generated-more-power-than-gas-globally-april-2026/"
   - "https://havenweb.org/2026/05/28/retro-tech.html"
   - "https://dev.to/javz/why-every-developer-should-attend-tech-week-at-least-once-28ip"
-cover: "https://picsum.photos/seed/renovables-superan-gas-s-p-mantiene-reglas-crianza-retro-tech-20260605/800/400"
-            ---
+---
 
 Abril de 2026 marcó un punto de inflexión en la producción energética global: la generación combinada de energía eólica y solar superó, por primera vez, la del gas natural. Este hito global, registrado por Electrek, indica un avance concreto en la transición energética, demostrando la capacidad de las renovables para asumir una porción dominante del mix eléctrico.
 

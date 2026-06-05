@@ -1,14 +1,14 @@
-            ---
-            title: "Anthropic: Auto-mejora recursiva de IA y seguridad open-source"
-            date: "2026-06-05"
-            description: "Anthropic avanza en IA con modelos auto-mejorables y lanza un framework open-source para detectar vulnerabilidades en código fuente."
-            tags: ["IA", "open-source", "seguridad", "Anthropic"]
-            source_urls:
-              - "https://www.anthropic.com/institute/recursive-self-improvement"
+---
+title: "Anthropic: Auto-mejora recursiva de IA y seguridad open-source"
+date: "2026-06-05"
+description: "Anthropic avanza en IA con modelos auto-mejorables y lanza un framework open-source para detectar vulnerabilidades en código fuente."
+tags: ["IA", "open-source", "seguridad", "Anthropic"]
+cover: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=75"
+source_urls:
+  - "https://www.anthropic.com/institute/recursive-self-improvement"
   - "https://github.com/anthropics/defending-code-reference-harness"
   - "https://dev.to/lovestaco/peektea-narrows-its-gaze-filter-as-you-type-and-hidden-files-23ic"
-cover: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=75"
-            ---
+---
 
 Anthropic avanza su investigación en auto-mejora recursiva de la IA, mientras despliega herramientas de código abierto basadas en inteligencia artificial para fortalecer la seguridad en el desarrollo de software.
 

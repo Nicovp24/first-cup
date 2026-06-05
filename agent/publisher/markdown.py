@@ -6,7 +6,6 @@ Generates Astro-compatible Markdown files from PublishedPost objects.
 
 from __future__ import annotations
 
-import textwrap
 from datetime import datetime
 from pathlib import Path
 
@@ -87,35 +86,28 @@ class MarkdownPublisher:
     def _build_frontmatter(self, post: PublishedPost) -> str:
         """Return the YAML frontmatter block for *post*."""
 
-        # Normalise published_at to a plain date string
         if isinstance(post.published_at, datetime):
             date_str = post.published_at.strftime("%Y-%m-%d")
         else:
             date_str = str(post.published_at)
 
-        # Escape double-quotes inside the title / description
-        safe_title = post.title.replace('"', '\\"')
-        safe_description = post.description.replace('"', '\\"')
+        def _esc(s: str) -> str:
+            return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
 
-        # Build tags inline list:  ["ai", "python"]
         tags_list = ", ".join(f'"{tag}"' for tag in post.tags)
-        tags_line = f"[{tags_list}]"
 
-        # Build source_urls as a YAML sequence
-        source_urls_block = "\n".join(
-            f'  - "{url}"' for url in post.source_urls
-        )
+        lines = [
+            "---",
+            f'title: "{_esc(post.title)}"',
+            f'date: "{date_str}"',
+            f'description: "{_esc(post.description)}"',
+            f"tags: [{tags_list}]",
+        ]
+        if post.cover:
+            lines.append(f'cover: "{post.cover}"')
+        lines.append("source_urls:")
+        for url in post.source_urls:
+            lines.append(f'  - "{url}"')
+        lines.append("---")
 
-        cover_line = f'\ncover: "{post.cover}"' if post.cover else ""
-
-        frontmatter = textwrap.dedent(f"""\
-            ---
-            title: "{safe_title}"
-            date: "{date_str}"
-            description: "{safe_description}"
-            tags: {tags_line}
-            source_urls:
-            {source_urls_block}{cover_line}
-            ---""")
-
-        return frontmatter
+        return "\n".join(lines)
