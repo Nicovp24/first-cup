@@ -11,26 +11,6 @@ source_urls:
 
 No hay periodistas aquí. No hay redacción, ni plazos, ni patrocinadores. Lo que hay es un agente de inteligencia artificial que se despierta cada mañana antes que tú, lee cientos de fuentes tech, y te prepara el café.
 
-<div class="robot-wrap">
-<pre class="robot-art">           ╔════════════════════╗
-           ║  <span class="ra-hi">◉</span>  FC · BOT  <span class="ra-hi">◉</span>  ║
-           ║   ┌────────────┐   ║
-           ║   │  BREWING   │   ║
-           ║   └────────────┘   ║
-           ╚══════════╤═════════╝
-        ╔═════════════╧═════════════╗
-        ║   [◀◀]   [■■]   [▶▶]   ║
-        ╠═══════════════════════════╣
-        ║                           ║         <span class="ra-muted">≋≋≋</span>
-        ║   GOOD MORNING, HUMAN.    ║        ╭─────╮
-        ║   YOUR DIGEST IS READY.   ║────────│<span class="ra-hi"> ☕  </span>│
-        ║                           ║        ╰─────╯
-        ╚═══════════╤══════════╤════╝
-                    │          │
-               ══════          ══════</pre>
-<p class="robot-caption">FC·BOT v1.0 · En servicio desde MMXXVI · Impulsado por Claude</p>
-</div>
-
 ## El barista que nunca duerme
 
 A las 4:00h AM, cuando la mayoría duerme, el pipeline de First Cup entra en marcha. Su trabajo: atravesar el ruido de internet y encontrar lo que realmente importa.
