@@ -24,6 +24,7 @@ import unicodedata
 from datetime import datetime, timezone
 from typing import Any
 
+import httpx
 import structlog
 
 from agent.db.posts import PublishedPost
@@ -92,21 +93,37 @@ _TOPIC_COVERS: dict[str, str] = {
     "machine learning": "photo-1620712943543-bcc4688e7485",
     "neural network": "photo-1555949963-aa79dcee981c",
     "language model": "photo-1677442135703-1787eea5ce01",
+    "transformer": "photo-1677442135703-1787eea5ce01",
     "llm": "photo-1677442135703-1787eea5ce01",
+    "agent": "photo-1677442135703-1787eea5ce01",
+    "token": "photo-1620712943543-bcc4688e7485",
     "python": "photo-1526379095098-d400fd0bf935",
     "javascript": "photo-1555066931-4365d14bab8c",
     "typescript": "photo-1555066931-4365d14bab8c",
     "rust": "photo-1629654297299-c8506221ca97",
+    "go ": "photo-1629654297299-c8506221ca97",
     "open source": "photo-1618401471353-b98afee0b2eb",
     "github": "photo-1618401471353-b98afee0b2eb",
     "security": "photo-1550751827-4bd374c3f58b",
     "cloud": "photo-1451187580459-43490279c0fa",
+    "kubernetes": "photo-1667372393119-3d4c48d07fc9",
+    "docker": "photo-1667372393119-3d4c48d07fc9",
+    "devops": "photo-1667372393119-3d4c48d07fc9",
+    "server": "photo-1451187580459-43490279c0fa",
     "database": "photo-1544383835-bda2bc66a55d",
+    "api": "photo-1461749280684-dccba630e2f6",
     "web": "photo-1558494949-ef010cbdcc31",
     "frontend": "photo-1559028012-481c04fa702d",
     "backend": "photo-1629654297299-c8506221ca97",
-    "devops": "photo-1667372393119-3d4c48d07fc9",
+    "terminal": "photo-1461749280684-dccba630e2f6",
+    "cli": "photo-1461749280684-dccba630e2f6",
+    "compiler": "photo-1461749280684-dccba630e2f6",
     "code": "photo-1461749280684-dccba630e2f6",
+    "startup": "photo-1559028012-481c04fa702d",
+    "model": "photo-1620712943543-bcc4688e7485",
+    "paper": "photo-1620712943543-bcc4688e7485",
+    "research": "photo-1620712943543-bcc4688e7485",
+    "benchmark": "photo-1620712943543-bcc4688e7485",
 }
 
 
@@ -116,6 +133,60 @@ def _build_cover_url(slug: str, keywords: str = "") -> str:
         if topic in kw:
             return f"https://images.unsplash.com/{photo_id}?auto=format&fit=crop&w=800&q=75"
     return f"https://picsum.photos/seed/{slug}/800/400"
+
+
+async def _fetch_og_image(url: str) -> str | None:
+    """
+    Try to get a topic-relevant image from a source URL.
+
+    - github.com/{owner}/{repo} → opengraph.github.com social preview (no HTTP request)
+    - All other URLs → fetch first ~32 KB of the page, extract og:image or twitter:image
+    Returns None on any failure so the caller can fall back.
+    """
+    try:
+        from urllib.parse import urlparse as _urlparse
+        parsed = _urlparse(url)
+        hostname = (parsed.hostname or "").lower()
+
+        if hostname in ("github.com", "www.github.com"):
+            parts = [p for p in parsed.path.strip("/").split("/") if p]
+            if len(parts) >= 2:
+                owner, repo = parts[0], parts[1].split("?")[0]
+                return f"https://opengraph.github.com/{owner}/{repo}"
+
+        async with httpx.AsyncClient(timeout=6.0, follow_redirects=True) as client:
+            async with client.stream(
+                "GET", url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; FirstCupBot/1.0)"},
+            ) as resp:
+                if resp.status_code >= 400:
+                    return None
+                content = b""
+                async for chunk in resp.aiter_bytes(chunk_size=4096):
+                    content += chunk
+                    low = content.lower()
+                    if b"</head>" in low or len(content) > 32_000:
+                        break
+
+        head_html = content.decode("utf-8", errors="ignore")
+
+        patterns = [
+            r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
+            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
+            r'<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']',
+            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']twitter:image["\']',
+        ]
+        for pat in patterns:
+            m = re.search(pat, head_html, re.IGNORECASE)
+            if m:
+                img = m.group(1).strip()
+                if img.startswith("http"):
+                    return img
+
+    except Exception:
+        pass
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -278,7 +349,7 @@ class DigestWriter:
         slug = f"{slug}-{date_suffix}"
 
         # --- Step D: cover image ---
-        cover = _build_cover_url(slug, cover_keywords)
+        cover = await _fetch_og_image(item.url) or _build_cover_url(slug, cover_keywords)
 
         self._log.info(
             "article_drafted",

@@ -267,7 +267,7 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
 
   /* ── Article ── */
   .article-wrap {
-    max-width: 720px;
+    max-width: 740px;
     margin-bottom: 4rem;
   }
 
@@ -354,13 +354,17 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
 
   /* ── Cover image ── */
   .article-cover {
-    margin-bottom: 2rem;
-    border: 1px solid var(--ink);
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--rule);
+    border-top: 2px solid var(--ink);
     overflow: hidden;
+    position: relative;
   }
   .article-cover img {
     width: 100%; height: auto;
     display: block;
+    max-height: 440px;
+    object-fit: cover;
   }
 
   /* ── Content ── */
@@ -433,7 +437,7 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
-    max-width: 720px;
+    max-width: 740px;
     margin-bottom: 3rem;
     border: 1px solid var(--ink);
     border-top: 3px double var(--ink);
@@ -472,7 +476,7 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   }
 
   /* ── Subscribe CTA ── */
-  .post-cta { max-width: 720px; margin-bottom: 3rem; }
+  .post-cta { max-width: 740px; margin-bottom: 3rem; }
 
   .cta-inner {
     background: var(--paper-sink);
@@ -510,20 +514,20 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--spot);
+    color: var(--paper-2);
     font-size: 0.75rem;
     font-weight: 700;
     padding: 0.65rem 1.35rem;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
     text-decoration: none;
-    transition: opacity 0.15s;
+    transition: background 0.18s, color 0.18s;
     width: fit-content;
     margin-top: 0.4rem;
     border-radius: 0;
   }
-  .cta-btn:hover { opacity: 0.8; text-decoration: none; }
+  .cta-btn:hover { background: var(--spot-deep); color: var(--paper-2); text-decoration: none; }
 
   /* ── Footer ── */
   .site-footer {

@@ -196,12 +196,13 @@ img { max-width: 100%; height: auto; }
 /* Drop cap on first paragraph */
 .prose > p:first-of-type::first-letter {
   font-family: var(--font-display);
-  font-size: 4.2em;
+  font-size: 3.6em;
   font-weight: 900;
-  line-height: 0.82;
+  line-height: 0.86;
   float: left;
-  margin: 0.06em 0.12em 0 0;
-  color: var(--spot-deep);
+  margin: 0.05em 0.14em 0 0;
+  color: var(--spot);
+  padding: 0 0.04em;
 }
 
 .prose h1, .prose h2, .prose h3 {
@@ -211,28 +212,45 @@ img { max-width: 100%; height: auto; }
   line-height: 1.12;
   letter-spacing: -0.022em;
   margin-top: 2.8rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.7rem;
 }
 .prose h1 { font-size: 2.1rem; }
 .prose h2 {
   font-size: 1.45rem;
-  padding-bottom: 0.45rem;
-  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.5rem;
+  border-bottom: 3px double var(--ink);
 }
-.prose h3 { font-size: 1.15rem; }
+.prose h3 {
+  font-size: 1.15rem;
+  padding-left: 0.7rem;
+  border-left: 3px solid var(--spot);
+}
 .prose p { margin-bottom: 0; }
 .prose ul, .prose ol { padding-left: 1.6rem; }
 .prose li { margin-bottom: 0.45rem; line-height: 1.72; }
 
 .prose blockquote {
   border-left: 3px solid var(--spot);
-  padding: 0.8rem 1.4rem;
-  margin: 2rem 0;
+  padding: 0.9rem 1.4rem 0.9rem 1.6rem;
+  margin: 2.2rem 0;
   background: var(--paper-sink);
   color: var(--ink-soft);
   font-style: italic;
-  font-size: 1.08rem;
+  font-size: 1.06rem;
   line-height: 1.72;
+  position: relative;
+}
+.prose blockquote::before {
+  content: '\201C';
+  position: absolute;
+  left: 0.4rem;
+  top: 0.2rem;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--spot);
+  opacity: 0.5;
+  line-height: 1;
 }
 
 .prose code {
@@ -281,12 +299,35 @@ html[data-theme="espresso"] .prose a:hover {
 .prose hr {
   border: none;
   text-align: center;
-  margin: 2.5rem 0;
-  color: var(--ink-faint);
-  font-size: 1.2rem;
-  letter-spacing: 0.6em;
+  margin: 2.8rem 0;
+  color: var(--spot);
+  font-size: 1rem;
+  letter-spacing: 0.7em;
+  opacity: 0.55;
 }
-.prose hr::after { content: '· · ·'; }
+.prose hr::after { content: '✦  ✦  ✦'; }
+
+.prose img {
+  width: 100%;
+  border: 1px solid var(--rule);
+  display: block;
+}
+
+.prose figure {
+  margin: 2rem 0;
+}
+.prose figure img {
+  margin-bottom: 0;
+}
+.prose figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
 
 /* ── Animations ── */
 @keyframes fade-up {
