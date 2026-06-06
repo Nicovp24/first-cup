@@ -2,6 +2,8 @@
 import Header from '../components/Header.astro';
 import SEO from '../components/SEO.astro';
 import '../styles/global.css';
+
+const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').replace(/\/$/, '');
 ---
 
 <!doctype html>
@@ -14,7 +16,7 @@ import '../styles/global.css';
   <SEO
     title="404 — Página no encontrada · First Cup"
     description="Esta página no existe. Vuelve al inicio de First Cup para leer el digest tech del día."
-    canonical="https://firstcup.dev/404"
+    canonical={`${SITE}/404`}
     noindex={true}
   />
 </head>
