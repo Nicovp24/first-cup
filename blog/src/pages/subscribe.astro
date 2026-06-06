@@ -35,8 +35,31 @@ import '../styles/global.css';
         </h1>
         <p class="page-subtitle">
           First Cup analiza automáticamente cientos de fuentes cada día
-          y te entrega solo lo que vale la pena. Elige tu plan.
+          y te entrega solo lo que vale la pena — sin ruido, sin spam.
         </p>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="stats-strip anim-up" style="animation-delay:60ms" aria-label="Métricas del digest">
+        <div class="stat-item">
+          <span class="stat-num">500+</span>
+          <span class="stat-label gz-mono">Fuentes analizadas</span>
+        </div>
+        <span class="stat-sep" aria-hidden="true">·</span>
+        <div class="stat-item">
+          <span class="stat-num">2×</span>
+          <span class="stat-label gz-mono">Al día</span>
+        </div>
+        <span class="stat-sep" aria-hidden="true">·</span>
+        <div class="stat-item">
+          <span class="stat-num">6</span>
+          <span class="stat-label gz-mono">Posts por edición</span>
+        </div>
+        <span class="stat-sep" aria-hidden="true">·</span>
+        <div class="stat-item">
+          <span class="stat-num">0€</span>
+          <span class="stat-label gz-mono">Para empezar</span>
+        </div>
       </div>
 
       <!-- Plans -->
@@ -214,7 +237,7 @@ import '../styles/global.css';
   .header-rule-top {
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, var(--spot), transparent);
+    background: linear-gradient(90deg, transparent, var(--spot), transparent);
     margin-bottom: 0.5rem;
   }
 
@@ -233,6 +256,49 @@ import '../styles/global.css';
     color: var(--ink-soft);
     line-height: 1.7;
     font-style: italic;
+  }
+
+  /* ── Stats strip ── */
+  .stats-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    border-top: 3px double var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 1.4rem 0 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--spot);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .stat-sep {
+    color: var(--rule);
+    font-size: 1.4rem;
+    line-height: 1;
+    align-self: center;
   }
 
   /* ── Plans grid ── */
@@ -351,19 +417,19 @@ import '../styles/global.css';
   .premium-btn {
     display: block;
     text-align: center;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--spot);
+    color: var(--paper-2);
     font-weight: 700;
     font-size: 0.78rem;
     padding: 0.85rem 1.5rem;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
-    transition: opacity 0.15s;
+    transition: background 0.18s, color 0.18s;
     text-decoration: none;
     width: 100%;
     border-radius: 0;
   }
-  .premium-btn:hover { opacity: 0.8; text-decoration: none; }
+  .premium-btn:hover { background: var(--spot-deep); color: var(--paper-2); text-decoration: none; }
 
   .premium-note {
     text-align: center;

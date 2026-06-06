@@ -66,11 +66,11 @@ except ImportError:
 
 try:
     from agent.writer.writer import DigestWriter  # type: ignore[import]
-    from agent.writer.claude_client import ClaudeClient as _AIClient  # type: ignore[import]
+    from agent.writer.gemini_client import GeminiClient as _AIClient  # type: ignore[import]
 except ImportError:
     try:
         from agent.writer.writer import DigestWriter  # type: ignore[import]
-        from agent.writer.gemini_client import GeminiClient as _AIClient  # type: ignore[import]
+        from agent.writer.claude_client import ClaudeClient as _AIClient  # type: ignore[import]
     except ImportError:
         DigestWriter = None  # type: ignore[assignment,misc]
         _AIClient = None  # type: ignore[assignment,misc]

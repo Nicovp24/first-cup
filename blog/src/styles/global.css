@@ -350,7 +350,7 @@ html[data-theme="espresso"] .prose a:hover {
   color: var(--ink-soft);
   background: var(--paper-sink);
   border: 1px solid var(--rule) !important;
-  border-top: 1px solid var(--rule) !important;
+  border-top: 2px solid var(--ink) !important;
   padding: 1.5rem 2rem;
   text-align: left;
   overflow-x: auto;
@@ -360,7 +360,7 @@ html[data-theme="espresso"] .prose a:hover {
 }
 
 .ra-hi    { color: var(--spot); }
-.ra-muted { color: var(--spot); opacity: 0.55; }
+.ra-muted { color: oklch(from var(--spot) l c h / .52); }
 
 .robot-caption {
   font-family: var(--font-mono);

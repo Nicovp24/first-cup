@@ -29,11 +29,11 @@ function toRoman(n: number): string {
       </span>
     </span>
     <span class="dateline-right">
-      <a href="/bienvenido-a-first-cup" class={`dateline-link dateline-link--about gz-mono${p==='/bienvenido-a-first-cup' ? ' active' : ''}`}>☕ El Barista</a>
-      <span class="dateline-div" aria-hidden="true">·</span>
       <a href="/" class={`dateline-link gz-mono${p==='/' ? ' active' : ''}`}>Inicio</a>
       <span class="dateline-div" aria-hidden="true">·</span>
-      <a href="/subscribe" class="dateline-link gz-mono">Suscribirse</a>
+      <a href="/bienvenido-a-first-cup" class={`dateline-link dateline-link--about gz-mono${p==='/bienvenido-a-first-cup' ? ' active' : ''}`}>☕ El Barista</a>
+      <span class="dateline-div" aria-hidden="true">·</span>
+      <a href="/subscribe" class={`dateline-link dateline-link--cta gz-mono${p==='/subscribe' ? ' active' : ''}`}>Suscribirse</a>
       <span class="dateline-div" aria-hidden="true">·</span>
       <div class="theme-switcher gz-mono" id="theme-toggle" role="group" aria-label="Cambiar tema">
         <button class="ts-btn" data-t="latte">LATTE</button>
@@ -204,6 +204,26 @@ function toRoman(n: number): string {
   .dateline-link:hover { color: var(--dl-text); text-decoration: none; }
   .dateline-link.active { color: var(--spot); }
   .dateline-link--about { font-weight: 700; }
+
+  .dateline-link--cta {
+    color: var(--spot) !important;
+    border: 1px solid oklch(from var(--spot) l c h / .55);
+    padding: 0.2rem 0.6rem;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+  .dateline-link--cta:hover {
+    background: var(--spot);
+    color: var(--dl-bg) !important;
+    border-color: var(--spot);
+    text-decoration: none;
+  }
+  .dateline-link--cta.active {
+    background: var(--spot);
+    color: var(--dl-bg) !important;
+    border-color: var(--spot);
+  }
 
   .dateline-div {
     color: oklch(from var(--dl-text) l c h / .30);

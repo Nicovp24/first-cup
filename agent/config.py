@@ -199,13 +199,37 @@ class Settings(BaseSettings):
         default=7,
         ge=0,
         le=23,
-        description="Hour (0-23, local time) at which the daily digest runs.",
+        description="Hour (0-23, local time) at which the morning digest runs.",
     )
     daily_run_minute: int = Field(
         default=0,
         ge=0,
         le=59,
-        description="Minute (0-59) at which the daily digest runs.",
+        description="Minute (0-59) at which the morning digest runs.",
+    )
+    midday_run_hour: int = Field(
+        default=13,
+        ge=0,
+        le=23,
+        description="Hour for the midday digest run.",
+    )
+    evening_run_hour: int = Field(
+        default=20,
+        ge=0,
+        le=23,
+        description="Hour for the evening digest run.",
+    )
+    breaking_news_interval_minutes: int = Field(
+        default=30,
+        ge=5,
+        le=120,
+        description="How often (in minutes) to check for breaking news.",
+    )
+    breaking_news_urgency_threshold: int = Field(
+        default=8,
+        ge=1,
+        le=10,
+        description="Minimum urgency_score (1-10) to trigger an immediate breaking-news publish.",
     )
     timezone: str = Field(
         default="Europe/Madrid",

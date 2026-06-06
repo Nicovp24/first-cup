@@ -183,6 +183,34 @@ async def mark_scraped(item: ScrapedItem) -> None:
         raise
 
 
+async def is_published_url(url: str) -> bool:
+    """
+    Check whether a URL is already referenced in a published post.
+
+    Used by the breaking-news pipeline to avoid publishing duplicate urgent items.
+    """
+    try:
+        def _query() -> list[dict]:
+            client = get_client()
+            response = (
+                client.table("posts")
+                .select("id")
+                .contains("source_urls", [url])
+                .limit(1)
+                .execute()
+            )
+            return response.data
+
+        data = await asyncio.to_thread(_query)
+        found = len(data) > 0
+        logger.debug("is_published_url_check", url=url, found=found)
+        return found
+
+    except Exception as exc:
+        logger.error("is_published_url_error", url=url, error=str(exc))
+        return False
+
+
 async def get_recent_posts(days: int = 7) -> list[PublishedPost]:
     """
     Retrieve posts published within the last ``days`` days.

@@ -1,11 +1,13 @@
 """
 agent/scheduler.py
 
-APScheduler-based daily scheduler for First Cup.
+APScheduler-based scheduler for First Cup.
 
-The scheduler runs ``run_agent()`` once per day at the time configured via
-``settings.DAILY_RUN_HOUR`` and ``settings.DAILY_RUN_MINUTE`` in the
-``settings.TIMEZONE`` timezone.
+Jobs:
+  - Morning digest  (daily_run_hour, default 07:00)
+  - Midday digest   (midday_run_hour, default 13:00)
+  - Evening digest  (evening_run_hour, default 20:00)
+  - Breaking-news checker (every breaking_news_interval_minutes, default 30 min)
 
 Usage:
     python -m agent.scheduler     # start the scheduler process (blocking)
@@ -23,7 +25,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from agent.config import settings
-from agent.main import run_agent
+from agent.main import run_agent, run_breaking_news
 
 logger = structlog.get_logger(__name__)
 
@@ -34,12 +36,7 @@ logger = structlog.get_logger(__name__)
 
 
 async def _scheduled_job() -> None:
-    """
-    Wrapper executed by APScheduler on each scheduled tick.
-
-    Catches all exceptions so APScheduler does not mark the job as broken
-    and continues to schedule future runs.
-    """
+    """Full digest run — called at each scheduled time slot."""
     log = logger.bind(job="daily_digest")
     log.info("scheduled_job_start")
     try:
@@ -49,6 +46,17 @@ async def _scheduled_job() -> None:
         log.error("scheduled_job_error", error=str(exc))
 
 
+async def _breaking_news_job() -> None:
+    """Breaking-news check — runs every N minutes, publishes only if truly urgent."""
+    log = logger.bind(job="breaking_news")
+    log.debug("breaking_news_job_start")
+    try:
+        await run_breaking_news()
+        log.debug("breaking_news_job_done")
+    except Exception as exc:
+        log.error("breaking_news_job_error", error=str(exc))
+
+
 # ---------------------------------------------------------------------------
 # Scheduler setup
 # ---------------------------------------------------------------------------
@@ -56,36 +64,48 @@ async def _scheduled_job() -> None:
 
 def _build_scheduler() -> AsyncIOScheduler:
     """
-    Create and configure an :class:`~apscheduler.schedulers.asyncio.AsyncIOScheduler`
-    with the daily digest job.
+    Create and configure an :class:`~apscheduler.schedulers.asyncio.AsyncIOScheduler`.
 
-    Returns:
-        A configured (but not yet started) scheduler instance.
+    Scheduled jobs:
+    - Morning digest   (daily_run_hour, default 07:00)
+    - Midday digest    (midday_run_hour, default 13:00)
+    - Evening digest   (evening_run_hour, default 20:00)
+    - Breaking-news checker (every breaking_news_interval_minutes, default 30 min)
     """
     scheduler = AsyncIOScheduler(timezone=settings.timezone)
 
-    trigger = CronTrigger(
-        hour=settings.daily_run_hour,
-        minute=settings.daily_run_minute,
-        timezone=settings.timezone,
-    )
+    # -- Three daily full-digest runs --
+    for job_id, hour in (
+        ("digest_morning", settings.daily_run_hour),
+        ("digest_midday",  settings.midday_run_hour),
+        ("digest_evening", settings.evening_run_hour),
+    ):
+        scheduler.add_job(
+            _scheduled_job,
+            trigger=CronTrigger(hour=hour, minute=settings.daily_run_minute, timezone=settings.timezone),
+            id=job_id,
+            name=f"First Cup — {job_id.replace('digest_', '')} digest",
+            replace_existing=True,
+            misfire_grace_time=60 * 30,
+            coalesce=True,
+        )
+        logger.info("digest_job_configured", job_id=job_id, hour=hour, minute=settings.daily_run_minute)
 
+    # -- Breaking-news checker --
+    from apscheduler.triggers.interval import IntervalTrigger  # local import to avoid top-level dep
     scheduler.add_job(
-        _scheduled_job,
-        trigger=trigger,
-        id="daily_digest",
-        name="First Cup — daily run",
+        _breaking_news_job,
+        trigger=IntervalTrigger(minutes=settings.breaking_news_interval_minutes),
+        id="breaking_news",
+        name="First Cup — breaking news checker",
         replace_existing=True,
-        misfire_grace_time=60 * 30,   # 30-minute grace window
-        coalesce=True,                 # run at most once if multiple misfires
+        misfire_grace_time=60 * 5,
+        coalesce=True,
     )
-
     logger.info(
-        "scheduler_configured",
-        job_id="daily_digest",
-        hour=settings.daily_run_hour,
-        minute=settings.daily_run_minute,
-        timezone=settings.timezone,
+        "breaking_news_job_configured",
+        interval_minutes=settings.breaking_news_interval_minutes,
+        urgency_threshold=settings.breaking_news_urgency_threshold,
     )
 
     return scheduler
@@ -118,11 +138,10 @@ async def start_scheduler() -> None:
         loop.add_signal_handler(sig, _shutdown, sig.name)
 
     scheduler.start()
+    morning_job = scheduler.get_job("digest_morning")
     logger.info(
         "scheduler_started",
-        next_run=str(
-            scheduler.get_job("daily_digest").next_run_time  # type: ignore[union-attr]
-        ),
+        next_morning_run=str(morning_job.next_run_time) if morning_job else "unknown",
     )
 
     # Keep the coroutine alive until the loop is stopped
@@ -130,7 +149,7 @@ async def start_scheduler() -> None:
         while True:
             await asyncio.sleep(60)
             if scheduler.running:
-                job = scheduler.get_job("daily_digest")
+                job = scheduler.get_job("digest_morning")
                 if job is not None:
                     logger.debug(
                         "scheduler_heartbeat",
