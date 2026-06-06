@@ -141,21 +141,21 @@ const { compact = false } = Astro.props;
   .submit-btn {
     height: 44px;
     padding: 0 1.25rem;
-    background: var(--ink, var(--accent));
-    color: var(--paper, var(--bg));
+    background: var(--spot);
+    color: var(--paper-2, var(--paper));
     border: none;
     border-radius: 0;
     font-size: 0.78rem;
     font-weight: 700;
     font-family: var(--font-mono);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
     cursor: pointer;
     white-space: nowrap;
-    transition: opacity 0.12s;
+    transition: background 0.18s;
   }
 
-  .submit-btn:hover { opacity: 0.82; }
+  .submit-btn:hover { background: var(--spot-deep); }
   .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
   .form-error {
