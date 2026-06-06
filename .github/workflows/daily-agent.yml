@@ -61,6 +61,10 @@ jobs:
           DAILY_RUN_HOUR:         '7'
           DAILY_RUN_MINUTE:       '0'
           TIMEZONE:               Europe/Madrid
+          STORIES_PER_RUN:        ${{ github.event.inputs.stories || '6' }}
+          TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID:    ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          TELEGRAM_PREMIUM_GROUP_ID: ${{ secrets.TELEGRAM_PREMIUM_GROUP_ID }}
         run: python -m agent.main
 
       - name: Verify new posts

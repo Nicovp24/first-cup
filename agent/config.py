@@ -231,6 +231,12 @@ class Settings(BaseSettings):
         le=10,
         description="Minimum urgency_score (1-10) to trigger an immediate breaking-news publish.",
     )
+    stories_per_run: int = Field(
+        default=6,
+        ge=1,
+        le=20,
+        description="Number of stories to select and write per agent run.",
+    )
     timezone: str = Field(
         default="Europe/Madrid",
         description="IANA timezone name used by the scheduler.",

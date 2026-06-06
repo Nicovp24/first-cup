@@ -3,7 +3,7 @@ title: "Vite 6 llega con Environment API y un 40% menos de uso de memoria"
 date: "2026-05-15"
 description: "La nueva versión principal de Vite introduce la Environment API para separar entornos client/server/edge, mejora drástica en uso de memoria en monorepos grandes y soporte nativo para CSS Modules v2."
 tags: ["Dev", "herramientas", "frontend"]
-cover: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=75"
+cover: "https://opengraph.github.com/vitejs/vite"
 source_urls:
   - "https://vitejs.dev"
   - "https://github.com/vitejs/vite"

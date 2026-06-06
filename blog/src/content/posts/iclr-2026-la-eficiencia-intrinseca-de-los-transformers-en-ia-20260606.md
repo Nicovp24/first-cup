@@ -3,7 +3,7 @@ title: "ICLR 2026: La Eficiencia Intrínseca de los Transformers en IA"
 date: "2026-06-06"
 description: "Un artículo destacado en ICLR 2026 demuestra que los Transformers son inherentemente concisos, lo que impacta su diseño y optimización en aplicaciones de IA."
 tags: ["IA", "LLMs", "tendencias"]
-cover: "https://picsum.photos/seed/iclr-2026-la-eficiencia-intrinseca-de-los-transformers-en-ia-20260606/800/400"
+cover: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=75"
 source_urls:
   - "https://openreview.net/pdf?id=Yxz92UuPLQ"
 ---

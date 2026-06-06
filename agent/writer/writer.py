@@ -37,9 +37,11 @@ from agent.writer.prompts import (
     SYSTEM_PROMPT_EDITOR,
 )
 
+from agent.config import settings as _settings
+
 logger = structlog.get_logger(__name__)
 
-STORIES_PER_RUN: int = 6
+STORIES_PER_RUN: int = _settings.stories_per_run
 
 
 # ---------------------------------------------------------------------------

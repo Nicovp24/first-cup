@@ -3,7 +3,7 @@ title: "Renovables Superan Gas; S&P Mantiene Reglas; Crianza Retro-Tech"
 date: "2026-06-05"
 description: "La eólica y solar superan al gas en un hito energético global. S&P mantiene la cautela ante grandes IPOs y la sociedad cuestiona la tech en crianza."
 tags: ["tendencias", "Dev", "infraestructura"]
-cover: "https://picsum.photos/seed/renovables-superan-gas-s-p-mantiene-reglas-crianza-retro-tech-20260605/800/400"
+cover: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=75"
 source_urls:
   - "https://www.bloomberg.com/news/articles/2026-06-04/s-p-dow-jones-keeps-megacap-ipo-rules-as-is-after-consultation"
   - "https://electrek.co/2026/05/20/in-a-first-wind-solar-generated-more-power-than-gas-globally-april-2026/"

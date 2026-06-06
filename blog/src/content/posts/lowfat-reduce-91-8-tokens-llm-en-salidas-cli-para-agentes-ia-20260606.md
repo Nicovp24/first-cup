@@ -3,7 +3,7 @@ title: "Lowfat Reduce 91.8% Tokens LLM en Salidas CLI para Agentes IA"
 date: "2026-06-06"
 description: "Lowfat, un filtro CLI, reduce el 91.8% de tokens LLM en salidas, optimizando costes y mejorando la eficiencia de agentes de IA."
 tags: ["IA", "LLMs", "herramientas", "open-source"]
-cover: "https://picsum.photos/seed/lowfat-reduce-91-8-tokens-llm-en-salidas-cli-para-agentes-ia-20260606/800/400"
+cover: "https://opengraph.github.com/zdk/lowfat"
 source_urls:
   - "https://github.com/zdk/lowfat"
 ---

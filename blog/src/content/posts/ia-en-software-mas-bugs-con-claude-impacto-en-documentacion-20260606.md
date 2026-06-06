@@ -3,7 +3,7 @@ title: "IA en software: ¿Más bugs con Claude? Impacto en documentación"
 date: "2026-06-06"
 description: "Análisis técnico de la IA en desarrollo: ¿Claude introduce errores en `rsync`? Exploramos el impacto en la fiabilidad del código y la documentación."
 tags: ["IA", "LLMs", "Dev", "Anthropic"]
-cover: "https://picsum.photos/seed/ia-en-software-mas-bugs-con-claude-impacto-en-documentacion-20260606/800/400"
+cover: "https://opengraph.github.com/traefik/traefik"
 source_urls:
   - "https://github.com/traefik/traefik"
   - "https://github.com/apache/superset"

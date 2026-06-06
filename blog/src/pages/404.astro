@@ -1,0 +1,209 @@
+---
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="es" data-theme="latte">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Página no encontrada — First Cup" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>404 — First Cup</title>
+</head>
+
+<body>
+  <Header />
+
+  <main class="main">
+    <div class="container">
+      <div class="error-wrap anim-up">
+
+        <div class="error-rule-top" aria-hidden="true"></div>
+
+        <div class="error-eyebrow">
+          <span class="kicker">Error</span>
+          <span class="error-code gz-mono">404</span>
+        </div>
+
+        <h1 class="error-title">
+          Este café<br/>
+          <em>no está en la carta.</em>
+        </h1>
+
+        <p class="error-body">
+          La página que buscas no existe o fue retirada del menú.
+          Vuelve al inicio y pide algo que sí tengamos.
+        </p>
+
+        <div class="error-actions">
+          <a href="/" class="primary-btn gz-mono">← Volver al inicio</a>
+          <a href="/subscribe" class="secondary-btn gz-mono">Suscribirme gratis</a>
+        </div>
+
+        <div class="error-ornament gz-mono" aria-hidden="true">
+          ☕ &nbsp;·&nbsp; FIRST CUP &nbsp;·&nbsp; ☕
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="/" class="footer-brand gz-mono">
+        <span class="footer-fc">FC</span>
+        First Cup
+      </a>
+      <span class="footer-copy gz-mono">© {new Date().getFullYear()} · Hecho con Astro</span>
+    </div>
+  </footer>
+</body>
+</html>
+
+<script>
+  const saved = localStorage.getItem('theme') ?? 'latte';
+  document.documentElement.setAttribute('data-theme', saved);
+</script>
+
+<style>
+  .main {
+    padding: 5rem 0 6rem;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .error-wrap {
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .error-rule-top {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--spot) 0%, transparent 100%);
+    margin-bottom: 0.5rem;
+  }
+
+  .error-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .error-code {
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.16em;
+    border: 1px solid var(--rule);
+    padding: 0.12rem 0.5rem;
+  }
+
+  .error-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+  }
+  .error-title em {
+    font-style: italic;
+    color: var(--spot);
+    font-weight: 400;
+  }
+
+  .error-body {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-style: italic;
+    max-width: 44ch;
+  }
+
+  .error-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+  }
+
+  .primary-btn {
+    display: inline-flex;
+    align-items: center;
+    background: var(--spot);
+    color: var(--paper-2);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.7rem 1.35rem;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.18s;
+    border-radius: 0;
+  }
+  .primary-btn:hover { background: var(--spot-deep); text-decoration: none; }
+
+  .secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    background: none;
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+    font-weight: 400;
+    padding: 0.7rem 1.1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--rule);
+    transition: color 0.15s, border-color 0.15s;
+    border-radius: 0;
+  }
+  .secondary-btn:hover {
+    color: var(--spot);
+    border-color: oklch(from var(--spot) l c h / .45);
+    text-decoration: none;
+  }
+
+  .error-ornament {
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-top: 1rem;
+    padding-top: 1.25rem;
+    border-top: 3px double var(--ink);
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    padding: 1.25rem 0;
+    background: var(--paper-sink);
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-brand {
+    display: flex; align-items: center; gap: 0.45rem;
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--ink-soft); text-decoration: none;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.15s;
+  }
+  .footer-brand:hover { color: var(--ink); text-decoration: none; }
+  .footer-fc {
+    width: 26px; height: 20px;
+    background: var(--ink); color: var(--paper);
+    font-size: 0.58rem; font-weight: 700; border-radius: 2px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .footer-copy { font-size: 0.65rem; color: var(--ink-faint); letter-spacing: 0.06em; }
+</style>
