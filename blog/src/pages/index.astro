@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
 import PostCard from '../components/PostCard.astro';
+import SEO from '../components/SEO.astro';
 import '../styles/global.css';
 
 const all   = await getCollection('posts');
@@ -14,10 +15,9 @@ const tagCounts: Record<string, number> = {};
 posts.forEach(p => p.data.tags.forEach(t => { tagCounts[t] = (tagCounts[t] ?? 0) + 1; }));
 const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 7).map(([t]) => t);
 
-const T = 'First Cup — IA, Dev & Tech';
-const D = 'Tu café tech de cada mañana. IA, desarrollo y tecnología en tu inbox.';
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://firstcup.dev';
-const ogImg = `${siteUrl}/og-default.svg`;
+const TITLE = 'First Cup — IA, Dev & Tech | Tu café tech de cada mañana';
+const DESC  = 'Diario tech automatizado con IA. Los mejores repos de GitHub, papers de IA, debates de Hacker News y tendencias dev — publicado cada mañana antes de las 8h.';
+const CANONICAL = 'https://firstcup.dev/';
 ---
 
 <!doctype html>
@@ -25,22 +25,9 @@ const ogImg = `${siteUrl}/og-default.svg`;
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content={D}/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content={`${siteUrl}/`}/>
-  <meta property="og:title" content={T}/>
-  <meta property="og:description" content={D}/>
-  <meta property="og:image" content={ogImg}/>
-  <meta property="og:site_name" content="First Cup"/>
-  <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content={T}/>
-  <meta name="twitter:description" content={D}/>
-  <meta name="twitter:image" content={ogImg}/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-  <link rel="canonical" href={`${siteUrl}/`}/>
-  <link rel="sitemap" href="/sitemap.xml"/>
-  <link rel="alternate" type="application/rss+xml" title="First Cup RSS" href="/rss.xml"/>
-  <title>{T}</title>
+  <title>{TITLE}</title>
+  <SEO title={TITLE} description={DESC} canonical={CANONICAL} type="website" />
 </head>
 
 <body>

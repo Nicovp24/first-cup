@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
+import SEO from '../components/SEO.astro';
 import '../styles/global.css';
 ---
 
@@ -9,14 +10,14 @@ import '../styles/global.css';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Suscríbete a First Cup y recibe el mejor tech de cada mañana en tu inbox. Gratis, sin spam." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://firstcup.es/subscribe" />
-  <meta property="og:title" content="Suscribirse – First Cup" />
-  <meta property="og:description" content="Tu café tech de cada mañana. IA, dev y tech curada en tu inbox." />
-  <link rel="canonical" href="https://firstcup.es/subscribe" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <title>Suscribirse – First Cup</title>
+  <title>Suscribirse gratis – First Cup</title>
+  <SEO
+    title="Suscribirse gratis – First Cup | Digest tech diario"
+    description="Recibe cada mañana el mejor tech en tu inbox: IA, GitHub, papers, dev tools. Gratis, sin spam, cancela cuando quieras."
+    canonical="https://firstcup.dev/subscribe"
+    type="website"
+  />
 </head>
 
 <body>

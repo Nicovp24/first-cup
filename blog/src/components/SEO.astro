@@ -1,0 +1,130 @@
+---
+/**
+ * SEO.astro — drop into every page <head>.
+ * Handles meta tags, Open Graph, Twitter Card, and JSON-LD structured data.
+ */
+interface Props {
+  title:        string;
+  description:  string;
+  canonical:    string;
+  image?:       string;
+  type?:        'website' | 'article';
+  publishedAt?: Date;
+  tags?:        string[];
+  noindex?:     boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image,
+  type = 'website',
+  publishedAt,
+  tags = [],
+  noindex = false,
+} = Astro.props;
+
+const SITE      = 'https://firstcup.dev';
+const SITE_NAME = 'First Cup';
+const ogImage   = image ?? `${SITE}/og-default.svg`;
+
+// ── JSON-LD ──
+const orgSchema = {
+  '@type':  'Organization',
+  name:     SITE_NAME,
+  url:      SITE,
+  logo:     `${SITE}/favicon.svg`,
+  sameAs:   [],
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type':    'WebSite',
+  name:       SITE_NAME,
+  url:        SITE,
+  description,
+  inLanguage: 'es-ES',
+  publisher:  orgSchema,
+  potentialAction: {
+    '@type':      'ReadAction',
+    target:       SITE,
+  },
+};
+
+const articleSchema = type === 'article' && publishedAt ? {
+  '@context':         'https://schema.org',
+  '@type':            'NewsArticle',
+  headline:           title,
+  description,
+  image:              ogImage,
+  url:                canonical,
+  datePublished:      publishedAt.toISOString(),
+  dateModified:       publishedAt.toISOString(),
+  inLanguage:         'es-ES',
+  keywords:           tags.join(', '),
+  author:             { '@type': 'Organization', name: `${SITE_NAME} AI`, url: SITE },
+  publisher:          { ...orgSchema, '@type': 'Organization' as const },
+  mainEntityOfPage:   { '@type': 'WebPage', '@id': canonical },
+  isAccessibleForFree: true,
+} : null;
+
+const breadcrumbSchema = type === 'article' ? {
+  '@context': 'https://schema.org',
+  '@type':    'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio',     item: SITE },
+    { '@type': 'ListItem', position: 2, name: title,        item: canonical },
+  ],
+} : null;
+
+const jsonLd = type === 'article'
+  ? [articleSchema, breadcrumbSchema].filter(Boolean)
+  : [websiteSchema];
+---
+
+<!-- Primary -->
+<meta name="description"        content={description} />
+<meta name="robots"             content={noindex ? 'noindex,nofollow' : 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1'} />
+<meta name="author"             content={SITE_NAME} />
+<meta name="theme-color"        content="#f5f0e8" media="(prefers-color-scheme: light)" />
+<meta name="theme-color"        content="#201a15" media="(prefers-color-scheme: dark)" />
+<link rel="canonical"           href={canonical} />
+
+<!-- Open Graph -->
+<meta property="og:site_name"   content={SITE_NAME} />
+<meta property="og:type"        content={type} />
+<meta property="og:url"         content={canonical} />
+<meta property="og:title"       content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image"       content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt"   content={title} />
+<meta property="og:locale"      content="es_ES" />
+{type === 'article' && publishedAt && (
+  <meta property="article:published_time" content={publishedAt.toISOString()} />
+)}
+{tags.map(t => <meta property="article:tag" content={t} />)}
+
+<!-- Twitter / X -->
+<meta name="twitter:card"        content="summary_large_image" />
+<meta name="twitter:title"       content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image"       content={ogImage} />
+<meta name="twitter:image:alt"   content={title} />
+
+<!-- Feeds & sitemap -->
+<link rel="sitemap"      href="/sitemap.xml" />
+<link rel="alternate"    type="application/rss+xml" title={`${SITE_NAME} RSS`} href="/rss.xml" />
+
+<!-- Preconnect for Google Fonts -->
+<link rel="preconnect"   href="https://fonts.googleapis.com" />
+<link rel="preconnect"   href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://images.unsplash.com" />
+<link rel="dns-prefetch" href="https://opengraph.github.com" />
+
+<!-- JSON-LD structured data -->
+{jsonLd.map(schema => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema, null, 0)} />
+))}

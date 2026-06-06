@@ -1,5 +1,6 @@
 ---
 import Header from '../components/Header.astro';
+import SEO from '../components/SEO.astro';
 import '../styles/global.css';
 ---
 
@@ -8,9 +9,14 @@ import '../styles/global.css';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Página no encontrada — First Cup" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <title>404 — First Cup</title>
+  <title>404 — Página no encontrada · First Cup</title>
+  <SEO
+    title="404 — Página no encontrada · First Cup"
+    description="Esta página no existe. Vuelve al inicio de First Cup para leer el digest tech del día."
+    canonical="https://firstcup.dev/404"
+    noindex={true}
+  />
 </head>
 
 <body>

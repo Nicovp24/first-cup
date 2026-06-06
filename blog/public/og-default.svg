@@ -1,0 +1,82 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#f5f0e8"/>
+      <stop offset="100%" stop-color="#ede5d6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Top rule -->
+  <rect x="0" y="0" width="1200" height="6" fill="#1a0f06"/>
+
+  <!-- Left accent bar -->
+  <rect x="60" y="60" width="4" height="510" fill="#8b4513"/>
+
+  <!-- Masthead area -->
+  <rect x="80" y="60" width="1060" height="100" fill="none"/>
+
+  <!-- KICKER -->
+  <text x="80" y="108" font-family="'Courier New', monospace" font-size="20"
+        fill="#8b4513" letter-spacing="8" text-anchor="start"
+        font-weight="700">EST. MMXXVI  ·  LA GACETA DIGITAL</text>
+
+  <!-- Horizontal rule -->
+  <rect x="80" y="120" width="1060" height="1" fill="#c5a882"/>
+
+  <!-- Title "First Cup" -->
+  <text x="80" y="230" font-family="Georgia, 'Times New Roman', serif"
+        font-size="120" fill="#1a0f06" font-weight="900"
+        letter-spacing="-3">First Cup</text>
+
+  <!-- Subtitle -->
+  <text x="82" y="285" font-family="Georgia, serif" font-size="28"
+        fill="#6b5744" font-style="italic">
+    Tu café tech de cada mañana.
+  </text>
+
+  <!-- Tags strip -->
+  <rect x="80" y="320" width="1060" height="1" fill="#c5a882"/>
+
+  <text x="80" y="355" font-family="'Courier New', monospace" font-size="18"
+        fill="#8b4513" letter-spacing="4" font-weight="700">
+    IA  ·  DESARROLLO  ·  OPEN SOURCE  ·  TENDENCIAS
+  </text>
+
+  <rect x="80" y="368" width="1060" height="1" fill="#c5a882"/>
+
+  <!-- Body copy -->
+  <text x="80" y="420" font-family="Georgia, serif" font-size="22"
+        fill="#4a3728" line-height="1.6">
+    Un agente de IA analiza cientos de fuentes cada día
+  </text>
+  <text x="80" y="452" font-family="Georgia, serif" font-size="22" fill="#4a3728">
+    y publica solo lo que importa — antes de las 8h.
+  </text>
+
+  <!-- CTA box -->
+  <rect x="80" y="490" width="260" height="54" fill="#8b4513"/>
+  <text x="210" y="524" font-family="'Courier New', monospace" font-size="17"
+        fill="#f5f0e8" font-weight="700" text-anchor="middle"
+        letter-spacing="3">FIRSTCUP.DEV</text>
+
+  <!-- Bottom rule -->
+  <rect x="0" y="618" width="1200" height="3" fill="#c5a882"/>
+  <rect x="0" y="621" width="1200" height="9" fill="#1a0f06"/>
+
+  <!-- Coffee cup icon (right side) -->
+  <g transform="translate(900, 180)">
+    <!-- Cup body -->
+    <rect x="0" y="60" width="160" height="120" rx="12" fill="#8b4513"/>
+    <!-- Cup handle -->
+    <path d="M160 80 Q220 80 220 120 Q220 160 160 160" stroke="#8b4513" stroke-width="16" fill="none" stroke-linecap="round"/>
+    <!-- Saucer -->
+    <ellipse cx="80" cy="195" rx="100" ry="14" fill="#6b3a10"/>
+    <!-- Steam lines -->
+    <path d="M50 50 Q60 20 50 0" stroke="#c5a882" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.7"/>
+    <path d="M80 40 Q90 10 80 -10" stroke="#c5a882" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.7"/>
+    <path d="M110 50 Q120 20 110 0" stroke="#c5a882" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.7"/>
+  </g>
+</svg>
