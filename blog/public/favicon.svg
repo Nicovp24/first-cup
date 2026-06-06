@@ -1,36 +1,12 @@
-<svg width="100%" viewBox="0 0 690 690" role="img" style="" xmlns="http://www.w3.org/2000/svg">
-  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">First Cup favicon taza</title>
-  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Favicon con taza de café minimalista estilo periódico blanco y negro</desc>
-
-  <!-- Fondo blanco puro -->
-  <rect x="0" y="0" width="680" height="680" fill="#F5F0E8" style="fill:rgb(245, 240, 232);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- ══ VAPOR ══ -->
-  <path d="M234 148 C228 128 242 112 234 92" fill="none" stroke="#1A1A1A" stroke-width="12" stroke-linecap="round" style="fill:none;stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:12px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <path d="M340 138 C334 115 350 98 340 74" fill="none" stroke="#1A1A1A" stroke-width="12" stroke-linecap="round" style="fill:none;stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:12px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <path d="M446 148 C452 128 438 112 446 92" fill="none" stroke="#1A1A1A" stroke-width="12" stroke-linecap="round" style="fill:none;stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:12px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- ══ TAZA body ══ -->
-  <!-- relleno interior crema -->
-  <path d="M175 174 L210 510 Q340 534 470 510 L505 174 Z" fill="#E8E0D0" style="fill:rgb(232, 224, 208);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <!-- outline taza -->
-  <path d="M175 174 L210 510 Q340 534 470 510 L505 174 Z" fill="none" stroke="#1A1A1A" stroke-width="12" stroke-linejoin="round" style="fill:none;stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:12px;stroke-linecap:butt;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- superficie café negra -->
-  <ellipse cx="340" cy="174" rx="165" ry="22" fill="#1A1A1A" style="fill:rgb(26, 26, 26);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- ══ ASA ══ -->
-  <path d="M500 260 C570 260 596 310 596 360 C596 420 562 470 500 474" fill="none" stroke="#1A1A1A" stroke-width="12" stroke-linecap="round" style="fill:none;stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:12px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- ══ PLATILLO ══ -->
-  <ellipse cx="340" cy="522" rx="192" ry="22" fill="#E8E0D0" stroke="#1A1A1A" stroke-width="12" style="fill:rgb(232, 224, 208);stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:12px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <!-- detalle interior platillo -->
-  <ellipse cx="340" cy="518" rx="110" ry="10" fill="none" stroke="#1A1A1A" stroke-width="4" style="fill:none;stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- ══ LÍNEAS PERIÓDICO dentro de la taza ══ -->
-  <line x1="230" y1="290" x2="450" y2="290" stroke="#1A1A1A" stroke-width="6" style="fill:rgb(0, 0, 0);stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:6px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="222" y1="340" x2="456" y2="340" stroke="#1A1A1A" stroke-width="4" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="215" y1="390" x2="462" y2="390" stroke="#1A1A1A" stroke-width="4" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="208" y1="440" x2="468" y2="440" stroke="#1A1A1A" stroke-width="4" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:rgb(26, 26, 26);color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#ffffff"/>
+  <path d="M22 32 Q20 23 22 15" fill="none" stroke="#24292f" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M36 32 Q34 22 36 14" fill="none" stroke="#24292f" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="14" y="33" width="36" height="18" rx="4" fill="none" stroke="#24292f" stroke-width="2.5"/>
+  <rect x="19" y="39" width="9" height="7" rx="1.5" fill="#24292f">
+    <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite" calcMode="discrete"/>
+  </rect>
+  <rect x="31" y="43" width="12" height="2" rx="1" fill="#24292f" opacity="0.25"/>
+  <path d="M50 37 Q60 37 60 46 Q60 51 50 51" fill="none" stroke="#24292f" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="9" y="52" width="46" height="5" rx="2.5" fill="#24292f"/>
 </svg>

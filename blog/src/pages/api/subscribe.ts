@@ -146,7 +146,7 @@ function welcomeHtml(): string {
           </ul>
 
           <!-- CTA -->
-          <a href="https://firstcup.dev"
+          <a href="https://first-cup-kappa.vercel.app"
              style="display:block; background:#8b4513; color:#f5f0e8; text-align:center;
                      text-decoration:none; font-family:monospace; font-size:0.78rem;
                      font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
@@ -165,13 +165,13 @@ function welcomeHtml(): string {
           <p style="font-family:monospace; font-size:0.62rem; color:#9a8572;
                      letter-spacing:0.06em; margin:0 0 0.4rem;">
             © 2026 First Cup ·
-            <a href="https://firstcup.dev" style="color:#8b4513; text-decoration:none;">
-              firstcup.dev
+            <a href="https://first-cup-kappa.vercel.app" style="color:#8b4513; text-decoration:none;">
+              first-cup-kappa.vercel.app
             </a>
           </p>
           <p style="font-family:monospace; font-size:0.6rem; color:#b0a090;
                      letter-spacing:0.04em; margin:0; line-height:1.6;">
-            Has recibido este email porque te suscribiste en firstcup.dev.<br/>
+            Has recibido este email porque te suscribiste en first-cup-kappa.vercel.app.<br/>
             Para darte de baja, responde con "baja" a este correo.
           </p>
         </td></tr>

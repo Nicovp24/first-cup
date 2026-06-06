@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  site: 'https://firstcup.dev',
+  site: 'https://first-cup-kappa.vercel.app',
   output: 'hybrid',
   adapter: vercel(),
   integrations: [mdx()],

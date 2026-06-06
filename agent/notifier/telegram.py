@@ -26,7 +26,7 @@ from agent.db.posts import PublishedPost
 logger = structlog.get_logger(__name__)
 
 _TELEGRAM_API = "https://api.telegram.org/bot{token}/{method}"
-_BLOG_BASE_URL = "https://firstcup.dev"  # update once the domain is live
+_BLOG_BASE_URL = "https://first-cup-kappa.vercel.app"  # update to custom domain when ready
 _TIMEOUT = 20.0
 
 

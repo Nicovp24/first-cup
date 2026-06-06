@@ -3,6 +3,8 @@ import Header from '../components/Header.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
 import SEO from '../components/SEO.astro';
 import '../styles/global.css';
+
+const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').replace(/\/$/, '');
 ---
 
 <!doctype html>
@@ -15,7 +17,7 @@ import '../styles/global.css';
   <SEO
     title="Suscribirse gratis – First Cup | Digest tech diario"
     description="Recibe cada mañana el mejor tech en tu inbox: IA, GitHub, papers, dev tools. Gratis, sin spam, cancela cuando quieras."
-    canonical="https://firstcup.dev/subscribe"
+    canonical={`${SITE}/subscribe`}
     type="website"
   />
 </head>

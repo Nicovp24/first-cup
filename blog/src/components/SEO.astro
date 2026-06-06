@@ -25,7 +25,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const SITE      = 'https://firstcup.dev';
+const SITE      = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').replace(/\/$/, '');
 const SITE_NAME = 'First Cup';
 const ogImage   = image ?? `${SITE}/og-default.svg`;
 
