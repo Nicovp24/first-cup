@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,700;1,6..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,700;1,6..96,800;1,6..96,900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap');
 
 /* ──────────────────────────────────────────────
    LATTE (light) — warm newspaper cream
@@ -46,24 +46,24 @@
    ESPRESSO (dark) — warm vintage newsprint night
 ────────────────────────────────────────────── */
 html[data-theme="espresso"] {
-  --paper:      oklch(0.198 0.024 44);   /* warm very dark brown */
-  --paper-2:    oklch(0.238 0.026 42);   /* slightly lighter surface */
-  --paper-sink: oklch(0.170 0.022 46);   /* deepest, beneath cards */
+  --paper:      oklch(0.205 0.018 46);   /* warm dark, not too brown */
+  --paper-2:    oklch(0.246 0.020 44);   /* slightly lighter surface */
+  --paper-sink: oklch(0.182 0.016 46);   /* deepest, beneath cards */
 
-  --ink:        oklch(0.935 0.016 82);   /* warm cream — never pure white */
-  --ink-soft:   oklch(0.775 0.020 76);   /* warm medium */
-  --ink-faint:  oklch(0.580 0.018 66);   /* muted warm */
+  --ink:        oklch(0.918 0.022 84);   /* warm near-white, readable */
+  --ink-soft:   oklch(0.760 0.022 78);   /* warm medium */
+  --ink-faint:  oklch(0.600 0.020 68);   /* muted warm grey */
 
-  --rule:       oklch(0.360 0.028 46);   /* visible warm border */
-  --rule-soft:  oklch(0.290 0.024 46);   /* subtle dark border */
+  --rule:       oklch(0.360 0.022 48);   /* visible warm border */
+  --rule-soft:  oklch(0.305 0.020 48);   /* subtle border */
 
-  --spot:       oklch(0.740 0.145 48);   /* warm amber/gold — reads well on dark */
-  --spot-deep:  oklch(0.810 0.135 52);   /* brighter for links */
+  --spot:       oklch(0.715 0.130 50);   /* warm amber — reads well on dark */
+  --spot-deep:  oklch(0.780 0.120 54);   /* lighter for hover/links */
 
-  --shadow:     0 1px 0 var(--rule), 0 16px 40px oklch(0 0 0 / .55);
+  --shadow:     0 1px 0 var(--rule), 0 16px 40px oklch(0 0 0 / .35);
 
-  /* Dateline bar — always dark, even in dark mode */
-  --dl-bg:   oklch(0.130 0.020 46);      /* near-black */
+  /* Dateline bar — always dark strip */
+  --dl-bg:   oklch(0.125 0.015 46);      /* near-black */
   --dl-text: oklch(0.880 0.016 80);      /* warm cream */
 
   --bg:         var(--paper);
@@ -77,8 +77,8 @@ html[data-theme="espresso"] {
   --text-3:     var(--ink-faint);
   --text-muted: var(--ink-faint);
   --amber:      var(--spot);
-  --amber-dim:  oklch(0.740 0.145 48 / 0.14);
-  --amber-glow: oklch(0.740 0.145 48 / 0.28);
+  --amber-dim:  oklch(0.715 0.130 50 / 0.14);
+  --amber-glow: oklch(0.715 0.130 50 / 0.28);
   --accent:     var(--spot-deep);
 }
 
@@ -86,9 +86,9 @@ html[data-theme="espresso"] {
    FONT STACK
 ────────────────────────────────────────────── */
 :root {
-  --font-display: 'Bodoni Moda', 'Times New Roman', serif;
-  --font-body:    'Source Serif 4', Georgia, serif;
-  --font-mono:    'Space Mono', 'Courier New', monospace;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
   --spring:       cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -133,27 +133,17 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.72;
+  font-size: 16px;
+  line-height: 1.7;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-optical-sizing: auto;
   transition: background 0.45s ease, color 0.45s ease;
 }
 
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; height: auto; }
 
-/* ── Scroll progress bar ── */
-#scroll-progress {
-  position: fixed; top: 0; left: 0;
-  height: 2px; width: 0%;
-  background: linear-gradient(90deg, var(--spot-deep) 0%, var(--spot) 100%);
-  z-index: 9999;
-  transition: width 0.08s linear;
-  pointer-events: none;
-}
 
 /* ── Layout ── */
 .container {
@@ -196,11 +186,10 @@ img { max-width: 100%; height: auto; }
 
 /* ── Prose ── */
 .prose {
-  font-size: 1.05rem;
-  line-height: 1.88;
+  font-size: 1rem;
+  line-height: 1.82;
   color: var(--ink);
   font-family: var(--font-body);
-  font-optical-sizing: auto;
 }
 .prose > * + * { margin-top: 1.65rem; }
 
@@ -223,7 +212,6 @@ img { max-width: 100%; height: auto; }
   letter-spacing: -0.022em;
   margin-top: 2.8rem;
   margin-bottom: 0.6rem;
-  font-optical-sizing: auto;
 }
 .prose h1 { font-size: 2.1rem; }
 .prose h2 {
@@ -346,3 +334,40 @@ html[data-theme="espresso"] .prose a:hover {
 
 /* gz-mono utility */
 .gz-mono { font-family: var(--font-mono); }
+
+/* ── Robot art ── */
+.robot-wrap {
+  margin: 2.5rem auto;
+  text-align: center;
+}
+
+.robot-art,
+.prose .robot-art {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 1.4vw, 0.74rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  background: var(--paper-sink);
+  border: 1px solid var(--rule) !important;
+  border-top: 1px solid var(--rule) !important;
+  padding: 1.5rem 2rem;
+  text-align: left;
+  overflow-x: auto;
+  margin: 0 auto;
+  max-width: 100%;
+  white-space: pre;
+}
+
+.ra-hi    { color: var(--spot); }
+.ra-muted { color: var(--spot); opacity: 0.55; }
+
+.robot-caption {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.6rem;
+  text-align: center;
+}

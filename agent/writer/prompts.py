@@ -61,7 +61,7 @@ Artículos fuente (array JSON):
 {items_json}
 
 Tarea:
-Agrupa los artículos anteriores en 4-6 temas coherentes según su contenido.
+Agrupa los artículos anteriores en 6-8 temas coherentes según su contenido.
 
 Devuelve un objeto JSON con este esquema exacto — sin texto antes ni después:
 

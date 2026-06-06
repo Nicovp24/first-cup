@@ -67,7 +67,7 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
 </head>
 
 <body>
-  <Header />
+  <Header edition={editionNum} />
 
   <main class="main">
     <div class="container">
@@ -295,8 +295,7 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   .eyebrow-sep { color: var(--ink-faint); font-size: 0.7rem; }
 
   .article-title {
-    font-family: 'Bodoni Moda', serif;
-    font-optical-sizing: auto;
+    font-family: var(--font-display);
     font-size: clamp(1.75rem, 4.5vw, 2.8rem);
     font-weight: 800;
     color: var(--ink);
@@ -493,7 +492,7 @@ const editionLabel = `#${String(editionNum).padStart(3, '0')}`;
   }
 
   .cta-h {
-    font-family: 'Bodoni Moda', serif;
+    font-family: var(--font-display);
     font-size: 1.4rem;
     font-weight: 800;
     color: var(--ink);
