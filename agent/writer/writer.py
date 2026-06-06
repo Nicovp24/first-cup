@@ -167,31 +167,27 @@ class DigestWriter:
             breaking=len(breaking_indices),
         )
 
-        # Step 2: write all articles in parallel
+        # Step 2: write articles sequentially to respect API rate limits
         valid_indices = [i for i in selected_indices if 0 <= i < len(items)]
-        tasks = [
-            self._write_article(items[i], is_breaking=(i in breaking_set))
-            for i in valid_indices
-        ]
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-
-        # Collect: breaking posts first, then regular
         breaking_posts: list[PublishedPost] = []
         regular_posts: list[PublishedPost] = []
 
-        for idx, result in zip(valid_indices, results):
-            if isinstance(result, BaseException):
-                self._log.error(
-                    "write_digest_article_failed",
-                    item_idx=idx,
-                    error=str(result),
+        for idx in valid_indices:
+            try:
+                result = await self._write_article(
+                    items[idx], is_breaking=(idx in breaking_set)
                 )
-            else:
                 if idx in breaking_set:
                     breaking_posts.append(result)
                 else:
                     regular_posts.append(result)
                 self._log.info("write_digest_article_ok", slug=result.slug)
+            except Exception as exc:
+                self._log.error(
+                    "write_digest_article_failed",
+                    item_idx=idx,
+                    error=str(exc),
+                )
 
         posts = breaking_posts + regular_posts
         self._log.info("write_digest_done", posts_written=len(posts))

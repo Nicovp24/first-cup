@@ -20,7 +20,7 @@ from typing import Any
 import structlog
 from typing_extensions import TypedDict
 
-from agent.db.posts import PublishedPost, is_duplicate, mark_scraped, save_post
+from agent.db.posts import PublishedPost, is_published_url, mark_scraped, save_post
 from agent.publisher.git_publisher import GitPublisher
 from agent.scraper.base import ScrapedItem
 from agent.scraper.github_api import GitHubAPIScraper
@@ -66,11 +66,11 @@ except ImportError:
 
 try:
     from agent.writer.writer import DigestWriter  # type: ignore[import]
-    from agent.writer.gemini_client import GeminiClient as _AIClient  # type: ignore[import]
+    from agent.writer.claude_client import ClaudeClient as _AIClient  # type: ignore[import]
 except ImportError:
     try:
         from agent.writer.writer import DigestWriter  # type: ignore[import]
-        from agent.writer.claude_client import ClaudeClient as _AIClient  # type: ignore[import]
+        from agent.writer.gemini_client import GeminiClient as _AIClient  # type: ignore[import]
     except ImportError:
         DigestWriter = None  # type: ignore[assignment,misc]
         _AIClient = None  # type: ignore[assignment,misc]
@@ -165,9 +165,11 @@ async def scrape_node(state: AgentState) -> dict[str, Any]:
 
     log.info("scrape_total_raw", count=len(all_items))
 
-    # Deduplicate against the DB and mark new items as scraped
+    # Deduplicate: skip URLs already published (not just scraped)
+    # This allows re-scraping the same sources every run — the AI editor
+    # picks the best stories and only published URLs are permanently skipped.
     unique_items: list[ScrapedItem] = []
-    dedup_tasks = [is_duplicate(item.url) for item in all_items]
+    dedup_tasks = [is_published_url(item.url) for item in all_items]
     duplicate_flags: list[bool | BaseException] = await asyncio.gather(
         *dedup_tasks, return_exceptions=True
     )
@@ -175,17 +177,14 @@ async def scrape_node(state: AgentState) -> dict[str, Any]:
     mark_tasks: list[Any] = []
     for item, flag in zip(all_items, duplicate_flags):
         if isinstance(flag, BaseException):
-            log.error(
-                "dedup_check_error", url=item.url, error=str(flag)
-            )
-            # Include the item to be safe — better to re-process than miss it
+            log.error("dedup_check_error", url=item.url, error=str(flag))
             unique_items.append(item)
             mark_tasks.append(mark_scraped(item))
         elif not flag:
             unique_items.append(item)
             mark_tasks.append(mark_scraped(item))
         else:
-            log.debug("duplicate_skipped", url=item.url)
+            log.debug("already_published_skipped", url=item.url)
 
     # Fire-and-forget: mark scraped items concurrently
     if mark_tasks:

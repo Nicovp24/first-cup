@@ -18,8 +18,8 @@ logger = structlog.get_logger(__name__)
 
 MODEL = "models/gemini-2.5-flash"
 MAX_TOKENS = 4096
-_RETRY_ATTEMPTS = 3
-_BACKOFF_BASE = 1.0
+_RETRY_ATTEMPTS = 5
+_BACKOFF_BASE = 20.0   # seconds; rate-limit errors need at least 15s+
 
 
 class GeminiClient:
@@ -54,11 +54,14 @@ class GeminiClient:
             except Exception as exc:
                 log.warning("gemini_request_error", error=str(exc), attempt=attempt)
                 last_exc = exc
-
-            if attempt < _RETRY_ATTEMPTS:
-                log.info("gemini_retry_backoff", wait_seconds=backoff)
-                await asyncio.sleep(backoff)
-                backoff *= 2
+                # Extract retry_delay from 429 grpc detail if available
+                import re as _re
+                m = _re.search(r"retry_delay\s*\{\s*seconds:\s*(\d+)", str(exc))
+                wait = int(m.group(1)) + 5 if m else backoff
+                if attempt < _RETRY_ATTEMPTS:
+                    log.info("gemini_retry_backoff", wait_seconds=wait)
+                    await asyncio.sleep(wait)
+                    backoff = min(backoff * 2, 120)
 
         self._log.error("gemini_all_retries_failed", attempts=_RETRY_ATTEMPTS, error=str(last_exc))
         raise last_exc  # type: ignore[misc]
