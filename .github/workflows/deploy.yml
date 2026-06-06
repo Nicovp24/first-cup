@@ -5,7 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'blog/src/content/posts/**'
+      - 'blog/src/**'
+      - 'blog/public/**'
+      - 'blog/astro.config.mjs'
+      - 'blog/package.json'
 
 jobs:
   deploy:

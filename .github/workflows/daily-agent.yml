@@ -2,8 +2,10 @@ name: Daily Digest Agent
 
 on:
   schedule:
-    # 07:00 Madrid (UTC+2) = 05:00 UTC
+    # Morning run — 07:00 Madrid (UTC+2 summer) = 05:00 UTC
     - cron: '0 5 * * *'
+    # Afternoon run — 15:00 Madrid = 13:00 UTC (catches afternoon breaking news)
+    - cron: '0 13 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -11,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      stories:
+        description: 'Number of stories to publish (default: 6)'
+        required: false
+        default: '6'
+        type: string
 
 permissions:
   contents: write
@@ -69,8 +76,9 @@ jobs:
           git config user.email "bot@firstcup.dev"
           git add blog/src/content/posts/
           if git diff --cached --quiet; then
-            echo "Nothing to commit — no new posts today."
+            echo "Nothing to commit — no new posts this run."
           else
-            git commit -m "chore(agent): add daily digest posts $(date -u '+%Y-%m-%d')"
+            POSTS=$(git diff --cached --name-only | wc -l)
+            git commit -m "chore(agent): add ${POSTS} post(s) $(date -u '+%Y-%m-%d %H:%M UTC')"
             git push
           fi
