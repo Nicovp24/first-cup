@@ -61,7 +61,15 @@ class Settings(BaseSettings):
     )
 
     # ------------------------------------------------------------------
-    # Claude / Anthropic (opcional si se usa Gemini)
+    # Groq (primary LLM — free tier, 14 400 req/day)
+    # ------------------------------------------------------------------
+    groq_api_key: str | None = Field(
+        default=None,
+        description="Groq API key. Get one free at https://console.groq.com/",
+    )
+
+    # ------------------------------------------------------------------
+    # Claude / Anthropic (fallback)
     # ------------------------------------------------------------------
     anthropic_api_key: str | None = Field(
         default=None,
@@ -69,10 +77,10 @@ class Settings(BaseSettings):
     )
 
     # ------------------------------------------------------------------
-    # Google Gemini
+    # Google Gemini (second fallback)
     # ------------------------------------------------------------------
-    gemini_api_key: str = Field(
-        ...,
+    gemini_api_key: str | None = Field(
+        default=None,
         description="Google AI Studio API key. Get one free at https://aistudio.google.com/",
     )
 

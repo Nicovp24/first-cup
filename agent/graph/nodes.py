@@ -64,16 +64,28 @@ try:
 except ImportError:
     ProductHuntScraper = None  # type: ignore[assignment,misc]
 
-try:
-    from agent.writer.writer import DigestWriter  # type: ignore[import]
-    from agent.writer.gemini_client import GeminiClient as _AIClient  # type: ignore[import]
-except ImportError:
-    try:
-        from agent.writer.writer import DigestWriter  # type: ignore[import]
-        from agent.writer.claude_client import ClaudeClient as _AIClient  # type: ignore[import]
-    except ImportError:
-        DigestWriter = None  # type: ignore[assignment,misc]
-        _AIClient = None  # type: ignore[assignment,misc]
+from agent.writer.writer import DigestWriter  # type: ignore[import]
+
+def _build_ai_client():
+    """
+    Pick the best available AI client at runtime based on configured API keys.
+    Priority: Groq (free, fast) → Claude → Gemini.
+    """
+    from agent.config import settings as _s
+    if _s.groq_api_key:
+        from agent.writer.groq_client import GroqClient
+        return GroqClient()
+    if _s.anthropic_api_key:
+        from agent.writer.claude_client import ClaudeClient
+        return ClaudeClient()
+    if _s.gemini_api_key:
+        from agent.writer.gemini_client import GeminiClient
+        return GeminiClient()
+    raise RuntimeError(
+        "No AI API key configured. Set GROQ_API_KEY, ANTHROPIC_API_KEY, or GEMINI_API_KEY."
+    )
+
+_AIClient = None  # kept for compat; actual client built per-run in write_node
 
 logger = structlog.get_logger(__name__)
 
@@ -224,15 +236,11 @@ async def write_node(state: AgentState) -> dict[str, Any]:
         log.warning("write_node_skipped", reason="no scraped items")
         return {"written_posts": [], "errors": errors}
 
-    if DigestWriter is None or _AIClient is None:
-        msg = "DigestWriter module not available — skipping write step"
-        log.error("writer_unavailable")
-        errors.append(msg)
-        return {"written_posts": [], "errors": errors}
-
     written_posts: list[PublishedPost] = []
     try:
-        writer = DigestWriter(client=_AIClient())
+        ai_client = _build_ai_client()
+        writer = DigestWriter(client=ai_client)
+        log.info("write_node_client", client=type(ai_client).__name__)
         written_posts = await writer.write_digest(scraped_items)
         log.info("write_node_done", post_count=len(written_posts))
     except Exception as exc:
