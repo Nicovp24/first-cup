@@ -207,12 +207,37 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <a href="/" class="footer-brand gz-mono">
-        <span class="footer-fc">FC</span>
-        First Cup
-      </a>
-      <span class="footer-copy gz-mono">© {new Date().getFullYear()} · Hecho con Astro</span>
+    <div class="container">
+      <div class="foot-top">
+        <div class="foot-brand-col">
+          <a href="/" class="foot-logo gz-mono">
+            <span class="footer-fc">FC</span>
+            First Cup
+          </a>
+          <p class="foot-tag">El diario del café tech. IA, desarrollo y tecnología curada cada mañana por un agente.</p>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h4 class="gz-mono">Contenido</h4>
+            <a href="/">Posts</a>
+            <a href="/subscribe">Newsletter</a>
+            <a href="/rss.xml">RSS</a>
+          </div>
+          <div class="foot-col">
+            <h4 class="gz-mono">Plataforma</h4>
+            <span>First Cup AI</span>
+            <span>Astro SSG</span>
+          </div>
+          <div class="foot-col">
+            <h4 class="gz-mono">Contacto</h4>
+            <a href="mailto:hola@firstcup.es">hola@firstcup.es</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-base gz-mono">
+        <span>© {new Date().getFullYear()} First Cup</span>
+        <span>Hecho con Astro · IA generativa</span>
+      </div>
     </div>
   </footer>
 </body>
@@ -496,33 +521,91 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
   /* ── Footer ── */
   .site-footer {
     border-top: 3px double var(--ink);
-    padding: 1.25rem 0;
     background: var(--paper-sink);
+    padding: 0;
   }
 
-  .footer-inner {
-    display: flex;
+  .foot-top {
+    display: grid;
+    grid-template-columns: 1.4fr 2fr;
+    gap: 2.75rem;
+    padding: 2.5rem 0 1.75rem;
+  }
+
+  .foot-brand-col { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .foot-logo {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-brand {
-    display: flex; align-items: center; gap: 0.45rem;
-    font-size: 0.7rem; font-weight: 700;
-    color: var(--ink-soft); text-decoration: none;
-    letter-spacing: 0.08em; text-transform: uppercase;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     transition: color 0.15s;
   }
-  .footer-brand:hover { color: var(--ink); text-decoration: none; }
+  .foot-logo:hover { color: var(--ink); text-decoration: none; }
 
   .footer-fc {
     width: 26px; height: 20px;
     background: var(--ink); color: var(--paper);
-    font-size: 0.58rem; font-weight: 700; border-radius: 2px;
+    font-size: 0.58rem; font-weight: 700;
     display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
   }
 
-  .footer-copy { font-size: 0.65rem; color: var(--ink-faint); letter-spacing: 0.06em; }
+  .foot-tag {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 38ch;
+  }
+
+  .foot-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .foot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+
+  .foot-col h4 {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.2rem;
+  }
+
+  .foot-col a, .foot-col span {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .foot-col a:hover { color: var(--spot); text-decoration: none; }
+
+  .foot-base {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 0 1.75rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
 
   @media (max-width: 800px) {
     .plans-grid { grid-template-columns: 1fr; }
@@ -530,5 +613,11 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     .plan-card:last-child { border-bottom: none; }
     .faq-grid   { grid-template-columns: 1fr; }
     .faq-item   { border-right: none; }
+    .foot-top   { grid-template-columns: 1fr; gap: 1.75rem; }
+    .foot-cols  { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .foot-cols { grid-template-columns: 1fr 1fr; }
   }
 </style>
