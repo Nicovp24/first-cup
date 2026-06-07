@@ -49,8 +49,9 @@ export const POST: APIRoute = async ({ request }) => {
       // Already subscribed — still send them back a success (no enumeration)
       return reply({ ok: true }, 200);
     }
-    console.error('Supabase subscribe error:', err);
-    return reply({ message: 'No se pudo guardar la suscripción.' }, 500);
+    const errMsg = String(err?.message ?? err?.error ?? `HTTP ${sbRes.status}`);
+    console.error('Supabase subscribe error:', sbRes.status, err);
+    return reply({ message: `Error Supabase: ${errMsg}` }, 500);
   }
 
   const confirmUrl     = `${SITE}/api/confirm?token=${confirmToken}`;
