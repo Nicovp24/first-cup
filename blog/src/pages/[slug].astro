@@ -63,9 +63,6 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
 </head>
 
 <body>
-  <!-- Scroll progress bar -->
-  <div class="scroll-bar" id="scroll-progress" aria-hidden="true"></div>
-
   <Header edition={editionNum} />
 
   <!-- Full-width hero cover -->
@@ -86,43 +83,43 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
         <article class="article-wrap" id="article">
 
           <header class="article-header anim-up">
-            <div class="article-rule-top" aria-hidden="true"></div>
 
+            <!-- Eyebrow: tags + edition -->
             <div class="article-eyebrow">
-              {tags.slice(0,3).map(t => <span class="kicker eyebrow-tag">{t}</span>)}
-              <span class="eyebrow-sep gz-mono" aria-hidden="true">·</span>
+              <div class="eyebrow-tags">
+                {tags.slice(0,3).map(t => <span class="kicker eyebrow-tag">{t}</span>)}
+              </div>
               <span class="edition-chip gz-mono">{editionLabel}</span>
             </div>
 
+            <!-- Title -->
             <h1 class="article-title">{title}</h1>
+
+            <!-- Stand / description -->
             <p class="article-stand">{description}</p>
 
+            <!-- Byline row -->
             <div class="article-byline">
               <div class="byline-left">
-                <span class="byline gz-mono">
-                  <span class="byline-by">por </span>
-                  <span class="byline-name">First Cup AI</span>
-                </span>
-                <span class="byline-sep gz-mono" aria-hidden="true">·</span>
+                <span class="byline-author gz-mono">First Cup AI</span>
+                <span class="byline-sep" aria-hidden="true">—</span>
                 <time class="byline gz-mono" datetime={isoDate}>{formattedDate}</time>
-                <span class="byline-sep gz-mono" aria-hidden="true">·</span>
                 <span class="read-time gz-mono">
-                  <span class="read-cups">{'☕'.repeat(readCups)}</span>
-                  {readingTime} min
+                  {'☕'.repeat(readCups)} {readingTime} min de lectura
                 </span>
               </div>
               <div class="share-row">
-                <span class="share-label gz-mono">Compartir</span>
                 <button class="share-btn gz-mono" id="copy-btn" data-url={canonicalUrl} aria-label="Copiar enlace">
                   <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M5 4H3a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1v-2M9 1h6v6M9.5 6.5L15 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span id="copy-label">Copiar</span>
+                  <span id="copy-label">Copiar enlace</span>
                 </button>
-                <a href={twitterShare} target="_blank" rel="noopener noreferrer" class="share-btn gz-mono" aria-label="Compartir en X/Twitter">
+                <a href={twitterShare} target="_blank" rel="noopener noreferrer" class="share-btn gz-mono" aria-label="Compartir en X">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.258 5.624 5.906-5.624Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  X
+                  Compartir en X
                 </a>
               </div>
             </div>
+
           </header>
 
           <!-- Body -->
@@ -309,20 +306,6 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   const saved = localStorage.getItem('theme') ?? 'latte';
   document.documentElement.setAttribute('data-theme', saved);
 
-  // ── Scroll progress bar ──
-  const bar = document.getElementById('scroll-progress');
-  const article = document.getElementById('article');
-  if (bar && article) {
-    const update = () => {
-      const rect = article.getBoundingClientRect();
-      const total = article.offsetHeight - window.innerHeight;
-      const scrolled = Math.max(0, -rect.top);
-      bar.style.width = total > 0 ? Math.min(100, (scrolled / total) * 100) + '%' : '0%';
-    };
-    window.addEventListener('scroll', update, { passive: true });
-    update();
-  }
-
   // ── Back to top ──
   const btt = document.getElementById('btt');
   window.addEventListener('scroll', () => {
@@ -394,17 +377,6 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
 </script>
 
 <style>
-  /* ── Scroll progress bar ── */
-  .scroll-bar {
-    position: fixed;
-    top: 0; left: 0;
-    height: 3px;
-    width: 0%;
-    background: var(--spot);
-    z-index: 9999;
-    transition: width 0.1s linear;
-  }
-
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 
   .main { padding: 2rem 0 0; }
@@ -455,37 +427,45 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
 
   .article-header {
     margin-bottom: 2.5rem;
-    padding-bottom: 1.75rem;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .article-rule-top {
-    height: 4px;
-    background: linear-gradient(90deg, var(--spot) 0%, transparent 60%);
-    margin-bottom: 1.4rem;
+    padding-bottom: 0;
+    border-top: 4px solid var(--ink);
+    padding-top: 1.5rem;
   }
 
   .article-eyebrow {
     display: flex;
     align-items: center;
-    gap: 0.45rem;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .eyebrow-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     flex-wrap: wrap;
-    margin-bottom: 1.1rem;
   }
 
   .eyebrow-tag { font-size: 0.62rem; }
-  .eyebrow-sep { color: var(--ink-faint); font-size: 0.65rem; }
-  .edition-chip { font-size: 0.6rem; color: var(--ink-faint); letter-spacing: 0.1em; }
+  .edition-chip {
+    font-size: 0.6rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    border: 1px solid var(--rule);
+    padding: 0.1rem 0.45rem;
+    white-space: nowrap;
+  }
 
   .article-title {
     font-family: var(--font-display);
     font-style: italic;
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
     font-weight: 800;
     color: var(--ink);
-    line-height: 1.08;
-    letter-spacing: -0.022em;
-    margin-bottom: 1.1rem;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    margin-bottom: 1.25rem;
   }
 
   .article-stand {
@@ -493,10 +473,10 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     color: var(--ink-soft);
     line-height: 1.65;
     font-style: italic;
-    margin-bottom: 1.4rem;
+    margin-bottom: 1.5rem;
     max-width: 62ch;
-    border-left: 3px solid var(--spot);
     padding-left: 1rem;
+    border-left: 3px solid var(--spot);
   }
 
   .article-byline {
@@ -505,30 +485,33 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
-    padding: 0.65rem 0;
-    border-top: 1px solid var(--rule-soft);
-    border-bottom: 1px solid var(--rule-soft);
+    padding: 0.75rem 0;
+    border-top: 3px double var(--ink);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 2rem;
   }
 
   .byline-left {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: 0.65rem;
     flex-wrap: wrap;
   }
 
-  .byline-sep { color: var(--rule); font-size: 0.7rem; }
-  .byline-by { color: var(--ink-faint); }
-  .byline-name { font-weight: 700; color: var(--ink); }
+  .byline-author {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+
+  .byline-sep { color: var(--rule); font-size: 0.8rem; }
 
   .read-time {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     color: var(--ink-faint);
+    letter-spacing: 0.04em;
   }
-  .read-cups { color: var(--spot); font-size: 0.62rem; letter-spacing: 1px; }
 
   /* ── Share ── */
   .share-row {

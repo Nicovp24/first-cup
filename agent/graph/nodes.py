@@ -177,6 +177,17 @@ async def scrape_node(state: AgentState) -> dict[str, Any]:
 
     log.info("scrape_total_raw", count=len(all_items))
 
+    # Deduplicate within this run: same URL from multiple scrapers
+    seen_in_run: set[str] = set()
+    run_deduped: list[ScrapedItem] = []
+    for item in all_items:
+        if item.url not in seen_in_run:
+            seen_in_run.add(item.url)
+            run_deduped.append(item)
+    if len(run_deduped) < len(all_items):
+        log.info("scrape_intrarun_dedup", removed=len(all_items) - len(run_deduped))
+    all_items = run_deduped
+
     # Deduplicate: skip URLs already published (not just scraped)
     # This allows re-scraping the same sources every run — the AI editor
     # picks the best stories and only published URLs are permanently skipped.
