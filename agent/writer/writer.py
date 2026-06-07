@@ -62,7 +62,7 @@ def _slugify(text: str) -> str:
 def _serialize_items(items: list[ScrapedItem]) -> str:
     rows: list[dict[str, Any]] = []
     for idx, item in enumerate(items):
-        rows.append({
+        row: dict[str, Any] = {
             "index": idx,
             "title": item.title,
             "url": item.url,
@@ -71,7 +71,10 @@ def _serialize_items(items: list[ScrapedItem]) -> str:
             "score": item.score,
             "published_at": item.published_at.isoformat(),
             "tags": item.tags,
-        })
+        }
+        if item.extra:
+            row["extra"] = item.extra
+        rows.append(row)
     return json.dumps(rows, ensure_ascii=False, indent=2)
 
 
@@ -332,7 +335,40 @@ class DigestWriter:
         self, item: ScrapedItem, is_breaking: bool = False
     ) -> PublishedPost:
         """Draft one standalone article for a single scraped item."""
+        # --- Step 0: fetch cover image before writing so prompt can reference it ---
+        source_cover = await _fetch_og_image(item.url)
+
         # --- Step A: article body ---
+        # Build rich metadata block for GitHub repos
+        extra_lines: list[str] = []
+        if item.extra:
+            lang = item.extra.get("language")
+            if lang:
+                extra_lines.append(f"Lenguaje:  {lang}")
+
+            # Total stars: trending scraper → total_stars; API scraper → score
+            total_stars: int = (
+                item.extra.get("total_stars")
+                or int(item.score)
+                or 0
+            )
+            if total_stars:
+                extra_lines.append(f"Estrellas: {total_stars:,}")
+
+            # Stars gained today (trending only)
+            if item.source == "github_trending" and item.score:
+                extra_lines.append(f"Stars hoy: +{int(item.score):,}")
+
+            # Forks: trending → forks; API → forks_count
+            forks: int = item.extra.get("forks") or item.extra.get("forks_count") or 0
+            if forks:
+                extra_lines.append(f"Forks:     {forks:,}")
+
+            topics: list[str] = item.extra.get("topics") or []
+            if topics:
+                extra_lines.append(f"Topics:    {', '.join(topics[:8])}")
+        extra_block = ("\n" + "\n".join(extra_lines)) if extra_lines else ""
+
         body_prompt = PROMPT_ARTICLE.format(
             title=item.title,
             url=item.url,
@@ -340,6 +376,7 @@ class DigestWriter:
             source=item.source,
             published_at=item.published_at.isoformat(),
             tags=", ".join(item.tags) if item.tags else "general",
+            extra_block=extra_block,
         )
         self._log.debug("drafting_article", title=item.title, breaking=is_breaking)
         content = await self._client.complete(body_prompt, system=SYSTEM_PROMPT_EDITOR)
@@ -372,8 +409,8 @@ class DigestWriter:
         date_suffix = datetime.now(tz=timezone.utc).strftime("%Y%m%d")
         slug = f"{slug}-{date_suffix}"
 
-        # --- Step D: cover image ---
-        cover = await _fetch_og_image(item.url) or _build_cover_url(slug, cover_keywords)
+        # --- Step D: cover image (use fetched, else build from keywords) ---
+        cover = source_cover or _build_cover_url(slug, cover_keywords)
 
         self._log.info(
             "article_drafted",

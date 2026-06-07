@@ -21,7 +21,7 @@ logger = structlog.get_logger(__name__)
 
 _BASE_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.3-70b-versatile"
-MAX_TOKENS = 4096
+MAX_TOKENS = 8192
 _RETRY_ATTEMPTS = 4
 _BACKOFF_BASE = 10.0
 _TIMEOUT = 60.0

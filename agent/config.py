@@ -18,7 +18,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # Model / generation constants
 # ---------------------------------------------------------------------------
 MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 4096
+MAX_TOKENS = 8192
 
 # ---------------------------------------------------------------------------
 # Content sources
