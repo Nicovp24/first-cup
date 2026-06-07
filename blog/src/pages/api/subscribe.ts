@@ -84,7 +84,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
-  return reply({ ok: true }, 200);
+  return reply({ ok: true, resend_configured: !!RESEND_KEY }, 200);
 };
 
 function reply(body: object, status: number) {
