@@ -268,12 +268,18 @@ function toRoman(n: number): string {
     .dateline-center { display: none; }
     .dateline-left   { display: none; }
     .dateline-inner  { grid-template-columns: 1fr auto; }
+    .dateline-right  { gap: 0.6rem; }
+  }
+
+  @media (max-width: 420px) {
+    .dateline-link--about { display: none; }
+    .dateline-div:has(+ .dateline-link--about),
+    .dateline-link--about + .dateline-div { display: none; }
   }
 
   /* ── MASTHEAD ── */
   .masthead {
     background: var(--paper);
-    border-bottom: 1px solid var(--rule);
     transition: background 0.45s ease;
   }
 
@@ -417,17 +423,22 @@ function toRoman(n: number): string {
   @media (max-width: 720px) {
     .masthead-inner {
       grid-template-columns: 1fr;
-      padding: 1.4rem 1.25rem 0;
-      gap: 0.8rem;
+      padding: 1.2rem 0 0;
+      gap: 0.5rem;
+      border-top: 2px solid var(--ink);
     }
     .mast-side { flex-direction: row; gap: 8px; justify-content: center; }
     .mast-rule { width: 16px; }
     .mast-right { display: none; }
-    .nameplate  { order: 0; }
+    .nameplate  { order: 0; justify-content: center; }
     .mast-left  { order: 1; }
+    .nameplate-text { font-size: clamp(2.4rem, 11vw, 4rem); }
+    .mast-motto { font-size: 0.52rem; letter-spacing: 0.12em; }
   }
 
   @media (max-width: 480px) {
-    .mast-side { display: none; }
+    .mast-side  { display: none; }
+    .mast-motto { font-size: 0.48rem; letter-spacing: 0.09em; padding: 0.5rem 0.5rem; }
+    .nameplate  { gap: 12px; }
   }
 </style>
