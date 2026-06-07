@@ -1,0 +1,464 @@
+---
+import { getCollection } from 'astro:content';
+import Header from '../../components/Header.astro';
+import PostCard from '../../components/PostCard.astro';
+import SEO from '../../components/SEO.astro';
+import '../../styles/global.css';
+
+export async function getStaticPaths() {
+  const all = await getCollection('posts');
+
+  const byDate = new Map<string, typeof all>();
+  for (const p of all) {
+    const k = p.data.date.toISOString().slice(0, 10);
+    if (!byDate.has(k)) byDate.set(k, []);
+    byDate.get(k)!.push(p);
+  }
+  for (const [, posts] of byDate) {
+    posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  }
+
+  const editionDates = [...byDate.keys()].sort(); // asc: oldest = edition 1
+  const totalEditions = editionDates.length;
+
+  // Editions 1 … N-1 get static pages; edition N is the homepage /
+  return editionDates.slice(0, -1).map((date, i) => {
+    const num = i + 1;
+    const posts = byDate.get(date)!;
+    return {
+      params: { num: String(num) },
+      props: {
+        editionNum:   num,
+        totalEditions,
+        editionDate:  date,
+        posts,
+        prevUrl: num > 1 ? `/edicion/${num - 1}` : null,
+        nextUrl: num + 1 === totalEditions ? '/' : `/edicion/${num + 1}`,
+        prevLabel: num > 1 ? `#${String(num - 1).padStart(3, '0')}` : null,
+        nextLabel: num + 1 === totalEditions
+          ? `#${String(totalEditions).padStart(3, '0')} (actual)`
+          : `#${String(num + 1).padStart(3, '0')}`,
+      },
+    };
+  });
+}
+
+const { editionNum, totalEditions, editionDate, posts, prevUrl, nextUrl, prevLabel, nextLabel } =
+  Astro.props as {
+    editionNum: number;
+    totalEditions: number;
+    editionDate: string;
+    posts: Awaited<ReturnType<typeof getCollection<'posts'>>>;
+    prevUrl: string | null;
+    nextUrl: string;
+    prevLabel: string | null;
+    nextLabel: string;
+  };
+
+const [featured, ...rest] = posts;
+
+const editionDateFormatted = new Date(editionDate + 'T12:00:00Z').toLocaleDateString('es-ES', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+});
+
+const editionTags = [...new Set(posts.flatMap(p => p.data.tags))].sort();
+
+const SITE      = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').replace(/\/$/, '');
+const TITLE     = `Edición #${String(editionNum).padStart(3, '0')} — First Cup`;
+const DESC      = `Archivo del ${editionDateFormatted}. ${posts.length} artículos publicados en esta edición de First Cup.`;
+const CANONICAL = `${SITE}/edicion/${editionNum}`;
+---
+
+<!doctype html>
+<html lang="es" data-theme="latte">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <title>{TITLE}</title>
+  <SEO title={TITLE} description={DESC} canonical={CANONICAL} type="website" />
+</head>
+
+<body>
+<Header edition={editionNum}/>
+
+<main>
+  <section class="edition-section">
+    <div class="container">
+
+      {/* ── Edition banner ── */}
+      <div class="ed-banner anim-in">
+        <div class="ed-banner-left">
+          <span class="ed-number gz-mono">
+            Edición #{String(editionNum).padStart(3, '0')}
+          </span>
+          <span class="ed-date gz-mono">{editionDateFormatted}</span>
+          <span class="ed-archive gz-mono">Archivo</span>
+        </div>
+        <div class="ed-nav">
+          {prevUrl && (
+            <a href={prevUrl} class="ed-nav-btn gz-mono">← {prevLabel}</a>
+          )}
+          <a href={nextUrl} class="ed-nav-btn ed-nav-btn--next gz-mono">{nextLabel} →</a>
+        </div>
+      </div>
+
+      {/* LEAD */}
+      {featured && (
+        <div class="lead-wrap anim-up">
+          <div class="lead-eyebrow">
+            <span class="kicker">{featured.data.tags[0] ?? 'Digest'}</span>
+          </div>
+          <a href={`/${featured.slug}`} class="lead-link">
+            <div class="lead-img">
+              {featured.data.cover
+                ? <img src={featured.data.cover} alt="" loading="eager" decoding="async"/>
+                : <div class="lead-img-placeholder gz-mono">#{String(editionNum).padStart(3,'0')}</div>
+              }
+            </div>
+            <div class="lead-content">
+              <h2 class="lead-title">{featured.data.title}</h2>
+              <p class="lead-stand">{featured.data.description}</p>
+              <div class="lead-byline">
+                <time class="byline gz-mono" datetime={featured.data.date.toISOString()}>
+                  {featured.data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </time>
+                <span class="lead-byline-sep gz-mono" aria-hidden="true">·</span>
+                <span class="lead-readon gz-mono">Leer artículo →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      )}
+
+      {/* Grid */}
+      {rest.length > 0 && (
+        <div class="grid-wrap">
+          <div class="grid-header">
+            <h2 class="section-head gz-mono">
+              Publicaciones
+              <span class="section-count">{rest.length}</span>
+            </h2>
+            {editionTags.length > 0 && (
+              <div class="tag-filter" id="tag-filter">
+                <button class="tf-btn active gz-mono" data-tag="all">Todos</button>
+                {editionTags.map(t => (
+                  <button class="tf-btn gz-mono" data-tag={t}>{t}</button>
+                ))}
+              </div>
+            )}
+          </div>
+          <div class="posts-grid" id="posts-grid">
+            {rest.map((p, i) => (
+              <PostCard
+                title={p.data.title}
+                slug={p.slug}
+                date={p.data.date}
+                description={p.data.description}
+                tags={p.data.tags}
+                index={i}
+                editionNum={editionNum}
+                cover={p.data.cover}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Bottom edition nav */}
+      <div class="ed-nav-bottom">
+        {prevUrl && (
+          <a href={prevUrl} class="ed-nav-btn gz-mono">← {prevLabel}</a>
+        )}
+        <a href="/" class="ed-home gz-mono">↑ Edición actual</a>
+        <a href={nextUrl} class="ed-nav-btn ed-nav-btn--next gz-mono">{nextLabel} →</a>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- ════════════ WIRE TICKER ════════════ -->
+<div class="wire wire-bottom" aria-hidden="true">
+  <span class="wire-tag gz-mono">FUENTES</span>
+  <div class="wire-mask">
+    <div class="wire-track">
+      {['GitHub Trending', 'Hacker News', 'ArXiv Papers', 'Reddit r/ML', 'Dev.to', 'Product Hunt', 'GitHub API', 'RSS Feeds',
+        'GitHub Trending', 'Hacker News', 'ArXiv Papers', 'Reddit r/ML', 'Dev.to', 'Product Hunt', 'GitHub API', 'RSS Feeds',
+        'GitHub Trending', 'Hacker News', 'ArXiv Papers', 'Reddit r/ML', 'Dev.to', 'Product Hunt', 'GitHub API', 'RSS Feeds'].map(item => (
+        <>
+          <span class="wire-item gz-mono">{item}</span>
+          <span class="wire-sep" aria-hidden="true">◆</span>
+        </>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-top">
+      <div class="foot-brand-col">
+        <a href="/" class="foot-logo gz-mono">
+          <span class="footer-fc">FC</span>
+          First Cup
+        </a>
+        <p class="foot-tag">El diario del café tech. IA, desarrollo y tecnología curada cada mañana por un agente.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4 class="gz-mono">Contenido</h4>
+          <a href="/">Posts</a>
+          <a href="/subscribe">Newsletter</a>
+          <a href="/rss.xml">RSS</a>
+        </div>
+        <div class="foot-col">
+          <h4 class="gz-mono">Plataforma</h4>
+          <span>First Cup AI</span>
+          <span>Astro SSG</span>
+        </div>
+        <div class="foot-col">
+          <h4 class="gz-mono">Contacto</h4>
+          <a href="mailto:hola@firstcup.es">hola@firstcup.es</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-base gz-mono">
+      <span>© {new Date().getFullYear()} First Cup</span>
+      <span>Hecho con Astro · IA generativa</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Init theme ──
+  const saved = localStorage.getItem('theme') ?? 'latte';
+  document.documentElement.setAttribute('data-theme', saved);
+
+  // ── Card scroll reveal ──
+  const cards = document.querySelectorAll<HTMLElement>('.story-card');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      (e.target as HTMLElement).classList.add('in-view');
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+  cards.forEach(c => obs.observe(c));
+
+  // ── Tag filter ──
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.tf-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tag = btn.dataset.tag ?? 'all';
+      document.querySelectorAll<HTMLElement>('.story-card').forEach(card => {
+        const tags = card.getAttribute('data-tags')?.split(',') ?? [];
+        card.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
+      });
+    });
+  });
+
+  // ── Steam cursor ──
+  let lastParticle = 0;
+  document.addEventListener('mousemove', (e: MouseEvent) => {
+    const now = Date.now();
+    if (now - lastParticle < 60) return;
+    lastParticle = now;
+    const p = document.createElement('div');
+    p.className = 'steam-particle';
+    const ox = (Math.random() - 0.5) * 10;
+    p.style.left = (e.clientX + ox) + 'px';
+    p.style.top  = e.clientY + 'px';
+    const dx = (Math.random() - 0.5) * 14;
+    document.body.appendChild(p);
+    p.animate([
+      { opacity: 0.35, transform: 'translate(-50%,-50%) scale(1)' },
+      { opacity: 0,    transform: `translate(calc(-50% + ${dx}px), calc(-50% - 24px)) scale(0.2)` }
+    ], { duration: 900, easing: 'ease-out', fill: 'forwards' })
+      .addEventListener('finish', () => p.remove());
+  });
+</script>
+
+<style>
+  /* ── WIRE TICKER ── */
+  .wire-bottom { margin-top: 3.5rem; }
+  .wire { display: flex; align-items: stretch; border-bottom: 1px solid var(--rule); border-top: 1px solid var(--rule); background: var(--paper-sink); }
+  .wire-tag { flex-shrink: 0; display: flex; align-items: center; background: var(--spot); color: var(--paper); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; padding: 0 14px; text-transform: uppercase; }
+  .wire-mask { flex: 1; overflow: hidden; padding: 0.6rem 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+  .wire-track { display: flex; align-items: center; width: max-content; animation: wireScroll 42s linear infinite; }
+  .wire-track:hover { animation-play-state: paused; }
+  @keyframes wireScroll { from { transform: translateX(0); } to { transform: translateX(-33.33%); } }
+  .wire-item { display: inline-flex; align-items: center; font-size: 0.7rem; color: var(--ink-soft); white-space: nowrap; padding: 0 0.75rem; letter-spacing: 0.04em; }
+  .wire-sep { color: var(--spot); font-size: 0.42rem; opacity: 0.55; padding: 0 0.1rem; flex-shrink: 0; }
+
+  /* ── EDITION SECTION ── */
+  .edition-section { padding: 2.5rem 0 5rem; }
+
+  /* ── EDITION BANNER ── */
+  .ed-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    background: var(--paper-sink);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--ink);
+    margin-bottom: 2.5rem;
+  }
+
+  .ed-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .ed-number {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--spot);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .ed-date {
+    font-size: 0.65rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    text-transform: capitalize;
+  }
+
+  .ed-archive {
+    font-size: 0.6rem;
+    color: var(--paper);
+    background: var(--ink-faint);
+    padding: 0.1rem 0.45rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .ed-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ed-nav-btn {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--rule);
+    padding: 0.28rem 0.7rem;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+  .ed-nav-btn:hover {
+    color: var(--spot);
+    border-color: oklch(from var(--spot) l c h / .45);
+    background: oklch(from var(--spot) l c h / .06);
+    text-decoration: none;
+  }
+  .ed-nav-btn--next {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .ed-nav-btn--next:hover {
+    background: var(--spot);
+    border-color: var(--spot);
+    color: var(--paper);
+  }
+
+  /* ── BOTTOM NAV ── */
+  .ed-nav-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .ed-home {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--spot);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    padding: 0.28rem 0.9rem;
+    border: 1px solid oklch(from var(--spot) l c h / .4);
+    transition: background 0.15s, color 0.15s;
+  }
+  .ed-home:hover {
+    background: var(--spot);
+    color: var(--paper);
+    text-decoration: none;
+  }
+
+  /* ── LEAD ── */
+  .lead-wrap { padding-bottom: 3rem; border-bottom: 3px double var(--ink); margin-bottom: 3rem; }
+  .lead-eyebrow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--rule); }
+  .lead-link { display: grid; grid-template-columns: 44% 1fr; gap: 2.5rem; align-items: start; text-decoration: none; color: inherit; }
+  .lead-link:hover { text-decoration: none; }
+  .lead-img { overflow: hidden; border: 1px solid var(--rule); border-top: 2px solid var(--ink); aspect-ratio: 4/3; width: 100%; position: relative; }
+  .lead-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.65s var(--spring); display: block; }
+  .lead-link:hover .lead-img img { transform: scale(1.035); }
+  .lead-img-placeholder { width: 100%; height: 100%; background: var(--paper-sink); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700; color: var(--rule); letter-spacing: 0.06em; min-height: 260px; }
+  .lead-content { display: flex; flex-direction: column; gap: 1rem; padding-top: 0.25rem; }
+  .lead-title { font-family: var(--font-display); font-style: italic; font-weight: 800; font-size: clamp(1.8rem, 3.2vw, 3rem); line-height: 1.08; letter-spacing: -0.025em; color: var(--ink); transition: color 0.2s; }
+  .lead-link:hover .lead-title { color: var(--spot); }
+  .lead-stand { font-size: 1rem; line-height: 1.65; font-style: italic; color: var(--ink-soft); }
+  .lead-byline { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; padding: 0.65rem 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .lead-byline-sep { color: var(--rule); font-size: 0.8rem; }
+  .lead-readon { font-size: 0.66rem; font-weight: 700; color: var(--spot); letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.15s; }
+  .lead-link:hover .lead-readon { color: var(--spot-deep); }
+
+  /* ── GRID ── */
+  .grid-header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--ink); margin-bottom: 1.75rem; }
+  .section-head { font-size: 0.68rem; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.16em; display: flex; align-items: center; gap: 0.6rem; }
+  .section-count { font-size: 0.62rem; color: var(--spot); background: oklch(from var(--spot) l c h / .1); border: 1px solid oklch(from var(--spot) l c h / .22); border-radius: 2px; padding: 0.06rem 0.38rem; font-weight: 400; }
+  .tag-filter { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+  .tf-btn { font-size: 0.62rem; color: var(--ink-soft); background: none; border: 1px solid var(--rule); border-radius: 2px; padding: 0.22rem 0.55rem; cursor: pointer; transition: color 0.15s, border-color 0.15s, background 0.15s; letter-spacing: 0.05em; text-transform: lowercase; }
+  .tf-btn:hover { color: var(--spot); border-color: oklch(from var(--spot) l c h / .4); background: oklch(from var(--spot) l c h / .06); }
+  .tf-btn.active { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+  .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-left: 1px solid var(--rule); border-top: 1px solid var(--rule); }
+
+  /* ── FOOTER ── */
+  .site-footer { border-top: 3px double var(--ink); background: var(--paper-sink); padding: 0; }
+  .foot-top { display: grid; grid-template-columns: 1.4fr 2fr; gap: 2.75rem; padding: 2.5rem 0 1.75rem; }
+  .foot-brand-col { display: flex; flex-direction: column; gap: 0.75rem; }
+  .foot-logo { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.72rem; font-weight: 700; color: var(--ink-soft); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.15s; }
+  .foot-logo:hover { color: var(--ink); text-decoration: none; }
+  .footer-fc { width: 26px; height: 20px; background: var(--ink); color: var(--paper); font-size: 0.58rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; border-radius: 2px; flex-shrink: 0; }
+  .foot-tag { font-size: 0.9rem; line-height: 1.55; color: var(--ink-soft); max-width: 38ch; }
+  .foot-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 0.55rem; }
+  .foot-col h4 { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.2rem; }
+  .foot-col a, .foot-col span { font-size: 0.9rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+  .foot-col a:hover { color: var(--spot); text-decoration: none; }
+  .foot-base { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; padding: 1rem 0 1.75rem; border-top: 1px solid var(--rule); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--ink-faint); text-transform: uppercase; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .posts-grid { grid-template-columns: repeat(2, 1fr); }
+    .lead-link { grid-template-columns: 1fr; }
+    .lead-img { aspect-ratio: 16/7; }
+    .foot-top { grid-template-columns: 1fr; gap: 1.75rem; }
+    .foot-cols { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .foot-cols { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .posts-grid { grid-template-columns: 1fr; }
+  }
+</style>

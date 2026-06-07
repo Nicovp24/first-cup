@@ -5,15 +5,36 @@ import PostCard from '../components/PostCard.astro';
 import SEO from '../components/SEO.astro';
 import '../styles/global.css';
 
-const all   = await getCollection('posts');
-const posts = all.sort((a,b) => b.data.date.getTime() - a.data.date.getTime());
-const [featured, ...rest] = posts;
-const total = posts.length;
-const allTags = [...new Set(posts.flatMap(p => p.data.tags))].sort();
+const all = await getCollection('posts');
 
-const tagCounts: Record<string, number> = {};
-posts.forEach(p => p.data.tags.forEach(t => { tagCounts[t] = (tagCounts[t] ?? 0) + 1; }));
-const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 7).map(([t]) => t);
+// Group posts by UTC date (YYYY-MM-DD) → editions
+const byDate = new Map<string, typeof all>();
+for (const p of all) {
+  const k = p.data.date.toISOString().slice(0, 10);
+  if (!byDate.has(k)) byDate.set(k, []);
+  byDate.get(k)!.push(p);
+}
+for (const [, posts] of byDate) {
+  posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+}
+
+// Editions sorted ascending: index 0 = oldest (Edición #1)
+const editionDates = [...byDate.keys()].sort();
+const totalEditions = editionDates.length;
+
+// Current = latest edition
+const currentDate  = editionDates[totalEditions - 1];
+const editionPosts = byDate.get(currentDate)!;
+const [featured, ...rest] = editionPosts;
+
+const editionDateFormatted = new Date(currentDate + 'T12:00:00Z').toLocaleDateString('es-ES', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+});
+
+const editionTags = [...new Set(editionPosts.flatMap(p => p.data.tags))].sort();
+
+const hasPrev    = totalEditions > 1;
+const prevEdNum  = totalEditions - 1;
 
 const SITE      = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').replace(/\/$/, '');
 const TITLE     = 'First Cup — IA, Dev & Tech | Tu café tech de cada mañana';
@@ -32,7 +53,7 @@ const CANONICAL = `${SITE}/`;
 </head>
 
 <body>
-<Header edition={total}/>
+<Header edition={totalEditions}/>
 
 <main>
 
@@ -40,7 +61,7 @@ const CANONICAL = `${SITE}/`;
   <section class="edition-section" id="posts">
     <div class="container">
 
-      {posts.length === 0 ? (
+      {editionPosts.length === 0 ? (
         <div class="empty anim-up">
           <span class="kicker">Próximamente</span>
           <h2 class="empty-h">El primer digest llega pronto</h2>
@@ -49,6 +70,21 @@ const CANONICAL = `${SITE}/`;
         </div>
       ) : (
         <>
+          {/* ── Edition banner ── */}
+          <div class="ed-banner anim-in">
+            <div class="ed-banner-left">
+              <span class="ed-number gz-mono">
+                Edición #{String(totalEditions).padStart(3, '0')}
+              </span>
+              <span class="ed-date gz-mono">{editionDateFormatted}</span>
+            </div>
+            {hasPrev && (
+              <a href={`/edicion/${prevEdNum}`} class="ed-prev gz-mono">
+                ← Edición #{String(prevEdNum).padStart(3, '0')}
+              </a>
+            )}
+          </div>
+
           {/* LEAD — featured post, horizontal newspaper layout */}
           {featured && (
             <div class="lead-wrap anim-up">
@@ -56,7 +92,6 @@ const CANONICAL = `${SITE}/`;
               <!-- Eyebrow row -->
               <div class="lead-eyebrow">
                 <span class="kicker">{featured.data.tags[0] ?? 'Digest'}</span>
-                <span class="edition-num gz-mono">Edición #{String(total).padStart(3, '0')}</span>
               </div>
 
               <!-- Two-column: image left, text right -->
@@ -64,7 +99,7 @@ const CANONICAL = `${SITE}/`;
                 <div class="lead-img">
                   {featured.data.cover
                     ? <img src={featured.data.cover} alt="" loading="eager" decoding="async"/>
-                    : <div class="lead-img-placeholder gz-mono">#{String(total).padStart(3,'0')}</div>
+                    : <div class="lead-img-placeholder gz-mono">#{String(totalEditions).padStart(3,'0')}</div>
                   }
                 </div>
 
@@ -91,10 +126,10 @@ const CANONICAL = `${SITE}/`;
                   Publicaciones
                   <span class="section-count">{rest.length}</span>
                 </h2>
-                {allTags.length > 0 && (
+                {editionTags.length > 0 && (
                   <div class="tag-filter" id="tag-filter">
                     <button class="tf-btn active gz-mono" data-tag="all">Todos</button>
-                    {allTags.map(t => (
+                    {editionTags.map(t => (
                       <button class="tf-btn gz-mono" data-tag={t}>{t}</button>
                     ))}
                   </div>
@@ -110,7 +145,7 @@ const CANONICAL = `${SITE}/`;
                     description={p.data.description}
                     tags={p.data.tags}
                     index={i}
-                    editionNum={total - 1 - i}
+                    editionNum={totalEditions}
                     cover={p.data.cover}
                   />
                 ))}
@@ -367,6 +402,59 @@ const CANONICAL = `${SITE}/`;
   /* ── EDITION SECTION ── */
   .edition-section { padding: 2.5rem 0 5rem; }
 
+  /* ── EDITION BANNER ── */
+  .ed-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    background: var(--paper-sink);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--ink);
+    margin-bottom: 2.5rem;
+  }
+
+  .ed-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .ed-number {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--spot);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .ed-date {
+    font-size: 0.65rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    text-transform: capitalize;
+  }
+
+  .ed-prev {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--rule);
+    padding: 0.28rem 0.7rem;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .ed-prev:hover {
+    color: var(--spot);
+    border-color: oklch(from var(--spot) l c h / .45);
+    background: oklch(from var(--spot) l c h / .06);
+    text-decoration: none;
+  }
+
   /* ── LEAD — horizontal newspaper layout ── */
   .lead-wrap {
     padding-bottom: 3rem;
@@ -381,12 +469,6 @@ const CANONICAL = `${SITE}/`;
     margin-bottom: 1.25rem;
     padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--rule);
-  }
-
-  .edition-num {
-    font-size: 0.62rem;
-    color: var(--ink-faint);
-    letter-spacing: 0.12em;
   }
 
   .lead-link {
@@ -479,8 +561,6 @@ const CANONICAL = `${SITE}/`;
 
 
   /* ── GRID OF POSTS ── */
-  .grid-wrap { }
-
   .grid-header {
     display: flex;
     align-items: baseline;

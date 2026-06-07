@@ -170,12 +170,15 @@ async def _fetch_og_image(url: str) -> str | None:
         parsed = _urlparse(url)
         hostname = (parsed.hostname or "").lower()
 
-        # GitHub opengraph cards are generic dark backgrounds — skip them
-        # and fall through to keyword-based Unsplash image instead.
+        # GitHub: construct opengraph.github.com URL directly (no HTTP request needed)
         if hostname in ("github.com", "www.github.com"):
+            parts = parsed.path.strip("/").split("/")
+            if len(parts) >= 2:
+                owner, repo = parts[0], parts[1]
+                return f"https://opengraph.github.com/repo/{owner}/{repo}"
             return None
 
-        async with httpx.AsyncClient(timeout=6.0, follow_redirects=True) as client:
+        async with httpx.AsyncClient(timeout=8.0, follow_redirects=True) as client:
             async with client.stream(
                 "GET", url,
                 headers={"User-Agent": "Mozilla/5.0 (compatible; FirstCupBot/1.0)"},
