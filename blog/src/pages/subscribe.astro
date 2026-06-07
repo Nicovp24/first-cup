@@ -152,14 +152,24 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
           </ul>
 
           <div class="plan-action">
-            <a
-              href="mailto:hola@firstcup.es?subject=Suscripci%C3%B3n%20Premium"
-              class="premium-btn gz-mono"
-              aria-label="Empezar plan Premium"
-            >
-              Empezar plan Premium →
-            </a>
-            <p class="premium-note gz-mono">Cancela cuando quieras · Pago seguro</p>
+            <form id="premium-form" novalidate>
+              <label for="premium-email" class="subscribe-label gz-mono">Tu email:</label>
+              <input
+                id="premium-email"
+                type="email"
+                name="email"
+                placeholder="tu@email.com"
+                autocomplete="email"
+                required
+                class="premium-input gz-mono"
+              />
+              <button type="submit" class="premium-btn gz-mono" id="premium-btn">
+                <span class="premium-btn-text">Empezar plan Premium →</span>
+                <span class="premium-btn-loading" hidden>Redirigiendo…</span>
+              </button>
+            </form>
+            <p class="premium-error gz-mono" id="premium-error" role="alert" hidden></p>
+            <p class="premium-note gz-mono">Cancela cuando quieras · Pago seguro con Stripe</p>
           </div>
         </div>
 
@@ -246,6 +256,49 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
 <script>
   const saved = localStorage.getItem('theme') ?? 'latte';
   document.documentElement.setAttribute('data-theme', saved);
+
+  // ── Premium checkout form ──
+  const premiumForm = document.getElementById('premium-form') as HTMLFormElement | null;
+  if (premiumForm) {
+    premiumForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input   = premiumForm.querySelector<HTMLInputElement>('#premium-email');
+      const btn     = premiumForm.querySelector<HTMLButtonElement>('#premium-btn');
+      const btnText = premiumForm.querySelector<HTMLElement>('.premium-btn-text');
+      const btnLoad = premiumForm.querySelector<HTMLElement>('.premium-btn-loading');
+      const errEl   = document.getElementById('premium-error') as HTMLElement | null;
+      if (!input || !errEl) return;
+
+      const email = input.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errEl.textContent = 'Introduce un email válido.';
+        errEl.hidden = false;
+        input.focus();
+        return;
+      }
+      errEl.hidden = true;
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.hidden = true;
+      if (btnLoad) btnLoad.hidden = false;
+
+      try {
+        const res = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json() as { url?: string; message?: string };
+        if (!res.ok || !data.url) throw new Error(data.message ?? `Error ${res.status}`);
+        window.location.href = data.url;
+      } catch (err: unknown) {
+        errEl.textContent = err instanceof Error ? err.message : 'Algo salió mal. Inténtalo de nuevo.';
+        errEl.hidden = false;
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.hidden = false;
+        if (btnLoad) btnLoad.hidden = true;
+      }
+    });
+  }
 </script>
 
 <style>
@@ -442,6 +495,26 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     margin-bottom: 0.55rem;
   }
 
+  #premium-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .premium-input {
+    font-size: 0.875rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 0.7rem 0.9rem;
+    outline: none;
+    border-radius: 0;
+    transition: border-color 0.12s;
+    width: 100%;
+  }
+  .premium-input:focus { border-color: var(--spot); }
+  .premium-input::placeholder { color: var(--ink-faint); }
+
   .premium-btn {
     display: block;
     text-align: center;
@@ -452,12 +525,21 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     padding: 0.85rem 1.5rem;
     letter-spacing: 0.10em;
     text-transform: uppercase;
-    transition: background 0.18s, color 0.18s;
-    text-decoration: none;
+    transition: background 0.18s;
+    border: none;
+    cursor: pointer;
     width: 100%;
     border-radius: 0;
   }
-  .premium-btn:hover { background: var(--spot-deep); color: var(--paper-2); text-decoration: none; }
+  .premium-btn:hover:not(:disabled) { background: var(--spot-deep); }
+  .premium-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .premium-error {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: oklch(0.55 0.22 28);
+    margin-top: 0.25rem;
+  }
 
   .premium-note {
     text-align: center;

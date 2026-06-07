@@ -1,0 +1,80 @@
+---
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="es" data-theme="latte">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <title>Suscripción confirmada – First Cup</title>
+</head>
+<body>
+<Header/>
+<main class="result-page">
+  <div class="container">
+    <div class="result-card anim-up">
+      <span class="result-icon" aria-hidden="true">☕</span>
+      <span class="kicker">Suscripción confirmada</span>
+      <h1 class="result-title">El café está en camino.</h1>
+      <p class="result-body">
+        Tu email ha sido confirmado. A partir de mañana recibirás el digest
+        de First Cup cada mañana antes de las 8h.
+      </p>
+      <a href="/" class="result-btn gz-mono">Ver última edición →</a>
+    </div>
+  </div>
+</main>
+<script>
+  const saved = localStorage.getItem('theme') ?? 'latte';
+  document.documentElement.setAttribute('data-theme', saved);
+</script>
+<style>
+  .result-page { padding: 6rem 0; }
+  .result-card {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    text-align: center;
+    border-top: 3px solid var(--ink);
+    padding-top: 2.5rem;
+  }
+  .result-icon { font-size: 2.8rem; }
+  .result-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0;
+  }
+  .result-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    font-style: italic;
+    max-width: 38ch;
+    margin: 0;
+  }
+  .result-btn {
+    display: inline-block;
+    margin-top: 0.75rem;
+    background: var(--spot);
+    color: var(--paper);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.75rem;
+    text-decoration: none;
+    transition: background 0.18s;
+  }
+  .result-btn:hover { background: var(--spot-deep); text-decoration: none; }
+</style>
+</body>
+</html>

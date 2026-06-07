@@ -31,6 +31,11 @@ try:
 except ImportError:
     TelegramNotifier = None  # type: ignore[assignment,misc]
 
+try:
+    from agent.notifier.email_newsletter import EmailNewsletter  # type: ignore[import]
+except ImportError:
+    EmailNewsletter = None  # type: ignore[assignment,misc]
+
 # These modules will exist once the rest of the project is complete.
 # Import them lazily inside the node functions so missing modules raise
 # at runtime (inside the node) rather than at import time.
@@ -354,6 +359,43 @@ async def notify_node(state: AgentState) -> dict[str, Any]:
     except Exception as exc:
         msg = f"TelegramNotifier.notify failed: {exc}"
         log.error("notify_node_error", error=str(exc))
+        errors.append(msg)
+
+    return {"errors": errors}
+
+
+# ---------------------------------------------------------------------------
+# Node: email
+# ---------------------------------------------------------------------------
+
+
+async def email_node(state: AgentState) -> dict[str, Any]:
+    """
+    Send the daily digest email to all confirmed subscribers via Resend.
+
+    No-op when RESEND_API_KEY is not configured or no posts were published.
+    """
+    log = logger.bind(node="email", run_date=state.get("run_date"))
+    log.info("email_node_start")
+
+    errors: list[str] = list(state.get("errors") or [])
+    written_posts: list[PublishedPost] = state.get("written_posts") or []
+
+    if not written_posts:
+        log.info("email_node_skipped", reason="no posts")
+        return {"errors": errors}
+
+    if EmailNewsletter is None:
+        log.warning("email_node_skipped", reason="EmailNewsletter module unavailable")
+        return {"errors": errors}
+
+    try:
+        newsletter = EmailNewsletter()
+        sent = await newsletter.send_digest(written_posts)
+        log.info("email_node_done", sent=sent)
+    except Exception as exc:
+        msg = f"EmailNewsletter.send_digest failed: {exc}"
+        log.error("email_node_error", error=str(exc))
         errors.append(msg)
 
     return {"errors": errors}

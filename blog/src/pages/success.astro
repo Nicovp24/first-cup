@@ -1,0 +1,109 @@
+---
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="es" data-theme="latte">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <title>Bienvenido a Premium – First Cup</title>
+</head>
+<body>
+<Header/>
+<main class="result-page">
+  <div class="container">
+    <div class="result-card anim-up">
+      <span class="result-icon" aria-hidden="true">☕✦</span>
+      <span class="kicker">Plan Premium activado</span>
+      <h1 class="result-title">Ya eres Premium.</h1>
+      <p class="result-body">
+        Tu suscripción Premium está activa. A partir de mañana recibirás el análisis
+        diario profundo directamente en tu inbox.
+      </p>
+      <div class="perks gz-mono">
+        <span>✓ Digest diario</span>
+        <span>✓ Telegram privado</span>
+        <span>✓ Sin anuncios</span>
+      </div>
+      <a href="/" class="result-btn gz-mono">Ver última edición →</a>
+      <p class="result-note gz-mono">
+        Recibirás un email de bienvenida en breve. Para gestionar tu suscripción,
+        responde a cualquier email de First Cup.
+      </p>
+    </div>
+  </div>
+</main>
+<script>
+  const saved = localStorage.getItem('theme') ?? 'latte';
+  document.documentElement.setAttribute('data-theme', saved);
+</script>
+<style>
+  .result-page { padding: 6rem 0; }
+  .result-card {
+    max-width: 520px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    text-align: center;
+    border-top: 3px solid var(--spot);
+    padding-top: 2.5rem;
+  }
+  .result-icon { font-size: 2.8rem; }
+  .result-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0;
+  }
+  .result-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    font-style: italic;
+    max-width: 40ch;
+    margin: 0;
+  }
+  .perks {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--spot);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0.25rem 0;
+  }
+  .result-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    background: var(--spot);
+    color: var(--paper);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.75rem;
+    text-decoration: none;
+    transition: background 0.18s;
+  }
+  .result-btn:hover { background: var(--spot-deep); text-decoration: none; }
+  .result-note {
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    margin-top: 0.25rem;
+    max-width: 44ch;
+    line-height: 1.6;
+  }
+</style>
+</body>
+</html>
