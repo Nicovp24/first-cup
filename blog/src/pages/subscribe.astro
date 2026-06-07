@@ -66,113 +66,87 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
       </div>
 
       <!-- Plans -->
-      <div class="plans-grid">
+      <div class="plans-wrap anim-up" style="animation-delay:80ms">
 
-        <!-- Free plan -->
-        <div class="plan-card anim-up" style="animation-delay:80ms">
-          <div class="plan-header">
-            <span class="kicker plan-kicker">Gratis</span>
+        <div class="plans-grid">
+
+          <!-- Free plan -->
+          <div class="plan-card">
+            <div class="plan-ornament gz-mono" aria-hidden="true">— ✦ —</div>
+            <div class="plan-tier gz-mono">Lector</div>
             <div class="plan-price">
-              <span class="price-amount">0€</span>
-              <span class="price-period gz-mono">/ siempre</span>
+              <span class="price-amount">0<span class="price-cur">€</span></span>
+              <span class="price-period gz-mono">para siempre</span>
+            </div>
+            <p class="plan-description">
+              Acceso completo al blog, digest semanal en tu inbox
+              y archivo histórico. Sin tarjeta, sin compromiso.
+            </p>
+            <ul class="plan-features" aria-label="Características del plan gratuito">
+              <li class="feature"><span class="fc" aria-hidden="true">✓</span>Blog público con todos los posts</li>
+              <li class="feature"><span class="fc" aria-hidden="true">✓</span>Email semanal con el resumen tech</li>
+              <li class="feature"><span class="fc" aria-hidden="true">✓</span>Archivo histórico completo</li>
+              <li class="feature"><span class="fc" aria-hidden="true">✓</span>RSS feed para tu lector favorito</li>
+              <li class="feature fc-empty"><span class="fc fc-no" aria-hidden="true">–</span>Digest diario</li>
+              <li class="feature fc-empty"><span class="fc fc-no" aria-hidden="true">–</span>Mini cursos prácticos</li>
+            </ul>
+            <div class="plan-action">
+              <p class="subscribe-label gz-mono">Tu email:</p>
+              <SubscribeForm compact={true} />
             </div>
           </div>
 
-          <p class="plan-description">
-            Acceso completo al blog público y al digest semanal en tu inbox.
-            Sin tarjeta. Sin compromiso.
-          </p>
-
-          <ul class="plan-features" aria-label="Características del plan gratuito">
-            <li class="feature">
-              <span class="feature-check" aria-hidden="true">✓</span>
-              Blog público con todos los posts
-            </li>
-            <li class="feature">
-              <span class="feature-check" aria-hidden="true">✓</span>
-              Email semanal con el resumen tech
-            </li>
-            <li class="feature">
-              <span class="feature-check" aria-hidden="true">✓</span>
-              Acceso al archivo histórico completo
-            </li>
-            <li class="feature">
-              <span class="feature-check" aria-hidden="true">✓</span>
-              RSS feed para tu lector favorito
-            </li>
-          </ul>
-
-          <div class="plan-action">
-            <p class="subscribe-label gz-mono">Suscríbete con tu email:</p>
-            <SubscribeForm compact={true} />
+          <!-- Divider -->
+          <div class="plans-divider" aria-hidden="true">
+            <span class="pd-line"></span>
+            <span class="pd-or gz-mono">O</span>
+            <span class="pd-line"></span>
           </div>
-        </div>
 
-        <!-- Premium plan -->
-        <div class="plan-card plan-premium anim-up" style="animation-delay:140ms">
-          <div class="plan-recommended gz-mono">RECOMENDADO</div>
-          <div class="plan-header">
-            <span class="kicker plan-kicker premium-kicker">Premium</span>
+          <!-- Premium plan -->
+          <div class="plan-card plan-premium">
+            <div class="plan-badge gz-mono">RECOMENDADO</div>
+            <div class="plan-ornament plan-ornament--spot gz-mono" aria-hidden="true">— ✦ —</div>
+            <div class="plan-tier gz-mono plan-tier--spot">Premium</div>
             <div class="plan-price">
-              <span class="price-amount">5€</span>
-              <span class="price-period gz-mono">/ mes</span>
+              <span class="price-amount price-amount--spot">5<span class="price-cur">€</span></span>
+              <span class="price-period gz-mono">al mes</span>
+            </div>
+            <p class="plan-description">
+              Para quienes quieren estar un paso por delante.
+              Análisis diarios, formación práctica y sin anuncios.
+            </p>
+            <ul class="plan-features" aria-label="Características del plan premium">
+              <li class="feature"><span class="fc fc-spot" aria-hidden="true">✓</span>Todo lo del plan Lector</li>
+              <li class="feature"><span class="fc fc-spot" aria-hidden="true">✓</span><strong>Digest diario</strong> – análisis de lunes a viernes</li>
+              <li class="feature"><span class="fc fc-spot" aria-hidden="true">✓</span><strong>Mini cursos</strong> – guías sobre tendencias tech</li>
+              <li class="feature"><span class="fc fc-spot" aria-hidden="true">✓</span>Acceso anticipado a nuevas funciones</li>
+              <li class="feature"><span class="fc fc-spot" aria-hidden="true">✓</span>Sin anuncios, nunca</li>
+              <li class="feature"><span class="fc fc-spot" aria-hidden="true">✓</span>Cancela cuando quieras</li>
+            </ul>
+            <div class="plan-action">
+              <form id="premium-form" novalidate>
+                <label for="premium-email" class="subscribe-label gz-mono">Tu email:</label>
+                <input
+                  id="premium-email"
+                  type="email"
+                  name="email"
+                  placeholder="tu@email.com"
+                  autocomplete="email"
+                  required
+                  class="premium-input gz-mono"
+                />
+                <button type="submit" class="premium-btn gz-mono" id="premium-btn">
+                  <span class="premium-btn-text">Empezar plan Premium →</span>
+                  <span class="premium-btn-loading" hidden>Redirigiendo…</span>
+                </button>
+              </form>
+              <p class="premium-error gz-mono" id="premium-error" role="alert" hidden></p>
+              <p class="premium-note gz-mono">Pago seguro con Stripe</p>
             </div>
           </div>
 
-          <p class="plan-description">
-            Para los profesionales que quieren estar un paso por delante.
-            Análisis diarios, canal privado y formación continua.
-          </p>
-
-          <ul class="plan-features" aria-label="Características del plan premium">
-            <li class="feature">
-              <span class="feature-check feature-spot" aria-hidden="true">✓</span>
-              Todo lo del plan gratuito
-            </li>
-            <li class="feature">
-              <span class="feature-check feature-spot" aria-hidden="true">✓</span>
-              <strong>Daily digest</strong> – análisis profundo cada día laboral
-            </li>
-            <li class="feature">
-              <span class="feature-check feature-spot" aria-hidden="true">✓</span>
-              <strong>Telegram privado</strong> – canal exclusivo con breaking news
-            </li>
-            <li class="feature">
-              <span class="feature-check feature-spot" aria-hidden="true">✓</span>
-              <strong>Mini cursos</strong> – guías prácticas sobre tendencias tech
-            </li>
-            <li class="feature">
-              <span class="feature-check feature-spot" aria-hidden="true">✓</span>
-              Acceso anticipado a nuevas funcionalidades
-            </li>
-            <li class="feature">
-              <span class="feature-check feature-spot" aria-hidden="true">✓</span>
-              Sin anuncios, nunca
-            </li>
-          </ul>
-
-          <div class="plan-action">
-            <form id="premium-form" novalidate>
-              <label for="premium-email" class="subscribe-label gz-mono">Tu email:</label>
-              <input
-                id="premium-email"
-                type="email"
-                name="email"
-                placeholder="tu@email.com"
-                autocomplete="email"
-                required
-                class="premium-input gz-mono"
-              />
-              <button type="submit" class="premium-btn gz-mono" id="premium-btn">
-                <span class="premium-btn-text">Empezar plan Premium →</span>
-                <span class="premium-btn-loading" hidden>Redirigiendo…</span>
-              </button>
-            </form>
-            <p class="premium-error gz-mono" id="premium-error" role="alert" hidden></p>
-            <p class="premium-note gz-mono">Cancela cuando quieras · Pago seguro con Stripe</p>
-          </div>
         </div>
-
       </div>
 
       <!-- FAQ -->
@@ -382,117 +356,170 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     align-self: center;
   }
 
-  /* ── Plans grid ── */
+  /* ── Plans wrap ── */
+  .plans-wrap {
+    margin-bottom: 5rem;
+    border-top: 3px double var(--ink);
+    border-bottom: 3px double var(--ink);
+  }
+
   .plans-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 40px 1fr;
     gap: 0;
-    margin-bottom: 5rem;
-    border: 1px solid var(--ink);
-    border-top: 3px double var(--ink);
+  }
+
+  /* Vertical divider */
+  .plans-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 0;
+    border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+  }
+  .pd-line {
+    display: block;
+    width: 1px;
+    flex: 1;
+    background: var(--rule);
+  }
+  .pd-or {
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: var(--ink-faint);
+    letter-spacing: 0.18em;
   }
 
   .plan-card {
     background: var(--paper);
-    padding: 2rem;
+    padding: 2.5rem 2.25rem;
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
-    border-right: 1px solid var(--rule);
-    transition: background 0.2s;
+    gap: 1.5rem;
   }
-  .plan-card:last-child { border-right: none; }
-  .plan-card:hover { background: var(--paper-sink); }
 
   .plan-premium {
     background: var(--paper-sink);
   }
-  .plan-premium:hover { background: var(--paper-2); }
 
-  .plan-recommended {
+  .plan-badge {
     position: absolute;
-    top: -1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--ink);
+    top: 0; left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--spot);
     color: var(--paper);
-    font-size: 0.58rem;
+    font-size: 0.54rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
-    padding: 0.2rem 0.75rem;
+    letter-spacing: 0.18em;
+    padding: 0.22rem 0.9rem;
     white-space: nowrap;
-    border-radius: 0;
   }
 
-  .plan-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
+  .plan-ornament {
+    text-align: center;
+    font-size: 0.62rem;
+    color: var(--rule);
+    letter-spacing: 0.25em;
+    margin-bottom: -0.5rem;
   }
+  .plan-ornament--spot { color: oklch(from var(--spot) l c h / .45); }
 
-  .plan-kicker { font-size: 0.7rem; }
-  .premium-kicker { color: var(--spot); }
+  .plan-tier {
+    text-align: center;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .plan-tier--spot { color: var(--spot); }
 
-  .plan-price { text-align: right; }
+  .plan-price {
+    text-align: center;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 1.1rem 0;
+  }
 
   .price-amount {
     display: block;
     font-family: var(--font-display);
-    font-size: 2.2rem;
-    font-weight: 800;
+    font-size: 3.5rem;
+    font-weight: 900;
     color: var(--ink);
     line-height: 1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+  }
+  .price-amount--spot { color: var(--spot); }
+
+  .price-cur {
+    font-size: 1.6rem;
+    font-weight: 700;
+    vertical-align: super;
+    letter-spacing: 0;
+    margin-left: 2px;
   }
 
   .price-period {
-    font-size: 0.68rem;
+    display: block;
+    font-size: 0.62rem;
     color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
   }
 
   .plan-description {
-    font-size: 0.88rem;
+    font-size: 0.875rem;
     color: var(--ink-soft);
-    line-height: 1.65;
+    line-height: 1.68;
     font-style: italic;
+    text-align: center;
   }
 
   .plan-features {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.65rem;
     flex: 1;
+    border-top: 1px solid var(--rule-soft);
+    padding-top: 1.25rem;
   }
 
   .feature {
     display: flex;
     align-items: flex-start;
-    gap: 0.6rem;
-    font-size: 0.88rem;
+    gap: 0.65rem;
+    font-size: 0.875rem;
     color: var(--ink);
     line-height: 1.5;
   }
+  .fc-empty { color: var(--ink-faint); }
 
-  .feature-check {
+  .fc {
     flex-shrink: 0;
-    color: oklch(0.55 0.14 155);
     font-weight: 700;
-    margin-top: 0.05rem;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
+    margin-top: 0.12rem;
+    color: oklch(0.52 0.14 155);
   }
-  .feature-spot { color: var(--spot); }
-  .feature strong { color: var(--ink); }
+  .fc-no  { color: var(--rule); font-weight: 400; }
+  .fc-spot { color: var(--spot); }
+  .feature strong { color: var(--ink); font-weight: 700; }
 
   .subscribe-label {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     color: var(--ink-faint);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.55rem;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.5rem;
   }
 
   #premium-form {
@@ -521,9 +548,9 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     background: var(--spot);
     color: var(--paper-2);
     font-weight: 700;
-    font-size: 0.78rem;
-    padding: 0.85rem 1.5rem;
-    letter-spacing: 0.10em;
+    font-size: 0.76rem;
+    padding: 0.9rem 1.5rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     transition: background 0.18s;
     border: none;
@@ -543,10 +570,10 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
 
   .premium-note {
     text-align: center;
-    font-size: 0.64rem;
+    font-size: 0.62rem;
     color: var(--ink-faint);
     margin-top: 0.5rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
   }
 
   /* ── FAQ ── */
@@ -690,9 +717,21 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
   }
 
   @media (max-width: 800px) {
-    .plans-grid { grid-template-columns: 1fr; }
-    .plan-card { border-right: none; border-bottom: 1px solid var(--rule); }
-    .plan-card:last-child { border-bottom: none; }
+    .plans-grid {
+      grid-template-columns: 1fr;
+    }
+    .plans-divider {
+      flex-direction: row;
+      padding: 0 2rem;
+      height: 40px;
+      border-left: none;
+      border-right: none;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .pd-line { flex: 1; width: auto; height: 1px; }
+    .plan-card { padding: 2rem 1.5rem; }
+    .plan-badge { top: 0; transform: translate(-50%, -50%); }
     .faq-grid   { grid-template-columns: 1fr; }
     .faq-item   { border-right: none; }
     .foot-top   { grid-template-columns: 1fr; gap: 1.75rem; }
@@ -700,6 +739,9 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
   }
 
   @media (max-width: 640px) {
-    .foot-cols { grid-template-columns: 1fr 1fr; }
+    .stats-strip { gap: 1rem; }
+    .foot-cols   { grid-template-columns: 1fr 1fr; }
+    .plan-card   { padding: 1.75rem 1.25rem; }
+    .price-amount { font-size: 2.75rem; }
   }
 </style>
