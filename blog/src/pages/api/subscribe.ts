@@ -75,10 +75,12 @@ export const POST: APIRoute = async ({ request }) => {
       });
       if (!emailRes.ok) {
         const resendErr = await emailRes.json().catch(() => ({}));
-        console.error('Resend error (non-fatal):', resendErr);
+        console.error('Resend error:', resendErr);
+        return reply({ ok: true, resend_error: resendErr }, 200);
       }
     } catch (err) {
-      console.error('Resend fetch error (non-fatal):', err);
+      console.error('Resend fetch error:', err);
+      return reply({ ok: true, resend_error: String(err) }, 200);
     }
   }
 
