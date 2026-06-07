@@ -3,7 +3,7 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection('posts');
-  const base = site?.toString().replace(/\/$/, '') ?? 'https://firstcup.dev';
+  const base = site?.toString().replace(/\/$/, '') ?? 'https://first-cup.es';
 
   const staticPages = ['', '/subscribe'].map(
     (path) => `
