@@ -46,6 +46,9 @@ Escribe un artículo editorial en Markdown de 280-420 palabras sobre esta histor
 Requisitos:
 - Abre directamente con el hecho más importante o la implicación más concreta.
   Sin introducción genérica. Sin "Hoy vamos a hablar de...".
+- Si la fuente es un repositorio de GitHub (source contiene "github"):
+  menciona el nombre exacto del repo (owner/repo), el lenguaje principal, las estrellas si las hay,
+  y explica con claridad qué problema resuelve y por qué está llamando la atención ahora.
 - Añade 2-3 secciones cortas con encabezados ## que profundicen: contexto,
   por qué importa y qué implica para el lector.
 - Incluye la referencia principal con hipervínculo natural al título del artículo.
@@ -64,9 +67,12 @@ Tu tarea: elegir los {n} artículos MÁS RELEVANTES para publicar hoy como posts
 Criterios (en orden de prioridad):
 1. Impacto real: lanzamientos, releases, papers, movimientos de industria con consecuencias concretas.
 2. Novedad: algo de las últimas 24-48h. Descarta análisis de semanas anteriores.
-3. Diversidad: elige de categorías distintas (IA/LLMs, herramientas dev, open-source, infra, industria tech).
-4. Calidad de fuente: prioriza GitHub, papers, Hacker News, blogs técnicos sobre medios generalistas.
-5. Urgencia: si hay breaking news (nuevo modelo de un lab, vulnerabilidad crítica, adquisición importante),
+3. Diversidad OBLIGATORIA: incluye siempre al menos UN repositorio de GitHub Trending o GitHub API
+   (source="github_trending" o source="github_api"). Si hay varios repos buenos, prioriza el más relevante.
+   El post sobre el repo debe explicar qué hace, por qué está trending y qué lo hace interesante.
+4. Resto de categorías: IA/LLMs, herramientas dev, papers, infra, industria tech.
+5. Calidad de fuente: prioriza GitHub, papers, Hacker News, blogs técnicos sobre medios generalistas.
+6. Urgencia: si hay breaking news (nuevo modelo de un lab, vulnerabilidad crítica, adquisición importante),
    súbelo a "breaking" — se publicará inmediatamente.
 
 Artículos disponibles (array JSON con campo "index"):

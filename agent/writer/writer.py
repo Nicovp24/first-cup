@@ -106,6 +106,26 @@ _TOPIC_COVERS: dict[str, str] = {
     "go ": "photo-1629654297299-c8506221ca97",
     "open source": "photo-1618401471353-b98afee0b2eb",
     "github": "photo-1618401471353-b98afee0b2eb",
+    "repository": "photo-1618401471353-b98afee0b2eb",
+    "trending": "photo-1618401471353-b98afee0b2eb",
+    "repo": "photo-1618401471353-b98afee0b2eb",
+    "swift": "photo-1555066931-4365d14bab8c",
+    "kotlin": "photo-1555066931-4365d14bab8c",
+    "java": "photo-1555066931-4365d14bab8c",
+    "c++": "photo-1629654297299-c8506221ca97",
+    "cpp": "photo-1629654297299-c8506221ca97",
+    "wasm": "photo-1629654297299-c8506221ca97",
+    "llvm": "photo-1629654297299-c8506221ca97",
+    "inference": "photo-1620712943543-bcc4688e7485",
+    "embedding": "photo-1620712943543-bcc4688e7485",
+    "rag": "photo-1620712943543-bcc4688e7485",
+    "fine-tun": "photo-1620712943543-bcc4688e7485",
+    "framework": "photo-1461749280684-dccba630e2f6",
+    "library": "photo-1461749280684-dccba630e2f6",
+    "gpu": "photo-1620712943543-bcc4688e7485",
+    "cuda": "photo-1620712943543-bcc4688e7485",
+    "performance": "photo-1461749280684-dccba630e2f6",
+    "benchmark": "photo-1461749280684-dccba630e2f6",
     "security": "photo-1550751827-4bd374c3f58b",
     "cloud": "photo-1451187580459-43490279c0fa",
     "kubernetes": "photo-1667372393119-3d4c48d07fc9",
@@ -150,11 +170,10 @@ async def _fetch_og_image(url: str) -> str | None:
         parsed = _urlparse(url)
         hostname = (parsed.hostname or "").lower()
 
+        # GitHub opengraph cards are generic dark backgrounds — skip them
+        # and fall through to keyword-based Unsplash image instead.
         if hostname in ("github.com", "www.github.com"):
-            parts = [p for p in parsed.path.strip("/").split("/") if p]
-            if len(parts) >= 2:
-                owner, repo = parts[0], parts[1].split("?")[0]
-                return f"https://opengraph.github.com/{owner}/{repo}"
+            return None
 
         async with httpx.AsyncClient(timeout=6.0, follow_redirects=True) as client:
             async with client.stream(

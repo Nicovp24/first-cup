@@ -22,7 +22,7 @@ logger = structlog.get_logger(__name__)
 _SEARCH_URL = "https://api.github.com/search/repositories"
 _GITHUB_BASE = "https://github.com"
 _TOP_N = 15
-_MIN_STARS = 500
+_MIN_STARS = 50
 
 
 class GitHubAPIScraper(ScraperBase):
