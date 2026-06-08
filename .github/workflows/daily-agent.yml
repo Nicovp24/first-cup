@@ -76,9 +76,11 @@ jobs:
           STORIES_PER_RUN:        ${{ github.event.inputs.stories || '6' }}
           BREAKING_ONLY:          ${{ github.event.schedule == '0 13 * * *' || github.event.inputs.breaking_only == 'true' }}
           WEEKLY_SUMMARY:         ${{ github.event.schedule == '0 8 * * 0' }}
-          TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_ID:    ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          TELEGRAM_BOT_TOKEN:        ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID:       ${{ secrets.TELEGRAM_CHANNEL_ID }}
           TELEGRAM_PREMIUM_GROUP_ID: ${{ secrets.TELEGRAM_PREMIUM_GROUP_ID }}
+          LINKEDIN_ACCESS_TOKEN:     ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN:       ${{ secrets.LINKEDIN_AUTHOR_URN }}
         run: python -m agent.main
 
       - name: Verify new posts

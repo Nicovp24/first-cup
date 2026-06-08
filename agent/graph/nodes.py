@@ -36,6 +36,11 @@ try:
 except ImportError:
     EmailNewsletter = None  # type: ignore[assignment,misc]
 
+try:
+    from agent.notifier.linkedin import LinkedInNotifier  # type: ignore[import]
+except ImportError:
+    LinkedInNotifier = None  # type: ignore[assignment,misc]
+
 # These modules will exist once the rest of the project is complete.
 # Import them lazily inside the node functions so missing modules raise
 # at runtime (inside the node) rather than at import time.
@@ -352,15 +357,25 @@ async def notify_node(state: AgentState) -> dict[str, Any]:
         log.warning("notify_node_skipped", reason="TelegramNotifier module unavailable")
         return {"errors": errors}
 
-    try:
-        notifier = TelegramNotifier()
-        await notifier.notify(written_posts)
-        log.info("notify_node_done", post_count=len(written_posts))
-    except Exception as exc:
-        msg = f"TelegramNotifier.notify failed: {exc}"
-        log.error("notify_node_error", error=str(exc))
-        errors.append(msg)
+    if TelegramNotifier is not None:
+        try:
+            notifier = TelegramNotifier()
+            await notifier.notify(written_posts)
+            log.info("telegram_notify_done", post_count=len(written_posts))
+        except Exception as exc:
+            errors.append(f"TelegramNotifier.notify failed: {exc}")
+            log.error("telegram_notify_error", error=str(exc))
 
+    if LinkedInNotifier is not None:
+        try:
+            li = LinkedInNotifier()
+            sent = await li.post_articles(written_posts)
+            log.info("linkedin_notify_done", sent=sent)
+        except Exception as exc:
+            errors.append(f"LinkedInNotifier.post_articles failed: {exc}")
+            log.error("linkedin_notify_error", error=str(exc))
+
+    log.info("notify_node_done")
     return {"errors": errors}
 
 

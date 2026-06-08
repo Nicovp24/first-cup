@@ -22,6 +22,7 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
   class:list={['story-card', { 'story-card--has-img': !!cover }]}
   style={`animation-delay:${delay}ms`}
   data-tags={tags.join(',')}
+  data-title={title.toLowerCase()}
 >
   <a href={`/${slug}`} class="story-link">
 

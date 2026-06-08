@@ -253,6 +253,14 @@ class Settings(BaseSettings):
         default=False,
         description="If True, send the weekly summary email to Premium subscribers (Sunday run).",
     )
+    linkedin_access_token: str = Field(
+        default="",
+        description="OAuth2 access token for LinkedIn UGC Posts API.",
+    )
+    linkedin_author_urn: str = Field(
+        default="",
+        description="LinkedIn author URN, e.g. urn:li:person:ABC123 or urn:li:organization:456.",
+    )
     timezone: str = Field(
         default="Europe/Madrid",
         description="IANA timezone name used by the scheduler.",

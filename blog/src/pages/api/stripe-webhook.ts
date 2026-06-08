@@ -79,6 +79,22 @@ export const POST: APIRoute = async ({ request }) => {
         });
 
         console.log(`stripe-webhook: upgraded ${email} to premium`);
+
+        // Send Premium welcome email (non-fatal)
+        const RESEND_KEY = import.meta.env.RESEND_API_KEY;
+        const EMAIL_FROM = import.meta.env.EMAIL_FROM ?? 'First Cup <hola@first-cup.es>';
+        if (RESEND_KEY) {
+          fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              from: EMAIL_FROM,
+              to: [email],
+              subject: '☕ Bienvenido a First Cup Premium',
+              html: welcomePremiumHtml(email),
+            }),
+          }).catch(err => console.error('stripe-webhook: premium welcome email failed', err));
+        }
       } catch (err) {
         console.error('stripe-webhook: Supabase update failed', err);
         // Return 200 anyway — Stripe will retry on non-2xx
@@ -172,6 +188,50 @@ async function verifyStripeSignature(
   } catch {
     return false;
   }
+}
+
+// ---------------------------------------------------------------------------
+// Premium welcome email
+// ---------------------------------------------------------------------------
+
+function welcomePremiumHtml(email: string): string {
+  const site = 'https://first-cup.es';
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"/></head>
+<body style="margin:0;padding:0;background:#f5f0e8;font-family:Georgia,serif;color:#1a0f06;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0e8;padding:2rem 1rem;">
+<tr><td><table width="560" align="center" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;margin:0 auto;">
+  <tr><td style="border-top:3px solid #1a0f06;border-bottom:1px solid #c5a882;padding:1.5rem 0;text-align:center;">
+    <span style="font-family:monospace;font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:#8b4513;display:block;margin-bottom:0.4rem;">Suscriptor Premium</span>
+    <span style="font-size:2.4rem;font-weight:900;color:#1a0f06;font-family:Georgia,serif;letter-spacing:-0.02em;">First Cup</span>
+    <span style="display:block;font-family:monospace;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:#9a8572;margin-top:0.4rem;">IA · Desarrollo · Tecnología</span>
+  </td></tr>
+  <tr><td style="padding:2rem 0;">
+    <p style="font-size:1.05rem;line-height:1.7;color:#1a0f06;margin:0 0 1rem;font-weight:700;">Ya eres Premium. Bienvenido.</p>
+    <p style="font-size:0.95rem;line-height:1.7;color:#4a3728;margin:0 0 0.75rem;">A partir de mañana recibirás:</p>
+    <table cellpadding="0" cellspacing="0" style="margin-bottom:1.5rem;">
+      <tr><td style="padding:0.3rem 0;font-size:0.92rem;color:#4a3728;">☕ &nbsp;<strong>Digest diario</strong> — 6 artículos cada mañana a las 07:00</td></tr>
+      <tr><td style="padding:0.3rem 0;font-size:0.92rem;color:#4a3728;">⚡ &nbsp;<strong>Shots del día</strong> — micro-dosis de lo que también pasó</td></tr>
+      <tr><td style="padding:0.3rem 0;font-size:0.92rem;color:#4a3728;">🔴 &nbsp;<strong>Breaking news</strong> — alertas instantáneas cuando algo es urgente</td></tr>
+      <tr><td style="padding:0.3rem 0;font-size:0.92rem;color:#4a3728;">📋 &nbsp;<strong>Resumen semanal</strong> — lo mejor de la semana, cada domingo</td></tr>
+    </table>
+    <table cellpadding="0" cellspacing="0"><tr><td>
+      <a href="${site}" style="display:inline-block;background:#8b4513;color:#f5f0e8;
+         text-decoration:none;font-family:monospace;font-size:0.7rem;font-weight:700;
+         letter-spacing:0.14em;text-transform:uppercase;padding:0.75rem 1.75rem;">
+        Ir a First Cup →
+      </a>
+    </td></tr></table>
+  </td></tr>
+  <tr><td style="border-top:1px solid #c5a882;padding:1rem 0;text-align:center;">
+    <p style="font-family:monospace;font-size:0.58rem;color:#9a8572;margin:0 0 0.25rem;">
+      © 2026 First Cup · <a href="${site}" style="color:#8b4513;text-decoration:none;">first-cup.es</a>
+    </p>
+    <p style="font-family:monospace;font-size:0.54rem;color:#b0a090;margin:0;">
+      <a href="${site}/cuenta" style="color:#b0a090;">Gestionar suscripción</a>
+    </p>
+  </td></tr>
+</table></td></tr></table>
+</body></html>`;
 }
 
 // ---------------------------------------------------------------------------
