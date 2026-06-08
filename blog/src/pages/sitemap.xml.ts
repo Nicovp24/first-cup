@@ -5,28 +5,42 @@ export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection('posts');
   const base = site?.toString().replace(/\/$/, '') ?? 'https://first-cup.es';
 
-  const staticPages = ['', '/subscribe'].map(
-    (path) => `
+  // Static pages
+  const staticPages = [
+    { path: '',            priority: '1.0', changefreq: 'daily'   },
+    { path: '/subscribe',  priority: '0.8', changefreq: 'monthly' },
+    { path: '/cuenta',     priority: '0.5', changefreq: 'monthly' },
+  ].map(({ path, priority, changefreq }) => `
   <url>
     <loc>${base}${path}/</loc>
-    <changefreq>daily</changefreq>
-    <priority>${path === '' ? '1.0' : '0.7'}</priority>
-  </url>`
-  );
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`);
 
-  const postPages = posts.map(
-    (post) => `
+  // Individual posts
+  const postPages = posts.map(post => `
   <url>
     <loc>${base}/${post.slug}/</loc>
     <lastmod>${post.data.date.toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>`
-  );
+  </url>`);
+
+  // Edition pages — one URL per unique edition number derived from post dates
+  const editionDates = [...new Set(
+    posts.map(p => p.data.date.toISOString().split('T')[0])
+  )].sort();
+  const editionPages = editionDates.map((date, i) => `
+  <url>
+    <loc>${base}/edicion/${i + 1}/</loc>
+    <lastmod>${date}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>`);
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...staticPages, ...postPages].join('')}
+${[...staticPages, ...postPages, ...editionPages].join('')}
 </urlset>`;
 
   return new Response(xml, {

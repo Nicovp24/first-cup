@@ -25,7 +25,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const SITE      = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').replace(/\/$/, '');
+const SITE      = (Astro.site?.toString() ?? 'https://first-cup.es').replace(/\/$/, '');
 const SITE_NAME = 'First Cup';
 const ogImage   = image ?? `${SITE}/og-default.svg`;
 
@@ -35,7 +35,10 @@ const orgSchema = {
   name:     SITE_NAME,
   url:      SITE,
   logo:     `${SITE}/favicon.svg`,
-  sameAs:   [],
+  sameAs:   [
+    'https://first-cup.es/rss.xml',
+    'https://www.linkedin.com/company/first-cup',
+  ],
 };
 
 const websiteSchema = {
@@ -47,8 +50,9 @@ const websiteSchema = {
   inLanguage: 'es-ES',
   publisher:  orgSchema,
   potentialAction: {
-    '@type':      'ReadAction',
-    target:       SITE,
+    '@type':        'SearchAction',
+    target:         { '@type': 'EntryPoint', urlTemplate: `${SITE}/?q={search_term_string}` },
+    'query-input':  'required name=search_term_string',
   },
 };
 
