@@ -86,7 +86,7 @@ html[data-theme="espresso"] {
    FONT STACK
 ────────────────────────────────────────────── */
 :root {
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'Times New Roman', Times, Georgia, serif;
   --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono:    'JetBrains Mono', 'Courier New', monospace;
   --spring:       cubic-bezier(0.16, 1, 0.3, 1);
