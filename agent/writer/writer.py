@@ -335,8 +335,9 @@ class DigestWriter:
         self, item: ScrapedItem, is_breaking: bool = False
     ) -> PublishedPost:
         """Draft one standalone article for a single scraped item."""
-        # --- Step 0: fetch cover image before writing so prompt can reference it ---
-        source_cover = await _fetch_og_image(item.url)
+        # --- Step 0: fetch cover image (skip GitHub OG cards — they're dark code previews) ---
+        is_github_source = item.source in ("github_trending", "github_api")
+        source_cover = None if is_github_source else await _fetch_og_image(item.url)
 
         # --- Step A: article body ---
         # Build rich metadata block for GitHub repos

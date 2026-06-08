@@ -93,19 +93,21 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
 
   .story-img {
     margin: 0;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
     border-bottom: 1px solid var(--rule);
     flex-shrink: 0;
     position: relative;
+    background: var(--paper-sink);
   }
   .story-img img {
     width: 100%; height: 100%;
     object-fit: cover;
+    object-position: center 30%;
     transition: transform 0.55s var(--spring);
     display: block;
   }
-  .story-card:hover .story-img img { transform: scale(1.05); }
+  .story-card:hover .story-img img { transform: scale(1.04); }
 
   .story-body {
     display: flex;

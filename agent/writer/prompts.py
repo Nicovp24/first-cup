@@ -76,30 +76,20 @@ SECCIÓN 2 — Por qué importa ahora (## header descriptivo)
 - Conecta con el ecosistema más amplio: otros proyectos relacionados, \
   movimientos recientes de la industria, investigación relevante.
 
-SECCIÓN 3 — Cómo funciona / Detalles técnicos (## header descriptivo)
-- Profundidad real: arquitectura, API, benchmarks, limitaciones conocidas.
-- Si hay código relevante (comando de instalación, llamada de API, snippet clave): \
-  inclúyelo en bloque ```language.
-- Incluye un blockquote con una cita real del README, paper o nota de release si la tienes.
-
-SECCIÓN 4 — Qué significa para ti (## header descriptivo)
-- Implicaciones prácticas: ¿cuándo usar esto? ¿cuándo no? \
-  ¿qué flujo de trabajo cambia? ¿qué debes aprender o evaluar?
-- Concreto: habla de casos de uso reales, no de "posibilidades".
-
-SECCIÓN 5 (opcional) — Limitaciones / Lo que falta (## header descriptivo)
-- Sé honesto: qué no hace aún, qué limitaciones técnicas tiene, \
-  qué preguntas quedan sin responder. Esto da credibilidad.
+SECCIÓN 3 — Detalles técnicos y qué significa para ti (## header descriptivo)
+- Arquitectura, API o mecanismo clave en 2-3 frases. Si hay un snippet de instalación o \
+  llamada de API (≤8 líneas), inclúyelo en bloque ```language.
+- Blockquote con una cita del README, paper o nota de release si la tienes.
+- Implicaciones prácticas breves: ¿cuándo usarlo? ¿cuándo no?
 
 CIERRE
 **Bottom line:** Una frase. El cambio o señal más importante que el lector debe llevarse.
 
 ---
-**Ver también:** [texto del enlace principal](url) · [cualquier enlace relacionado relevante] \
-· [discusión de HN si procede]
+**Ver también:** [texto del enlace principal](url) · [enlace relacionado si procede]
 
 ═══ REGLAS FINALES ═══════════════════════════════════════════════
-- Extensión: 700-1 000 palabras. Ni resumen ni enciclopedia.
+- Extensión: 350-500 palabras. Breve, densa en información, sin relleno.
 - Sin inventar datos, versiones o métricas que no estén en el resumen fuente o en tu \
   conocimiento de entrenamiento contrastado.
 - Output: solo el Markdown del artículo, empezando por el párrafo de apertura (sin título).
