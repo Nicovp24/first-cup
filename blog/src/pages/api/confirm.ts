@@ -44,21 +44,26 @@ export const GET: APIRoute = async ({ url }) => {
     console.error('confirm: error', err);
   }
 
-  // Send free welcome email (non-fatal)
+  // Send free welcome email — awaited so Vercel doesn't kill the request before it completes
   if (email) {
-    const RESEND_KEY  = import.meta.env.RESEND_API_KEY;
-    const EMAIL_FROM  = import.meta.env.EMAIL_FROM ?? 'First Cup <hola@first-cup.es>';
+    const RESEND_KEY = import.meta.env.RESEND_API_KEY;
+    const EMAIL_FROM = import.meta.env.EMAIL_FROM ?? 'First Cup <hola@first-cup.es>';
     if (RESEND_KEY) {
-      fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          from: EMAIL_FROM,
-          to: [email],
-          subject: '☕ Bienvenido a First Cup',
-          html: welcomeFreeHtml(email),
-        }),
-      }).catch(err => console.error('confirm: welcome email failed', err));
+      try {
+        const r = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: EMAIL_FROM,
+            to: [email],
+            subject: '☕ Bienvenido a First Cup',
+            html: welcomeFreeHtml(email),
+          }),
+        });
+        if (!r.ok) console.error('confirm: welcome email failed', r.status, await r.text());
+      } catch (err) {
+        console.error('confirm: welcome email error', err);
+      }
     }
   }
 

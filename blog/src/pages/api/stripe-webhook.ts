@@ -80,20 +80,25 @@ export const POST: APIRoute = async ({ request }) => {
 
         console.log(`stripe-webhook: upgraded ${email} to premium`);
 
-        // Send Premium welcome email (non-fatal)
+        // Send Premium welcome email — awaited so Vercel doesn't kill it early
         const RESEND_KEY = import.meta.env.RESEND_API_KEY;
         const EMAIL_FROM = import.meta.env.EMAIL_FROM ?? 'First Cup <hola@first-cup.es>';
         if (RESEND_KEY) {
-          fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              from: EMAIL_FROM,
-              to: [email],
-              subject: '☕ Bienvenido a First Cup Premium',
-              html: welcomePremiumHtml(email),
-            }),
-          }).catch(err => console.error('stripe-webhook: premium welcome email failed', err));
+          try {
+            const wr = await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                from: EMAIL_FROM,
+                to: [email],
+                subject: '☕ Bienvenido a First Cup Premium',
+                html: welcomePremiumHtml(email),
+              }),
+            });
+            if (!wr.ok) console.error('stripe-webhook: premium welcome email failed', wr.status);
+          } catch (err) {
+            console.error('stripe-webhook: premium welcome email error', err);
+          }
         }
       } catch (err) {
         console.error('stripe-webhook: Supabase update failed', err);
