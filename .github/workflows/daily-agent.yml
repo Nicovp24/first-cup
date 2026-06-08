@@ -3,9 +3,9 @@ name: Daily Digest Agent
 on:
   schedule:
     # Morning run — target 07:00 Madrid CEST (UTC+2) = 05:00 UTC
-    # Cron fires at 04:30 UTC to absorb GitHub's ~15-30 min scheduling delay
-    # + ~15 min agent runtime → posts live by ~07:00-07:15 Madrid
-    - cron: '30 4 * * *'
+    # Cron fires at 03:00 UTC to absorb GitHub's up-to-2h scheduling delay
+    # + ~15 min agent runtime → posts live by ~07:00 Madrid
+    - cron: '0 3 * * *'
     # Afternoon run — 15:00 Madrid = 13:00 UTC — breaking news only
     - cron: '0 13 * * *'
     # Sunday weekly summary — 10:00 Madrid = 08:00 UTC
@@ -100,5 +100,6 @@ jobs:
           else
             POSTS=$(git diff --cached --name-only | wc -l)
             git commit -m "chore(agent): add ${POSTS} post(s) $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git pull --rebase origin main
             git push
           fi
