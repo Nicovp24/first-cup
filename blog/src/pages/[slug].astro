@@ -37,7 +37,7 @@ const formattedDate = date.toLocaleDateString('es-ES', {
   year: 'numeric', month: 'long', day: 'numeric',
 });
 const isoDate = date.toISOString();
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://first-cup-kappa.vercel.app';
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://first-cup.es';
 const canonicalUrl = `${siteUrl}/${post.slug}`;
 const ogImage = cover ?? `${siteUrl}/og-default.svg`;
 const editionLabel = `#${String(editionNum).padStart(3, '0')}`;

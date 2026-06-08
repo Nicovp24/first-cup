@@ -36,10 +36,33 @@ const editionTags = [...new Set(editionPosts.flatMap(p => p.data.tags))].sort();
 const hasPrev    = totalEditions > 1;
 const prevEdNum  = totalEditions - 1;
 
-const SITE      = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').replace(/\/$/, '');
+const SITE      = (Astro.site?.toString() ?? 'https://first-cup.es').replace(/\/$/, '');
 const TITLE     = 'First Cup — Blog Tech en Español | Noticias de IA, Dev y Tecnología';
 const DESC      = 'First Cup es el blog tech diario en español. Noticias de inteligencia artificial, programación, GitHub Trending y tecnología — curadas por IA cada mañana. Gratis.';
 const CANONICAL = `${SITE}/`;
+
+// JSON-LD: Blog + ItemList for Google sitelinks
+const recentPosts = all
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 10);
+
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'First Cup',
+  url: SITE,
+  description: DESC,
+  inLanguage: 'es-ES',
+  publisher: { '@type': 'Organization', name: 'First Cup', url: SITE },
+  blogPost: recentPosts.map(p => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    url: `${SITE}/${p.slug}/`,
+    datePublished: p.data.date.toISOString(),
+    description: p.data.description ?? '',
+    keywords: (p.data.tags ?? []).join(', '),
+  })),
+};
 ---
 
 <!doctype html>
@@ -50,6 +73,7 @@ const CANONICAL = `${SITE}/`;
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <title>{TITLE}</title>
   <SEO title={TITLE} description={DESC} canonical={CANONICAL} type="website" />
+  <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} />
 </head>
 
 <body>
