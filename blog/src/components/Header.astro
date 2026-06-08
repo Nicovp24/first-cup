@@ -17,6 +17,8 @@ function toRoman(n: number): string {
 }
 ---
 
+<script defer src="/_vercel/insights/script.js"></script>
+
 <!-- ── Dateline bar ── -->
 <div class="dateline" id="dateline">
   <div id="scroll-progress"></div>
@@ -31,9 +33,9 @@ function toRoman(n: number): string {
     <span class="dateline-right">
       <a href="/" class={`dateline-link gz-mono${p==='/' ? ' active' : ''}`}>Inicio</a>
       <span class="dateline-div" aria-hidden="true">·</span>
-      <a href="/bienvenido-a-first-cup" class={`dateline-link dateline-link--about gz-mono${p==='/bienvenido-a-first-cup' ? ' active' : ''}`}>☕ El Barista</a>
-      <span class="dateline-div" aria-hidden="true">·</span>
       <a href="/subscribe" class={`dateline-link dateline-link--cta gz-mono${p==='/subscribe' ? ' active' : ''}`}>Suscribirse</a>
+      <span class="dateline-div" aria-hidden="true">·</span>
+      <a href="/bienvenido-a-first-cup" class={`dateline-link dateline-link--about gz-mono${p==='/bienvenido-a-first-cup' ? ' active' : ''}`}>☕ El Barista</a>
       <span class="dateline-div" aria-hidden="true">·</span>
       <div class="theme-switcher gz-mono" id="theme-toggle" role="group" aria-label="Cambiar tema">
         <button class="ts-btn" data-t="latte">LATTE</button>

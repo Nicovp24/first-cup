@@ -1,0 +1,385 @@
+---
+import Header from '../components/Header.astro';
+import SEO from '../components/SEO.astro';
+import '../styles/global.css';
+
+const SITE = (Astro.site?.toString() ?? 'https://first-cup.es').replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="es" data-theme="latte">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>Términos de Uso – First Cup</title>
+  <SEO
+    title="Términos de Uso – First Cup"
+    description="Condiciones de uso del blog tech First Cup: planes gratuito y Premium, pagos, cancelación y limitaciones de responsabilidad."
+    canonical={`${SITE}/terminos`}
+    type="website"
+  />
+</head>
+
+<body>
+  <Header />
+
+  <main class="main">
+    <div class="container">
+
+      <!-- Page header -->
+      <div class="page-header anim-up">
+        <div class="header-rule-top" aria-hidden="true"></div>
+        <span class="kicker">Legal · Condiciones</span>
+        <h1 class="page-title">Términos<br /><em>de Uso</em></h1>
+        <p class="page-meta gz-mono">
+          First Cup &mdash; Última actualización: junio de 2026
+        </p>
+      </div>
+
+      <!-- Legal content -->
+      <article class="prose legal-prose anim-up" style="animation-delay:60ms">
+
+        <p>
+          Bienvenido a <strong>First Cup</strong> (en adelante, "el Servicio", "la Plataforma" o "nosotros"). Al acceder o usar el Servicio aceptas estos términos en su totalidad. Si no estás de acuerdo, te rogamos que no utilices la Plataforma.
+        </p>
+
+        <h2>1. Descripción del Servicio</h2>
+
+        <p>
+          First Cup es un blog tecnológico en español cuyo contenido es generado y curado de forma automatizada mediante inteligencia artificial y revisado editorialmente antes de su publicación. El Servicio cubre temáticas de inteligencia artificial, desarrollo de software, herramientas para desarrolladores, tendencias tech, open source y startups.
+        </p>
+        <p>
+          El contenido está disponible a través de la web <strong>first-cup.es</strong> y, opcionalmente, por email mediante suscripción a la newsletter.
+        </p>
+
+        <h2>2. Planes y precios</h2>
+
+        <h3>2.1 Plan Gratuito (Lector)</h3>
+        <p>
+          El acceso al blog y a la newsletter es <strong>completamente gratuito</strong>. No se requiere tarjeta de crédito. El plan gratuito incluye:
+        </p>
+        <ul>
+          <li>Acceso completo al blog y a todos los artículos publicados.</li>
+          <li>Suscripción al digest por email.</li>
+          <li>Archivo histórico completo de ediciones.</li>
+          <li>Feed RSS.</li>
+        </ul>
+
+        <h3>2.2 Plan Premium</h3>
+        <p>
+          El plan Premium tiene un precio de <strong>5&thinsp;&euro; al mes</strong>, facturado mensualmente de forma recurrente. Incluye, además de todo lo anterior:
+        </p>
+        <ul>
+          <li>Digest diario de lunes a viernes con análisis en profundidad.</li>
+          <li>Mini cursos prácticos sobre tendencias tecnológicas.</li>
+          <li>Acceso anticipado a nuevas funciones.</li>
+          <li>Experiencia sin publicidad.</li>
+        </ul>
+        <p>
+          Los precios están expresados en euros e incluyen el IVA aplicable. Nos reservamos el derecho a modificar el precio del plan Premium con un preaviso de al menos 30 días comunicado por email.
+        </p>
+
+        <h2>3. Pagos y facturación</h2>
+
+        <p>
+          Los pagos del plan Premium son procesados por <strong>Stripe</strong>, proveedor externo de servicios de pago. First Cup <em>no almacena ni tiene acceso</em> a los datos de tu tarjeta bancaria. Al introducir tus datos de pago en el formulario de Stripe, aceptas también los <a href="https://stripe.com/es/legal/ssa" target="_blank" rel="noopener noreferrer">Términos de Servicio de Stripe</a>.
+        </p>
+        <p>
+          La suscripción se renueva automáticamente cada mes en la fecha de facturación. Recibirás un recibo por email tras cada cobro.
+        </p>
+
+        <h2>4. Cancelación</h2>
+
+        <p>
+          Puedes cancelar tu suscripción Premium <strong>en cualquier momento</strong>, sin permanencia ni penalizaciones, de dos formas:
+        </p>
+        <ul>
+          <li>Desde tu página de cuenta en <a href="/cuenta">/cuenta</a>.</li>
+          <li>Escribiendo a <a href="mailto:hola@first-cup.es">hola@first-cup.es</a> — gestionamos la baja en un plazo máximo de 24 horas laborables.</li>
+        </ul>
+        <p>
+          La cancelación tiene efecto al final del periodo de facturación en curso. No se realizan reembolsos proporcionales por el tiempo no consumido del mes en curso, salvo obligación legal.
+        </p>
+
+        <h2>5. Contenido generado por inteligencia artificial</h2>
+
+        <p>
+          El contenido publicado en First Cup es elaborado de forma automatizada por un agente de IA a partir de fuentes públicas (Hacker News, GitHub Trending, ArXiv, feeds RSS, entre otras) y revisado editorialmente antes de su publicación. A pesar de ese proceso de revisión:
+        </p>
+        <ul>
+          <li>El contenido puede contener <strong>errores, imprecisiones u omisiones</strong>.</li>
+          <li>No debe interpretarse como asesoramiento profesional, financiero, jurídico ni de inversión.</li>
+          <li>Las opiniones expresadas reflejan el análisis automatizado de fuentes públicas y no constituyen la posición oficial de ningún tercero mencionado.</li>
+        </ul>
+        <p>
+          First Cup no asume responsabilidad por decisiones tomadas en base al contenido publicado.
+        </p>
+
+        <h2>6. Disponibilidad del Servicio</h2>
+
+        <p>
+          Hacemos nuestro mejor esfuerzo por mantener el Servicio disponible de forma continua, pero <strong>no garantizamos una disponibilidad del 100%</strong>. El Servicio puede interrumpirse por razones de mantenimiento, actualizaciones, causas de fuerza mayor o fallos técnicos ajenos a nuestro control. No seremos responsables por los daños derivados de interrupciones del Servicio.
+        </p>
+
+        <h2>7. Propiedad intelectual</h2>
+
+        <p>
+          Todo el contenido del Servicio (textos, diseño, código, logotipos) es propiedad de First Cup o se publica bajo las licencias correspondientes. Queda prohibida la reproducción, redistribución o uso comercial del contenido sin autorización previa y por escrito. El uso personal y no comercial (lectura, compartir enlaces) está expresamente permitido.
+        </p>
+
+        <h2>8. Conducta del usuario</h2>
+
+        <p>
+          Al usar el Servicio te comprometes a no:
+        </p>
+        <ul>
+          <li>Realizar scraping masivo o automatizado del sitio sin permiso.</li>
+          <li>Intentar acceder a áreas restringidas o a cuentas de otros usuarios.</li>
+          <li>Usar el Servicio para fines ilegales o en violación de derechos de terceros.</li>
+        </ul>
+
+        <h2>9. Modificaciones de los términos</h2>
+
+        <p>
+          Podemos actualizar estos términos cuando sea necesario. Te notificaremos los cambios relevantes con al menos <strong>15 días de antelación</strong> por email. El uso continuado del Servicio tras esa fecha implica la aceptación de los nuevos términos.
+        </p>
+
+        <h2>10. Ley aplicable y jurisdicción</h2>
+
+        <p>
+          Estos términos se rigen por la <strong>legislación española</strong>. Para cualquier controversia derivada del uso del Servicio, las partes se someten, con renuncia expresa a cualquier otro fuero, a los juzgados y tribunales españoles competentes, sin perjuicio de los derechos que como consumidor pueda reconocerte la normativa europea aplicable.
+        </p>
+
+        <h2>11. Contacto</h2>
+
+        <p>
+          Para cualquier consulta sobre estos términos o el funcionamiento del Servicio, contacta con nosotros en <a href="mailto:hola@first-cup.es">hola@first-cup.es</a>.
+        </p>
+
+      </article>
+
+      <!-- Back link -->
+      <div class="back-row anim-up" style="animation-delay:80ms">
+        <a href="/" class="back-link gz-mono">← Volver al inicio</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="foot-top">
+        <div class="foot-brand-col">
+          <a href="/" class="foot-logo gz-mono">
+            <span class="footer-fc">FC</span>
+            First Cup
+          </a>
+          <p class="foot-tag">El diario del café tech. IA, desarrollo y tecnología curada cada mañana por un agente.</p>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h4 class="gz-mono">Contenido</h4>
+            <a href="/">Posts</a>
+            <a href="/subscribe">Newsletter</a>
+            <a href="/rss.xml">RSS</a>
+          </div>
+          <div class="foot-col">
+            <h4 class="gz-mono">Plataforma</h4>
+            <span>First Cup AI</span>
+            <span>Astro SSG</span>
+          </div>
+          <div class="foot-col">
+            <h4 class="gz-mono">Legal</h4>
+            <a href="/privacidad">Privacidad</a>
+            <a href="/terminos">Términos</a>
+            <a href="mailto:hola@first-cup.es">Contacto</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-base gz-mono">
+        <span>© {new Date().getFullYear()} First Cup</span>
+        <span>Hecho con Astro · IA generativa</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+<script>
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') ?? 'latte');
+</script>
+
+<style>
+  .main { padding: 3rem 0 5rem; }
+
+  /* ── Page header ── */
+  .page-header {
+    max-width: 680px;
+    margin: 0 auto 4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .header-rule-top {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--spot), transparent);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+  }
+  .page-title em {
+    font-style: italic;
+    color: var(--spot);
+    font-weight: 400;
+  }
+
+  .page-meta {
+    font-size: 0.62rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Legal prose ── */
+  .legal-prose {
+    max-width: 72ch;
+    margin: 0 auto;
+    border-top: 3px double var(--ink);
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ── Back link ── */
+  .back-row {
+    max-width: 72ch;
+    margin: 2rem auto 0;
+  }
+
+  .back-link {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--spot); text-decoration: none; }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 3px double var(--ink);
+    background: var(--paper-sink);
+    padding: 0;
+  }
+
+  .foot-top {
+    display: grid;
+    grid-template-columns: 1.4fr 2fr;
+    gap: 2.75rem;
+    padding: 2.5rem 0 1.75rem;
+  }
+
+  .foot-brand-col { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .foot-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+  .foot-logo:hover { color: var(--ink); text-decoration: none; }
+
+  .footer-fc {
+    width: 26px; height: 20px;
+    background: var(--ink); color: var(--paper);
+    font-size: 0.58rem; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .foot-tag {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 38ch;
+  }
+
+  .foot-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .foot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+
+  .foot-col h4 {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.2rem;
+  }
+
+  .foot-col a, .foot-col span {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .foot-col a:hover { color: var(--spot); text-decoration: none; }
+
+  .foot-base {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 0 1.75rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 800px) {
+    .foot-top  { grid-template-columns: 1fr; gap: 1.75rem; }
+    .foot-cols { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .foot-cols { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 400px) {
+    .foot-cols { grid-template-columns: 1fr; }
+  }
+</style>

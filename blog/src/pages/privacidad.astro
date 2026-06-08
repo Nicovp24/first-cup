@@ -1,0 +1,371 @@
+---
+import Header from '../components/Header.astro';
+import SEO from '../components/SEO.astro';
+import '../styles/global.css';
+
+const SITE = (Astro.site?.toString() ?? 'https://first-cup.es').replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="es" data-theme="latte">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>Política de Privacidad – First Cup</title>
+  <SEO
+    title="Política de Privacidad – First Cup"
+    description="Cómo First Cup recoge, usa y protege tus datos personales. Cumplimiento del RGPD y la legislación española de protección de datos."
+    canonical={`${SITE}/privacidad`}
+    type="website"
+  />
+</head>
+
+<body>
+  <Header />
+
+  <main class="main">
+    <div class="container">
+
+      <!-- Page header -->
+      <div class="page-header anim-up">
+        <div class="header-rule-top" aria-hidden="true"></div>
+        <span class="kicker">Legal · RGPD</span>
+        <h1 class="page-title">Política de<br /><em>Privacidad</em></h1>
+        <p class="page-meta gz-mono">
+          First Cup &mdash; Última actualización: junio de 2026
+        </p>
+      </div>
+
+      <!-- Legal content -->
+      <article class="prose legal-prose anim-up" style="animation-delay:60ms">
+
+        <p>
+          En <strong>First Cup</strong> (en adelante, "el Servicio") nos tomamos en serio la privacidad de nuestros usuarios. Esta política explica qué datos recogemos, por qué los usamos y cuáles son tus derechos conforme al Reglamento General de Protección de Datos (RGPD, UE 2016/679) y la legislación española aplicable.
+        </p>
+
+        <h2>1. Responsable del tratamiento</h2>
+
+        <p>
+          El responsable del tratamiento de tus datos personales es <strong>First Cup</strong>, con dirección de contacto en <a href="mailto:hola@first-cup.es">hola@first-cup.es</a>. Para cualquier consulta relativa a esta política o al ejercicio de tus derechos puedes escribirnos a esa dirección.
+        </p>
+
+        <h2>2. Datos que recogemos</h2>
+
+        <h3>2.1 Datos de contacto</h3>
+        <p>
+          Cuando te suscribes a la newsletter o al plan Premium recopilamos tu <strong>dirección de correo electrónico</strong>. Es el único dato de identificación personal que te solicitamos directamente.
+        </p>
+
+        <h3>2.2 Datos de pago</h3>
+        <p>
+          El cobro del plan Premium (5&thinsp;&euro;/mes) se gestiona íntegramente a través de <strong>Stripe</strong>. First Cup <em>nunca</em> almacena ni procesa datos de tarjeta bancaria (número, CVV, fecha de caducidad). Toda la información de pago queda bajo la responsabilidad de Stripe, que actúa como encargado del tratamiento con sus propias certificaciones de seguridad (PCI DSS nivel 1). Puedes consultar la política de privacidad de Stripe en <a href="https://stripe.com/es/privacy" target="_blank" rel="noopener noreferrer">stripe.com/es/privacy</a>.
+        </p>
+
+        <h3>2.3 Cookies y almacenamiento local</h3>
+        <p>
+          First Cup <strong>no utiliza cookies de rastreo ni cookies de terceros</strong>. El único almacenamiento en el navegador que empleamos es <code>localStorage</code> para guardar tu preferencia de tema visual (claro u oscuro). Este dato permanece únicamente en tu dispositivo y no es transmitido a ningún servidor.
+        </p>
+
+        <h2>3. Finalidad del tratamiento</h2>
+
+        <ul>
+          <li><strong>Envío de la newsletter:</strong> utilizamos tu email para enviarte el digest tech diario y comunicaciones relacionadas con el Servicio.</li>
+          <li><strong>Gestión de la suscripción Premium:</strong> procesamos tu email para crear y mantener tu cuenta, gestionar el ciclo de facturación y enviarte confirmaciones de pago.</li>
+          <li><strong>Comunicaciones de servicio:</strong> avisos importantes sobre cambios en los términos, incidencias o cancelaciones.</li>
+        </ul>
+
+        <h2>4. Base legal del tratamiento</h2>
+
+        <p>
+          El tratamiento de tus datos se basa en el <strong>consentimiento explícito</strong> que otorgas al suscribirte o al contratar el plan Premium, conforme al artículo 6.1.a del RGPD. Puedes retirar tu consentimiento en cualquier momento sin que ello afecte a la licitud del tratamiento realizado antes de la retirada.
+        </p>
+
+        <h2>5. Terceros que reciben tus datos</h2>
+
+        <p>
+          Trabajamos con los siguientes encargados del tratamiento que pueden tener acceso a tu email u otros datos necesarios para prestar el Servicio:
+        </p>
+
+        <ul>
+          <li>
+            <strong>Resend</strong> &mdash; Proveedor de envío de emails transaccionales. Sus servidores pueden operar dentro y fuera de la UE; en este último caso, las transferencias se realizan con las Cláusulas Contractuales Tipo (CCT) aprobadas por la Comisión Europea. Política de privacidad: <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">resend.com/legal/privacy-policy</a>.
+          </li>
+          <li>
+            <strong>Stripe</strong> &mdash; Procesador de pagos. Actúa como responsable independiente del tratamiento para los datos de pago. Ver apartado 2.2.
+          </li>
+          <li>
+            <strong>Supabase</strong> &mdash; Base de datos donde almacenamos tu email y el estado de tu suscripción. Supabase opera con infraestructura en la UE y cumple el RGPD. Política de privacidad: <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">supabase.com/privacy</a>.
+          </li>
+          <li>
+            <strong>Vercel</strong> &mdash; Proveedor de hosting y despliegue del Servicio. Los servidores de borde pueden procesar solicitudes fuera de la UE; las transferencias se amparan en mecanismos legales adecuados. Política de privacidad: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">vercel.com/legal/privacy-policy</a>.
+          </li>
+        </ul>
+
+        <p>
+          No vendemos, alquilamos ni cedemos tus datos a terceros con fines publicitarios o comerciales propios de esos terceros.
+        </p>
+
+        <h2>6. Plazo de conservación</h2>
+
+        <p>
+          Conservamos tu email y los datos asociados mientras mantengas tu suscripción activa (gratuita o Premium). Tras la cancelación o baja, los datos se conservan durante un plazo adicional de <strong>12 meses</strong> por razones de auditoría interna y cumplimiento legal, transcurridos los cuales se eliminan de forma permanente.
+        </p>
+
+        <h2>7. Tus derechos</h2>
+
+        <p>
+          Conforme al RGPD tienes derecho a:
+        </p>
+
+        <ul>
+          <li><strong>Acceso:</strong> conocer qué datos personales tratamos sobre ti.</li>
+          <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</li>
+          <li><strong>Supresión ("derecho al olvido"):</strong> solicitar la eliminación de tus datos cuando ya no sean necesarios o retires el consentimiento.</li>
+          <li><strong>Portabilidad:</strong> recibir tus datos en formato estructurado y de uso común.</li>
+          <li><strong>Oposición:</strong> oponerte al tratamiento en determinadas circunstancias.</li>
+          <li><strong>Limitación del tratamiento:</strong> solicitar que suspendamos el tratamiento mientras se resuelve una controversia.</li>
+        </ul>
+
+        <p>
+          Para ejercer cualquiera de estos derechos, escríbenos a <a href="mailto:hola@first-cup.es">hola@first-cup.es</a> indicando tu solicitud. Responderemos en el plazo máximo de 30 días naturales.
+        </p>
+
+        <h2>8. Reclamación ante la autoridad de control</h2>
+
+        <p>
+          Si consideras que el tratamiento de tus datos infringe la normativa de protección de datos, tienes derecho a presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong>, autoridad de control competente en España: <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">www.aepd.es</a>.
+        </p>
+
+        <h2>9. Cambios en esta política</h2>
+
+        <p>
+          Podemos actualizar esta política cuando sea necesario. Si los cambios son significativos, te informaremos por email con antelación razonable. La fecha de última actualización figura siempre al inicio del documento.
+        </p>
+
+      </article>
+
+      <!-- Back link -->
+      <div class="back-row anim-up" style="animation-delay:80ms">
+        <a href="/" class="back-link gz-mono">← Volver al inicio</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="foot-top">
+        <div class="foot-brand-col">
+          <a href="/" class="foot-logo gz-mono">
+            <span class="footer-fc">FC</span>
+            First Cup
+          </a>
+          <p class="foot-tag">El diario del café tech. IA, desarrollo y tecnología curada cada mañana por un agente.</p>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h4 class="gz-mono">Contenido</h4>
+            <a href="/">Posts</a>
+            <a href="/subscribe">Newsletter</a>
+            <a href="/rss.xml">RSS</a>
+          </div>
+          <div class="foot-col">
+            <h4 class="gz-mono">Plataforma</h4>
+            <span>First Cup AI</span>
+            <span>Astro SSG</span>
+          </div>
+          <div class="foot-col">
+            <h4 class="gz-mono">Legal</h4>
+            <a href="/privacidad">Privacidad</a>
+            <a href="/terminos">Términos</a>
+            <a href="mailto:hola@first-cup.es">Contacto</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-base gz-mono">
+        <span>© {new Date().getFullYear()} First Cup</span>
+        <span>Hecho con Astro · IA generativa</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+<script>
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') ?? 'latte');
+</script>
+
+<style>
+  .main { padding: 3rem 0 5rem; }
+
+  /* ── Page header ── */
+  .page-header {
+    max-width: 680px;
+    margin: 0 auto 4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .header-rule-top {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--spot), transparent);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+  }
+  .page-title em {
+    font-style: italic;
+    color: var(--spot);
+    font-weight: 400;
+  }
+
+  .page-meta {
+    font-size: 0.62rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Legal prose ── */
+  .legal-prose {
+    max-width: 72ch;
+    margin: 0 auto;
+    border-top: 3px double var(--ink);
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ── Back link ── */
+  .back-row {
+    max-width: 72ch;
+    margin: 2rem auto 0;
+  }
+
+  .back-link {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--spot); text-decoration: none; }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 3px double var(--ink);
+    background: var(--paper-sink);
+    padding: 0;
+  }
+
+  .foot-top {
+    display: grid;
+    grid-template-columns: 1.4fr 2fr;
+    gap: 2.75rem;
+    padding: 2.5rem 0 1.75rem;
+  }
+
+  .foot-brand-col { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .foot-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+  .foot-logo:hover { color: var(--ink); text-decoration: none; }
+
+  .footer-fc {
+    width: 26px; height: 20px;
+    background: var(--ink); color: var(--paper);
+    font-size: 0.58rem; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .foot-tag {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 38ch;
+  }
+
+  .foot-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .foot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+
+  .foot-col h4 {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.2rem;
+  }
+
+  .foot-col a, .foot-col span {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .foot-col a:hover { color: var(--spot); text-decoration: none; }
+
+  .foot-base {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 0 1.75rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 800px) {
+    .foot-top  { grid-template-columns: 1fr; gap: 1.75rem; }
+    .foot-cols { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .foot-cols { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 400px) {
+    .foot-cols { grid-template-columns: 1fr; }
+  }
+</style>

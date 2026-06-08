@@ -1,0 +1,302 @@
+---
+import Header from '../components/Header.astro';
+import SEO from '../components/SEO.astro';
+import '../styles/global.css';
+
+const SITE = (Astro.site?.toString() ?? 'https://first-cup.es').replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="es" data-theme="latte">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>Mi suscripción – First Cup</title>
+  <SEO
+    title="Mi suscripción – First Cup"
+    description="Gestiona o cancela tu suscripción Premium de First Cup."
+    canonical={`${SITE}/cuenta`}
+    type="website"
+    noindex={true}
+  />
+</head>
+
+<body>
+  <Header />
+
+  <main class="main">
+    <div class="container">
+
+      <div class="page-header anim-up">
+        <div class="rule-top" aria-hidden="true"></div>
+        <span class="kicker">Suscripción Premium</span>
+        <h1 class="page-title">Gestiona tu cuenta</h1>
+        <p class="page-subtitle">
+          Introduce tu email para acceder al portal de cliente — podrás cancelar,
+          cambiar el método de pago o ver tus facturas.
+        </p>
+      </div>
+
+      <div class="portal-wrap anim-up" style="animation-delay:80ms">
+        <form id="portal-form" novalidate>
+          <label for="portal-email" class="field-label gz-mono">Tu email de suscripción</label>
+          <div class="field-row">
+            <input
+              id="portal-email"
+              type="email"
+              name="email"
+              placeholder="tu@email.com"
+              autocomplete="email"
+              required
+              class="field-input gz-mono"
+            />
+            <button type="submit" class="field-btn gz-mono" id="portal-btn">
+              <span class="btn-text">Acceder →</span>
+              <span class="btn-loading" hidden>Abriendo portal…</span>
+            </button>
+          </div>
+        </form>
+        <p class="portal-error gz-mono" id="portal-error" role="alert" hidden></p>
+
+        <div class="portal-note gz-mono">
+          <span>¿Problemas? Escríbenos a <a href="mailto:hola@first-cup.es">hola@first-cup.es</a></span>
+        </div>
+      </div>
+
+      <div class="alt-section anim-up" style="animation-delay:140ms">
+        <div class="alt-rule" aria-hidden="true"></div>
+        <p class="alt-text gz-mono">¿Aún no eres Premium?</p>
+        <a href="/subscribe" class="alt-link gz-mono">Ver planes →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="foot-base gz-mono">
+        <a href="/">← Volver al inicio</a>
+        <span>
+          <a href="/privacidad">Privacidad</a>
+          &nbsp;·&nbsp;
+          <a href="/terminos">Términos</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+<script>
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') ?? 'latte');
+
+  const form    = document.getElementById('portal-form') as HTMLFormElement | null;
+  const errEl   = document.getElementById('portal-error') as HTMLElement | null;
+  const btn     = document.getElementById('portal-btn') as HTMLButtonElement | null;
+  const btnText = document.querySelector('.btn-text') as HTMLElement | null;
+  const btnLoad = document.querySelector('.btn-loading') as HTMLElement | null;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = form.querySelector<HTMLInputElement>('#portal-email');
+    if (!input || !errEl) return;
+
+    const email = input.value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Introduce un email válido.';
+      errEl.hidden = false;
+      input.focus();
+      return;
+    }
+
+    errEl.hidden = true;
+    if (btn) btn.disabled = true;
+    if (btnText) btnText.hidden = true;
+    if (btnLoad) btnLoad.hidden = false;
+
+    try {
+      const res  = await fetch('/api/portal', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email }),
+      });
+      const data = await res.json() as { url?: string; message?: string };
+      if (!res.ok || !data.url) throw new Error(data.message ?? `Error ${res.status}`);
+      window.location.href = data.url;
+    } catch (err: unknown) {
+      errEl.textContent = err instanceof Error ? err.message : 'Algo salió mal. Inténtalo de nuevo.';
+      errEl.hidden = false;
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.hidden = false;
+      if (btnLoad) btnLoad.hidden = true;
+    }
+  });
+</script>
+
+<style>
+  .main { padding: 4rem 0 5rem; }
+
+  .page-header {
+    max-width: 560px;
+    margin: 0 auto 3.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .rule-top {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--spot), transparent);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+  }
+
+  .page-subtitle {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-style: italic;
+    max-width: 44ch;
+  }
+
+  /* ── Form ── */
+  .portal-wrap {
+    max-width: 520px;
+    margin: 0 auto 3rem;
+    border-top: 3px double var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 2.5rem 0 2rem;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.6rem;
+  }
+
+  .field-row {
+    display: flex;
+    gap: 0;
+  }
+
+  .field-input {
+    flex: 1;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-right: none;
+    padding: 0.8rem 1rem;
+    outline: none;
+    border-radius: 0;
+    transition: border-color 0.12s;
+  }
+  .field-input:focus { border-color: var(--spot); }
+  .field-input::placeholder { color: var(--ink-faint); }
+
+  .field-btn {
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 0.8rem 1.25rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.18s;
+    border-radius: 0;
+  }
+  .field-btn:hover:not(:disabled) { background: var(--spot); border-color: var(--spot); }
+  .field-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .portal-error {
+    font-size: 0.72rem;
+    color: oklch(0.55 0.22 28);
+    margin-top: 0.75rem;
+  }
+
+  .portal-note {
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    margin-top: 1.25rem;
+    text-align: center;
+  }
+  .portal-note a { color: var(--spot); text-decoration: none; }
+  .portal-note a:hover { text-decoration: underline; }
+
+  /* ── Alt ── */
+  .alt-section {
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .alt-rule {
+    width: 40px; height: 1px;
+    background: var(--rule);
+  }
+
+  .alt-text {
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .alt-link {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--spot);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+  .alt-link:hover { color: var(--spot-deep); }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    background: var(--paper-sink);
+    padding: 1.25rem 0;
+  }
+
+  .foot-base {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+  }
+  .foot-base a { color: var(--ink-faint); text-decoration: none; transition: color 0.15s; }
+  .foot-base a:hover { color: var(--spot); }
+
+  @media (max-width: 600px) {
+    .field-row { flex-direction: column; }
+    .field-input { border-right: 1px solid var(--ink); border-bottom: none; }
+    .field-btn { width: 100%; text-align: center; }
+  }
+</style>

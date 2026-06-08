@@ -75,16 +75,14 @@ export const POST: APIRoute = async ({ request }) => {
       });
       if (!emailRes.ok) {
         const resendErr = await emailRes.json().catch(() => ({}));
-        console.error('Resend error:', resendErr);
-        return reply({ ok: true, resend_error: resendErr }, 200);
+        console.error('Resend error (non-fatal):', resendErr);
       }
     } catch (err) {
-      console.error('Resend fetch error:', err);
-      return reply({ ok: true, resend_error: String(err) }, 200);
+      console.error('Resend fetch error (non-fatal):', err);
     }
   }
 
-  return reply({ ok: true, resend_configured: !!RESEND_KEY }, 200);
+  return reply({ ok: true }, 200);
 };
 
 function reply(body: object, status: number) {
@@ -117,7 +115,7 @@ function welcomeHtml(confirmUrl: string, unsubscribeUrl: string, site: string): 
                         padding:1.25rem 0;text-align:center;">
           <span style="display:block;font-family:monospace;font-size:0.6rem;
                         letter-spacing:0.2em;text-transform:uppercase;color:#8b4513;
-                        margin-bottom:0.4rem;">EST. MMXXVI · La Gaceta Digital</span>
+                        margin-bottom:0.4rem;">EST. MMXXVI · CÁDIZ</span>
           <span style="font-size:2.4rem;font-weight:900;color:#1a0f06;
                         font-family:Georgia,serif;letter-spacing:-0.02em;">First Cup</span>
         </td></tr>
@@ -165,7 +163,7 @@ function welcomeHtml(confirmUrl: string, unsubscribeUrl: string, site: string): 
           <p style="font-family:monospace;font-size:0.62rem;color:#9a8572;
                      letter-spacing:0.06em;margin:0 0 0.4rem;">
             © 2026 First Cup ·
-            <a href="${site}" style="color:#8b4513;text-decoration:none;">firstcup.es</a>
+            <a href="${site}" style="color:#8b4513;text-decoration:none;">first-cup.es</a>
           </p>
           <p style="font-family:monospace;font-size:0.6rem;color:#b0a090;
                      letter-spacing:0.04em;margin:0;line-height:1.6;">
