@@ -89,7 +89,7 @@ CIERRE
 **Ver también:** [texto del enlace principal](url) · [enlace relacionado si procede]
 
 ═══ REGLAS FINALES ═══════════════════════════════════════════════
-- Extensión: 350-500 palabras. Breve, densa en información, sin relleno.
+- Extensión: 500-700 palabras. Conciso pero completo, sin relleno.
 - Sin inventar datos, versiones o métricas que no estén en el resumen fuente o en tu \
   conocimiento de entrenamiento contrastado.
 - Output: solo el Markdown del artículo, empezando por el párrafo de apertura (sin título).

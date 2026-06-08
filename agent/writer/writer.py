@@ -94,70 +94,121 @@ def _extract_json(text: str) -> dict | list:
 
 
 _TOPIC_COVERS: dict[str, str] = {
-    "artificial intelligence": "photo-1677442135703-1787eea5ce01",
+    # ── AI / LLM ──────────────────────────────────────────────────
+    "chatgpt":          "photo-1677442135703-1787eea5ce01",
+    "openai":           "photo-1677442135703-1787eea5ce01",
+    "claude":           "photo-1677442135703-1787eea5ce01",
+    "gemini":           "photo-1677442135703-1787eea5ce01",
+    "llama":            "photo-1677442135703-1787eea5ce01",
+    "mistral":          "photo-1677442135703-1787eea5ce01",
+    "language model":   "photo-1677442135703-1787eea5ce01",
+    "llm":              "photo-1677442135703-1787eea5ce01",
+    "transformer":      "photo-1677442135703-1787eea5ce01",
+    "gpt":              "photo-1677442135703-1787eea5ce01",
+    "agent":            "photo-1677442135703-1787eea5ce01",
+    "artificial intel": "photo-1677442135703-1787eea5ce01",
     "machine learning": "photo-1620712943543-bcc4688e7485",
-    "neural network": "photo-1555949963-aa79dcee981c",
-    "language model": "photo-1677442135703-1787eea5ce01",
-    "transformer": "photo-1677442135703-1787eea5ce01",
-    "llm": "photo-1677442135703-1787eea5ce01",
-    "agent": "photo-1677442135703-1787eea5ce01",
-    "token": "photo-1620712943543-bcc4688e7485",
-    "python": "photo-1526379095098-d400fd0bf935",
-    "javascript": "photo-1555066931-4365d14bab8c",
-    "typescript": "photo-1555066931-4365d14bab8c",
-    "rust": "photo-1629654297299-c8506221ca97",
-    "go ": "photo-1629654297299-c8506221ca97",
-    "open source": "photo-1618401471353-b98afee0b2eb",
-    "github": "photo-1618401471353-b98afee0b2eb",
-    "repository": "photo-1618401471353-b98afee0b2eb",
-    "trending": "photo-1618401471353-b98afee0b2eb",
-    "repo": "photo-1618401471353-b98afee0b2eb",
-    "swift": "photo-1555066931-4365d14bab8c",
-    "kotlin": "photo-1555066931-4365d14bab8c",
-    "java": "photo-1555066931-4365d14bab8c",
-    "c++": "photo-1629654297299-c8506221ca97",
-    "cpp": "photo-1629654297299-c8506221ca97",
-    "wasm": "photo-1629654297299-c8506221ca97",
-    "llvm": "photo-1629654297299-c8506221ca97",
-    "inference": "photo-1620712943543-bcc4688e7485",
-    "embedding": "photo-1620712943543-bcc4688e7485",
-    "rag": "photo-1620712943543-bcc4688e7485",
-    "fine-tun": "photo-1620712943543-bcc4688e7485",
-    "framework": "photo-1461749280684-dccba630e2f6",
-    "library": "photo-1461749280684-dccba630e2f6",
-    "gpu": "photo-1620712943543-bcc4688e7485",
-    "cuda": "photo-1620712943543-bcc4688e7485",
-    "performance": "photo-1461749280684-dccba630e2f6",
-    "benchmark": "photo-1461749280684-dccba630e2f6",
-    "security": "photo-1550751827-4bd374c3f58b",
-    "cloud": "photo-1451187580459-43490279c0fa",
-    "kubernetes": "photo-1667372393119-3d4c48d07fc9",
-    "docker": "photo-1667372393119-3d4c48d07fc9",
-    "devops": "photo-1667372393119-3d4c48d07fc9",
-    "server": "photo-1451187580459-43490279c0fa",
-    "database": "photo-1544383835-bda2bc66a55d",
-    "api": "photo-1461749280684-dccba630e2f6",
-    "web": "photo-1558494949-ef010cbdcc31",
-    "frontend": "photo-1559028012-481c04fa702d",
-    "backend": "photo-1629654297299-c8506221ca97",
-    "terminal": "photo-1461749280684-dccba630e2f6",
-    "cli": "photo-1461749280684-dccba630e2f6",
-    "compiler": "photo-1461749280684-dccba630e2f6",
-    "code": "photo-1461749280684-dccba630e2f6",
-    "startup": "photo-1559028012-481c04fa702d",
-    "model": "photo-1620712943543-bcc4688e7485",
-    "paper": "photo-1620712943543-bcc4688e7485",
-    "research": "photo-1620712943543-bcc4688e7485",
-    "benchmark": "photo-1620712943543-bcc4688e7485",
+    "neural network":   "photo-1555949963-aa79dcee981c",
+    "deep learning":    "photo-1555949963-aa79dcee981c",
+    "inference":        "photo-1620712943543-bcc4688e7485",
+    "embedding":        "photo-1620712943543-bcc4688e7485",
+    "fine-tun":         "photo-1620712943543-bcc4688e7485",
+    "rag":              "photo-1620712943543-bcc4688e7485",
+    "diffusion":        "photo-1620712943543-bcc4688e7485",
+    "multimodal":       "photo-1620712943543-bcc4688e7485",
+    "token":            "photo-1620712943543-bcc4688e7485",
+    "gpu":              "photo-1620712943543-bcc4688e7485",
+    "cuda":             "photo-1620712943543-bcc4688e7485",
+    "paper":            "photo-1620712943543-bcc4688e7485",
+    "research":         "photo-1620712943543-bcc4688e7485",
+    "arxiv":            "photo-1620712943543-bcc4688e7485",
+    "benchmark":        "photo-1620712943543-bcc4688e7485",
+    "model":            "photo-1620712943543-bcc4688e7485",
+    # ── Languages ─────────────────────────────────────────────────
+    "python":           "photo-1526379095098-d400fd0bf935",
+    "javascript":       "photo-1555066931-4365d14bab8c",
+    "typescript":       "photo-1555066931-4365d14bab8c",
+    "react":            "photo-1559028012-481c04fa702d",
+    "vue":              "photo-1559028012-481c04fa702d",
+    "svelte":           "photo-1559028012-481c04fa702d",
+    "next.js":          "photo-1559028012-481c04fa702d",
+    "rust":             "photo-1629654297299-c8506221ca97",
+    "go ":              "photo-1629654297299-c8506221ca97",
+    "golang":           "photo-1629654297299-c8506221ca97",
+    "c++":              "photo-1629654297299-c8506221ca97",
+    "cpp":              "photo-1629654297299-c8506221ca97",
+    "swift":            "photo-1555066931-4365d14bab8c",
+    "kotlin":           "photo-1555066931-4365d14bab8c",
+    "java":             "photo-1555066931-4365d14bab8c",
+    "wasm":             "photo-1629654297299-c8506221ca97",
+    "llvm":             "photo-1629654297299-c8506221ca97",
+    "compiler":         "photo-1461749280684-dccba630e2f6",
+    # ── Security ──────────────────────────────────────────────────
+    "security":         "photo-1550751827-4bd374c3f58b",
+    "vulnerabilit":     "photo-1550751827-4bd374c3f58b",
+    "exploit":          "photo-1550751827-4bd374c3f58b",
+    "cve":              "photo-1550751827-4bd374c3f58b",
+    "zero-day":         "photo-1550751827-4bd374c3f58b",
+    "encrypt":          "photo-1550751827-4bd374c3f58b",
+    "crypto":           "photo-1550751827-4bd374c3f58b",
+    # ── Infra / Cloud / DevOps ─────────────────────────────────────
+    "kubernetes":       "photo-1667372393119-3d4c48d07fc9",
+    "docker":           "photo-1667372393119-3d4c48d07fc9",
+    "container":        "photo-1667372393119-3d4c48d07fc9",
+    "devops":           "photo-1667372393119-3d4c48d07fc9",
+    "cicd":             "photo-1667372393119-3d4c48d07fc9",
+    "ci/cd":            "photo-1667372393119-3d4c48d07fc9",
+    "cloud":            "photo-1451187580459-43490279c0fa",
+    "aws":              "photo-1451187580459-43490279c0fa",
+    "azure":            "photo-1451187580459-43490279c0fa",
+    "gcp":              "photo-1451187580459-43490279c0fa",
+    "server":           "photo-1451187580459-43490279c0fa",
+    "serverless":       "photo-1451187580459-43490279c0fa",
+    # ── Data / DB ──────────────────────────────────────────────────
+    "database":         "photo-1544383835-bda2bc66a55d",
+    "postgres":         "photo-1544383835-bda2bc66a55d",
+    "mysql":            "photo-1544383835-bda2bc66a55d",
+    "mongodb":          "photo-1544383835-bda2bc66a55d",
+    "sql":              "photo-1544383835-bda2bc66a55d",
+    "data engineer":    "photo-1544383835-bda2bc66a55d",
+    "analytics":        "photo-1544383835-bda2bc66a55d",
+    # ── Web / Frontend ────────────────────────────────────────────
+    "frontend":         "photo-1559028012-481c04fa702d",
+    "web":              "photo-1558494949-ef010cbdcc31",
+    "browser":          "photo-1558494949-ef010cbdcc31",
+    "css":              "photo-1559028012-481c04fa702d",
+    "html":             "photo-1559028012-481c04fa702d",
+    # ── Open source / GitHub ──────────────────────────────────────
+    "open source":      "photo-1618401471353-b98afee0b2eb",
+    "github":           "photo-1618401471353-b98afee0b2eb",
+    "repository":       "photo-1618401471353-b98afee0b2eb",
+    "trending":         "photo-1618401471353-b98afee0b2eb",
+    # ── Tools / Dev ───────────────────────────────────────────────
+    "terminal":         "photo-1461749280684-dccba630e2f6",
+    "cli":              "photo-1461749280684-dccba630e2f6",
+    "api":              "photo-1461749280684-dccba630e2f6",
+    "framework":        "photo-1461749280684-dccba630e2f6",
+    "library":          "photo-1461749280684-dccba630e2f6",
+    "backend":          "photo-1629654297299-c8506221ca97",
+    "performance":      "photo-1461749280684-dccba630e2f6",
+    "code":             "photo-1461749280684-dccba630e2f6",
+    # ── Business / Industry ───────────────────────────────────────
+    "startup":          "photo-1559028012-481c04fa702d",
+    "acquisition":      "photo-1559028012-481c04fa702d",
+    "funding":          "photo-1559028012-481c04fa702d",
+    "ipo":              "photo-1559028012-481c04fa702d",
 }
+
+
+_FALLBACK_COVER = "photo-1461749280684-dccba630e2f6"  # generic code editor
 
 
 def _build_cover_url(slug: str, keywords: str = "") -> str:
     kw = keywords.lower() if keywords else ""
     for topic, photo_id in _TOPIC_COVERS.items():
         if topic in kw:
-            return f"https://images.unsplash.com/{photo_id}?auto=format&fit=crop&w=800&q=75"
-    return f"https://picsum.photos/seed/{slug}/800/400"
+            return f"https://images.unsplash.com/{photo_id}?auto=format&fit=crop&w=900&q=80"
+    return f"https://images.unsplash.com/{_FALLBACK_COVER}?auto=format&fit=crop&w=900&q=80"
 
 
 async def _fetch_og_image(url: str) -> str | None:
@@ -335,9 +386,8 @@ class DigestWriter:
         self, item: ScrapedItem, is_breaking: bool = False
     ) -> PublishedPost:
         """Draft one standalone article for a single scraped item."""
-        # --- Step 0: fetch cover image (skip GitHub OG cards — they're dark code previews) ---
-        is_github_source = item.source in ("github_trending", "github_api")
-        source_cover = None if is_github_source else await _fetch_og_image(item.url)
+        # --- Step 0: fetch cover image ---
+        source_cover = await _fetch_og_image(item.url)
 
         # --- Step A: article body ---
         # Build rich metadata block for GitHub repos
