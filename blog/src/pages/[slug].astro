@@ -376,6 +376,14 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   }
 </script>
 
+<script define:vars={{ postSlug: post.slug }}>
+  fetch('/api/view', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ slug: postSlug }),
+  }).catch(() => {});
+</script>
+
 <style>
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 

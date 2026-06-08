@@ -22,24 +22,29 @@ const token  = Astro.cookies.get('fc_admin')?.value ?? '';
 const isAuth = Boolean(ADMIN_SECRET) && token === ADMIN_SECRET;
 
 // ── Fetch data ────────────────────────────────────────────────────────────
-interface Sub  { email: string; tier: string; confirmed: boolean }
-interface Post { title: string; slug: string; tags: string[]; published_at: string }
+interface Sub       { email: string; tier: string; confirmed: boolean }
+interface Post      { title: string; slug: string; tags: string[]; published_at: string }
+interface PostViews { slug: string; views: number }
 
-let subs:  Sub[]  = [];
-let posts: Post[] = [];
-let err           = '';
+let subs:      Sub[]       = [];
+let posts:     Post[]      = [];
+let viewsMap:  Record<string, number> = {};
+let err                    = '';
 
 if (isAuth && SUPABASE_URL && SUPABASE_KEY) {
   const H = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
   try {
-    const [r1, r2] = await Promise.all([
+    const [r1, r2, r3] = await Promise.all([
       fetch(`${SUPABASE_URL}/rest/v1/subscribers?select=email,tier,confirmed&order=email.asc`, { headers: H }),
       fetch(`${SUPABASE_URL}/rest/v1/posts?select=title,slug,tags,published_at&order=published_at.desc&limit=50`, { headers: H }),
+      fetch(`${SUPABASE_URL}/rest/v1/post_views?select=slug,views&order=views.desc`, { headers: H }),
     ]);
     const d1 = await r1.json().catch(() => []);
     const d2 = await r2.json().catch(() => []);
+    const d3 = await r3.json().catch(() => []);
     if (Array.isArray(d1)) subs  = d1;
     if (Array.isArray(d2)) posts = d2;
+    if (Array.isArray(d3)) viewsMap = Object.fromEntries((d3 as PostViews[]).map(v => [v.slug, v.views]));
     if (!Array.isArray(d1)) err = `Supabase subscribers error: ${JSON.stringify(d1)}`;
   } catch (e) {
     err = String(e);
@@ -52,6 +57,7 @@ const premium     = subs.filter(s => s.tier === 'premium').length;
 const confirmed   = subs.filter(s => s.confirmed).length;
 const cutoff      = new Date(Date.now() - 7 * 86400000);
 const postsWk     = posts.filter(p => new Date(p.published_at) > cutoff).length;
+const totalViews  = Object.values(viewsMap).reduce((a, b) => a + b, 0);
 
 const fmt = (iso: string) =>
   new Date(iso).toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -173,6 +179,11 @@ const mask = (email: string) => {
         <div class="card-val">{posts.length}</div>
         <div class="card-sub">{postsWk} esta semana</div>
       </div>
+      <div class="card">
+        <div class="card-label">Lecturas totales</div>
+        <div class="card-val">{totalViews}</div>
+        <div class="card-sub">Vistas únicas por post</div>
+      </div>
     </div>
 
     <div class="links">
@@ -186,12 +197,13 @@ const mask = (email: string) => {
     <div class="sec">
       <div class="sec-title">Últimos posts ({posts.length})</div>
       <table>
-        <thead><tr><th>Título</th><th>Tags</th><th>Fecha</th></tr></thead>
+        <thead><tr><th>Título</th><th>Tags</th><th>Lecturas</th><th>Fecha</th></tr></thead>
         <tbody>
           {posts.slice(0,20).map(p => (
             <tr>
               <td><a class="post-a" href={`/${p.slug}`} target="_blank">{p.title}</a></td>
               <td>{(p.tags ?? []).slice(0,3).map(t => <span class="tag">{t}</span>)}</td>
+              <td class="mono">{viewsMap[p.slug] ?? 0}</td>
               <td class="mono">{fmt(p.published_at)}</td>
             </tr>
           ))}
