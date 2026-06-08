@@ -273,13 +273,19 @@ async def run_breaking_news() -> None:
 
 def main() -> None:
     """
-    Synchronous entry point.  Calls :func:`run_agent` via ``asyncio.run``.
+    Synchronous entry point.
 
-    Exits with status code 1 on unhandled error so the process signals
-    failure to the OS / container runtime.
+    If BREAKING_ONLY=true (set by the afternoon GitHub Actions schedule),
+    runs the lightweight breaking-news check instead of the full digest.
+    Exits with status code 1 on unhandled error.
     """
+    from agent.config import settings
     try:
-        asyncio.run(run_agent())
+        if settings.breaking_only:
+            logger.info("main_mode", mode="breaking_only")
+            asyncio.run(run_breaking_news())
+        else:
+            asyncio.run(run_agent())
     except Exception as exc:
         logger.error("main_fatal_error", error=str(exc))
         sys.exit(1)

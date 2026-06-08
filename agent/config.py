@@ -245,6 +245,10 @@ class Settings(BaseSettings):
         le=20,
         description="Number of stories to select and write per agent run.",
     )
+    breaking_only: bool = Field(
+        default=False,
+        description="If True, skip the full digest and only publish breaking news items.",
+    )
     timezone: str = Field(
         default="Europe/Madrid",
         description="IANA timezone name used by the scheduler.",
