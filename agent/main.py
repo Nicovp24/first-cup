@@ -255,6 +255,14 @@ async def run_breaking_news() -> None:
         log.error("breaking_news_publish_failed", error=str(exc))
         return
 
+    # Send breaking news email to Premium subscribers
+    try:
+        from agent.notifier.email_newsletter import EmailNewsletter
+        sent = await EmailNewsletter().send_breaking_news(posts)
+        log.info("breaking_news_email_sent", sent=sent)
+    except Exception as exc:
+        log.error("breaking_news_email_failed", error=str(exc))
+
     save_results = await asyncio.gather(
         *[save_post(post) for post in posts],
         return_exceptions=True,
@@ -271,6 +279,33 @@ async def run_breaking_news() -> None:
 # ---------------------------------------------------------------------------
 
 
+async def run_weekly_summary() -> None:
+    """
+    Fetch the best posts of the last 7 days and send a summary email
+    to Premium subscribers. Runs every Sunday at 10:00 Madrid.
+    """
+    log = logger.bind(mode="weekly_summary")
+    log.info("weekly_summary_start")
+
+    try:
+        from agent.db.posts import get_recent_posts
+        posts = await get_recent_posts(days=7)
+    except Exception as exc:
+        log.error("weekly_summary_fetch_failed", error=str(exc))
+        return
+
+    if not posts:
+        log.info("weekly_summary_no_posts")
+        return
+
+    try:
+        from agent.notifier.email_newsletter import EmailNewsletter
+        sent = await EmailNewsletter().send_weekly_summary(posts)
+        log.info("weekly_summary_done", sent=sent, posts=len(posts))
+    except Exception as exc:
+        log.error("weekly_summary_email_failed", error=str(exc))
+
+
 def main() -> None:
     """
     Synchronous entry point.
@@ -284,6 +319,9 @@ def main() -> None:
         if settings.breaking_only:
             logger.info("main_mode", mode="breaking_only")
             asyncio.run(run_breaking_news())
+        elif getattr(settings, "weekly_summary", False):
+            logger.info("main_mode", mode="weekly_summary")
+            asyncio.run(run_weekly_summary())
         else:
             asyncio.run(run_agent())
     except Exception as exc:

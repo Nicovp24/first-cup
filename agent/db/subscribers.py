@@ -21,9 +21,7 @@ _HEADERS = {
 
 
 async def get_confirmed_subscribers() -> list[dict]:
-    """
-    Return all confirmed, still-subscribed (unsubscribed_at IS NULL) subscribers.
-    """
+    """Return all confirmed, active subscribers regardless of tier."""
     if not settings.supabase_url or not settings.supabase_service_key:
         logger.warning("get_confirmed_subscribers: Supabase not configured")
         return []
@@ -40,6 +38,27 @@ async def get_confirmed_subscribers() -> list[dict]:
             return resp.json()
     except Exception as exc:
         logger.error("get_confirmed_subscribers_error", error=str(exc))
+        return []
+
+
+async def get_premium_subscribers() -> list[dict]:
+    """Return only confirmed, active Premium subscribers."""
+    if not settings.supabase_url or not settings.supabase_service_key:
+        logger.warning("get_premium_subscribers: Supabase not configured")
+        return []
+
+    url = (
+        f"{settings.supabase_url}/rest/v1/subscribers"
+        "?confirmed=eq.true&unsubscribed_at=is.null&tier=eq.premium"
+        "&select=id,email,confirm_token"
+    )
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.get(url, headers=_HEADERS)
+            resp.raise_for_status()
+            return resp.json()
+    except Exception as exc:
+        logger.error("get_premium_subscribers_error", error=str(exc))
         return []
 
 

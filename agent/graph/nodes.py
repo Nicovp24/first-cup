@@ -371,8 +371,9 @@ async def notify_node(state: AgentState) -> dict[str, Any]:
 
 async def email_node(state: AgentState) -> dict[str, Any]:
     """
-    Send the daily digest email to all confirmed subscribers via Resend.
+    Send the daily digest + Shots to Premium subscribers via Resend.
 
+    Shots = scraped items that were not selected for full articles.
     No-op when RESEND_API_KEY is not configured or no posts were published.
     """
     log = logger.bind(node="email", run_date=state.get("run_date"))
@@ -380,6 +381,7 @@ async def email_node(state: AgentState) -> dict[str, Any]:
 
     errors: list[str] = list(state.get("errors") or [])
     written_posts: list[PublishedPost] = state.get("written_posts") or []
+    scraped_items: list[ScrapedItem]   = state.get("scraped_items") or []
 
     if not written_posts:
         log.info("email_node_skipped", reason="no posts")
@@ -389,10 +391,18 @@ async def email_node(state: AgentState) -> dict[str, Any]:
         log.warning("email_node_skipped", reason="EmailNewsletter module unavailable")
         return {"errors": errors}
 
+    # Build shots: scraped items not turned into full articles, sorted by score
+    published_urls = {url for p in written_posts for url in (p.source_urls or [])}
+    shots = sorted(
+        [item for item in scraped_items if item.url not in published_urls],
+        key=lambda x: x.score,
+        reverse=True,
+    )[:8]
+
     try:
         newsletter = EmailNewsletter()
-        sent = await newsletter.send_digest(written_posts)
-        log.info("email_node_done", sent=sent)
+        sent = await newsletter.send_digest(written_posts, shots)
+        log.info("email_node_done", sent=sent, shots=len(shots))
     except Exception as exc:
         msg = f"EmailNewsletter.send_digest failed: {exc}"
         log.error("email_node_error", error=str(exc))

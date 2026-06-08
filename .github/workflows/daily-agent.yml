@@ -6,6 +6,8 @@ on:
     - cron: '0 5 * * *'
     # Afternoon run — 15:00 Madrid = 13:00 UTC — breaking news only
     - cron: '0 13 * * *'
+    # Sunday weekly summary — 10:00 Madrid = 08:00 UTC
+    - cron: '0 8 * * 0'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -71,6 +73,7 @@ jobs:
           TIMEZONE:               Europe/Madrid
           STORIES_PER_RUN:        ${{ github.event.inputs.stories || '6' }}
           BREAKING_ONLY:          ${{ github.event.schedule == '0 13 * * *' || github.event.inputs.breaking_only == 'true' }}
+          WEEKLY_SUMMARY:         ${{ github.event.schedule == '0 8 * * 0' }}
           TELEGRAM_BOT_TOKEN:     ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID:    ${{ secrets.TELEGRAM_CHANNEL_ID }}
           TELEGRAM_PREMIUM_GROUP_ID: ${{ secrets.TELEGRAM_PREMIUM_GROUP_ID }}

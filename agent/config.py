@@ -249,6 +249,10 @@ class Settings(BaseSettings):
         default=False,
         description="If True, skip the full digest and only publish breaking news items.",
     )
+    weekly_summary: bool = Field(
+        default=False,
+        description="If True, send the weekly summary email to Premium subscribers (Sunday run).",
+    )
     timezone: str = Field(
         default="Europe/Madrid",
         description="IANA timezone name used by the scheduler.",
