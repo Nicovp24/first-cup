@@ -115,10 +115,11 @@ Tu tarea: elegir los {n} artículos MÁS RELEVANTES para publicar hoy como posts
 Criterios (en orden de prioridad):
 1. Impacto real: lanzamientos, releases, papers, movimientos de industria con consecuencias concretas.
 2. Novedad: algo de las últimas 24-48h. Descarta análisis de semanas anteriores.
-3. Diversidad OBLIGATORIA: incluye siempre al menos UN repositorio de GitHub Trending o GitHub API
-   (source="github_trending" o source="github_api"). Si hay varios repos buenos, prioriza el más relevante.
-   El post sobre el repo debe explicar qué hace, por qué está trending y qué lo hace interesante.
-4. Resto de categorías: IA/LLMs, herramientas dev, papers, infra, industria tech.
+3. Mix OBLIGATORIO: selecciona EXACTAMENTE 2 repositorios de GitHub (source="github_trending" o
+   source="github_api") y EXACTAMENTE 4 noticias tech de otras fuentes (IA/LLMs, herramientas dev,
+   papers, infra, industria). Si no hay 2 repos de calidad, acepta 1 pero nunca 0 ni más de 2.
+   El post sobre cada repo debe explicar qué hace, por qué está trending y qué lo hace interesante.
+4. Para las 4 noticias: prioriza IA/LLMs, herramientas dev, papers, infra, industria tech.
 5. Calidad de fuente: prioriza GitHub, papers, Hacker News, blogs técnicos sobre medios generalistas.
 6. Urgencia: si hay breaking news (nuevo modelo de un lab, vulnerabilidad crítica, adquisición importante),
    súbelo a "breaking" — se publicará inmediatamente.
