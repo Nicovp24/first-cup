@@ -2,8 +2,10 @@ name: Daily Digest Agent
 
 on:
   schedule:
-    # Morning run — 07:00 Madrid (UTC+2 summer) = 05:00 UTC — full digest (6 posts)
-    - cron: '0 5 * * *'
+    # Morning run — target 07:00 Madrid CEST (UTC+2) = 05:00 UTC
+    # Cron fires at 04:30 UTC to absorb GitHub's ~15-30 min scheduling delay
+    # + ~15 min agent runtime → posts live by ~07:00-07:15 Madrid
+    - cron: '30 4 * * *'
     # Afternoon run — 15:00 Madrid = 13:00 UTC — breaking news only
     - cron: '0 13 * * *'
     # Sunday weekly summary — 10:00 Madrid = 08:00 UTC
