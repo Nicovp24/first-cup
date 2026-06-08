@@ -22,7 +22,7 @@ const token  = Astro.cookies.get('fc_admin')?.value ?? '';
 const isAuth = Boolean(ADMIN_SECRET) && token === ADMIN_SECRET;
 
 // ── Fetch data ────────────────────────────────────────────────────────────
-interface Sub  { email: string; tier: string; confirmed: boolean; created_at: string }
+interface Sub  { email: string; tier: string; confirmed: boolean }
 interface Post { title: string; slug: string; tags: string[]; published_at: string }
 
 let subs:  Sub[]  = [];
@@ -33,7 +33,7 @@ if (isAuth && SUPABASE_URL && SUPABASE_KEY) {
   const H = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
   try {
     const [r1, r2] = await Promise.all([
-      fetch(`${SUPABASE_URL}/rest/v1/subscribers?select=email,tier,confirmed,created_at&order=created_at.desc`, { headers: H }),
+      fetch(`${SUPABASE_URL}/rest/v1/subscribers?select=email,tier,confirmed&order=email.asc`, { headers: H }),
       fetch(`${SUPABASE_URL}/rest/v1/posts?select=title,slug,tags,published_at&order=published_at.desc&limit=50`, { headers: H }),
     ]);
     const d1 = await r1.json().catch(() => []);
@@ -47,12 +47,11 @@ if (isAuth && SUPABASE_URL && SUPABASE_KEY) {
 }
 
 // ── Stats ─────────────────────────────────────────────────────────────────
-const total     = subs.length;
-const premium   = subs.filter(s => s.tier === 'premium').length;
-const confirmed = subs.filter(s => s.confirmed).length;
-const cutoff    = new Date(Date.now() - 7 * 86400000);
-const newWk     = subs.filter(s => new Date(s.created_at) > cutoff).length;
-const postsWk   = posts.filter(p => new Date(p.published_at) > cutoff).length;
+const total       = subs.length;
+const premium     = subs.filter(s => s.tier === 'premium').length;
+const confirmed   = subs.filter(s => s.confirmed).length;
+const cutoff      = new Date(Date.now() - 7 * 86400000);
+const postsWk     = posts.filter(p => new Date(p.published_at) > cutoff).length;
 
 const fmt = (iso: string) =>
   new Date(iso).toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -150,9 +149,14 @@ const mask = (email: string) => {
 
     <div class="stats">
       <div class="card">
-        <div class="card-label">Total suscriptores</div>
+        <div class="card-label">Registrados</div>
         <div class="card-val">{total}</div>
-        <div class="card-sub">+{newWk} esta semana</div>
+        <div class="card-sub">Total en base de datos</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Newsletter activo</div>
+        <div class="card-val g">{confirmed}</div>
+        <div class="card-sub">Email confirmado</div>
       </div>
       <div class="card">
         <div class="card-label">Premium</div>
@@ -160,9 +164,9 @@ const mask = (email: string) => {
         <div class="card-sub">{total > 0 ? Math.round(premium/total*100) : 0}% del total</div>
       </div>
       <div class="card">
-        <div class="card-label">Confirmados</div>
-        <div class="card-val g">{confirmed}</div>
-        <div class="card-sub">{total - confirmed} pendientes</div>
+        <div class="card-label">Sin confirmar</div>
+        <div class="card-val r">{total - confirmed}</div>
+        <div class="card-sub">Pendientes de email</div>
       </div>
       <div class="card">
         <div class="card-label">Posts publicados</div>
@@ -198,14 +202,13 @@ const mask = (email: string) => {
     <div class="sec">
       <div class="sec-title">Suscriptores ({total})</div>
       <table>
-        <thead><tr><th>Email</th><th>Plan</th><th>Confirmado</th><th>Registro</th></tr></thead>
+        <thead><tr><th>Email</th><th>Plan</th><th>Newsletter</th></tr></thead>
         <tbody>
-          {subs.slice(0,30).map(s => (
+          {subs.slice(0,50).map(s => (
             <tr>
               <td class="mono">{mask(s.email)}</td>
               <td><span class={`badge ${s.tier === 'premium' ? 'bp' : 'bf'}`}>{s.tier}</span></td>
-              <td><span class={`badge ${s.confirmed ? 'by' : 'bn'}`}>{s.confirmed ? 'sí' : 'no'}</span></td>
-              <td class="mono">{fmt(s.created_at)}</td>
+              <td><span class={`badge ${s.confirmed ? 'by' : 'bn'}`}>{s.confirmed ? '✓ activo' : '✗ pendiente'}</span></td>
             </tr>
           ))}
         </tbody>
