@@ -122,7 +122,8 @@ const blogSchema = {
               <a href={`/${featured.slug}`} class="lead-link">
                 <div class="lead-img">
                   {featured.data.cover
-                    ? <img src={featured.data.cover} alt="" loading="eager" decoding="async"/>
+                    ? <img src={featured.data.cover} alt="" loading="eager" decoding="async"
+                        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=900&q=80'" />
                     : <div class="lead-img-placeholder gz-mono">#{String(totalEditions).padStart(3,'0')}</div>
                   }
                 </div>

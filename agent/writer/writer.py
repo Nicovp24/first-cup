@@ -224,12 +224,16 @@ async def _fetch_og_image(url: str) -> str | None:
         parsed = _urlparse(url)
         hostname = (parsed.hostname or "").lower()
 
-        # GitHub: construct opengraph.github.com URL directly (no HTTP request needed)
+        # GitHub: verify repo exists before returning opengraph URL
         if hostname in ("github.com", "www.github.com"):
             parts = parsed.path.strip("/").split("/")
             if len(parts) >= 2:
                 owner, repo = parts[0], parts[1]
-                return f"https://opengraph.github.com/repo/{owner}/{repo}"
+                og_url = f"https://opengraph.github.com/repo/{owner}/{repo}"
+                async with httpx.AsyncClient(timeout=6.0) as client:
+                    head = await client.head(og_url)
+                    if head.status_code < 400:
+                        return og_url
             return None
 
         async with httpx.AsyncClient(timeout=8.0, follow_redirects=True) as client:
