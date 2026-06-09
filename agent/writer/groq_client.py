@@ -60,26 +60,31 @@ class GroqClient:
         async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
             for attempt in range(1, _RETRY_ATTEMPTS + 1):
                 log = self._log.bind(model=MODEL, attempt=attempt)
+                log.debug("groq_request_start")
                 try:
-                    log.debug("groq_request_start")
                     resp = await client.post(_BASE_URL, json=payload, headers=headers)
+                except Exception as exc:
+                    log.warning("groq_request_error", error=str(exc), attempt=attempt)
+                    last_exc = exc
+                    if attempt < _RETRY_ATTEMPTS:
+                        await asyncio.sleep(backoff)
+                        backoff = min(backoff * 2, 120)
+                    continue
 
-                    if resp.status_code == 429:
-                        raw_wait = int(resp.headers.get("retry-after", backoff))
-                        if raw_wait > 60:
-                            # Daily limit — bail out immediately, no retries
-                            exc = RuntimeError(f"Groq daily limit exceeded (retry-after={raw_wait}s)")
-                            log.warning("groq_daily_limit_exceeded", retry_after=raw_wait)
-                            self._log.error("groq_all_retries_failed", attempts=attempt, error=str(exc))
-                            raise exc
-                        retry_after = raw_wait
-                        log.warning("groq_rate_limit", retry_after=retry_after, attempt=attempt)
-                        last_exc = RuntimeError(f"Groq 429 rate limit (attempt {attempt})")
-                        if attempt < _RETRY_ATTEMPTS:
-                            await asyncio.sleep(retry_after)
-                            backoff = min(backoff * 2, 120)
-                        continue
+                if resp.status_code == 429:
+                    raw_wait = int(resp.headers.get("retry-after", backoff))
+                    if raw_wait > 60:
+                        # Daily limit hit — fail immediately, don't retry
+                        last_exc = RuntimeError(f"Groq daily limit exceeded (retry-after={raw_wait}s)")
+                        log.warning("groq_daily_limit_exceeded", retry_after=raw_wait)
+                        break
+                    log.warning("groq_rate_limit", retry_after=raw_wait, attempt=attempt)
+                    last_exc = RuntimeError(f"Groq 429 rate limit (attempt {attempt})")
+                    if attempt < _RETRY_ATTEMPTS:
+                        await asyncio.sleep(raw_wait)
+                    continue
 
+                try:
                     resp.raise_for_status()
                     data = resp.json()
                     text: str = data["choices"][0]["message"]["content"]
@@ -91,18 +96,12 @@ class GroqClient:
                         output_chars=len(text),
                     )
                     return text
-
-                except httpx.HTTPStatusError as exc:
-                    log.warning("groq_http_error", status=exc.response.status_code, attempt=attempt)
-                    last_exc = exc
                 except Exception as exc:
-                    log.warning("groq_request_error", error=str(exc), attempt=attempt)
+                    log.warning("groq_http_error", status=resp.status_code, attempt=attempt)
                     last_exc = exc
-
-                if attempt < _RETRY_ATTEMPTS:
-                    log.info("groq_retry_backoff", wait_seconds=backoff)
-                    await asyncio.sleep(backoff)
-                    backoff = min(backoff * 2, 120)
+                    if attempt < _RETRY_ATTEMPTS:
+                        await asyncio.sleep(backoff)
+                        backoff = min(backoff * 2, 120)
 
         self._log.error("groq_all_retries_failed", attempts=_RETRY_ATTEMPTS, error=str(last_exc))
         raise last_exc  # type: ignore[misc]
