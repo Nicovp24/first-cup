@@ -288,9 +288,18 @@ class DigestWriter:
     # Public API
     # ------------------------------------------------------------------
 
-    async def write_digest(self, items: list[ScrapedItem]) -> list[PublishedPost]:
+    async def write_digest(
+        self,
+        items: list[ScrapedItem],
+        recent_titles: list[str] | None = None,
+    ) -> list[PublishedPost]:
         """
         Select the top stories and write one independent article per story.
+
+        Args:
+            items: Scraped items to choose from.
+            recent_titles: Titles of posts published in the last ~7 days so the
+                           selector can avoid covering the same topics again.
 
         Returns:
             List of PublishedPost objects; breaking-news posts come first.
@@ -303,7 +312,7 @@ class DigestWriter:
 
         # Step 1: ask the AI to pick the best N stories
         selected_indices, breaking_indices = await self._select_items(
-            items, n=STORIES_PER_RUN
+            items, n=STORIES_PER_RUN, recent_titles=recent_titles or []
         )
         if not selected_indices:
             self._log.error("write_digest_no_selection")
@@ -347,11 +356,28 @@ class DigestWriter:
     # ------------------------------------------------------------------
 
     async def _select_items(
-        self, items: list[ScrapedItem], n: int
+        self,
+        items: list[ScrapedItem],
+        n: int,
+        recent_titles: list[str] | None = None,
     ) -> tuple[list[int], list[int]]:
         """Ask the AI to pick the top N items and flag breaking news."""
         items_json = _serialize_items(items)
-        prompt = PROMPT_SELECTION.format(items_json=items_json, n=n)
+
+        if recent_titles:
+            titles_list = "\n".join(f"  - {t}" for t in recent_titles[:30])
+            recent_titles_block = (
+                f"TEMAS YA PUBLICADOS (últimos 7 días) — NO repitas ni cubras el mismo tema:\n"
+                f"{titles_list}\n\n"
+            )
+        else:
+            recent_titles_block = ""
+
+        prompt = PROMPT_SELECTION.format(
+            items_json=items_json,
+            n=n,
+            recent_titles_block=recent_titles_block,
+        )
 
         try:
             raw = await self._client.complete(prompt, system=SYSTEM_PROMPT_EDITOR)

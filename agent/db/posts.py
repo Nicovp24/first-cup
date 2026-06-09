@@ -211,6 +211,30 @@ async def is_published_url(url: str) -> bool:
         return False
 
 
+async def slug_exists(slug: str) -> bool:
+    """Return True if a post with this slug is already in the posts table."""
+    try:
+        def _query() -> list[dict]:
+            client = get_client()
+            response = (
+                client.table("posts")
+                .select("id")
+                .eq("slug", slug)
+                .limit(1)
+                .execute()
+            )
+            return response.data
+
+        data = await asyncio.to_thread(_query)
+        found = len(data) > 0
+        logger.debug("slug_exists_check", slug=slug, found=found)
+        return found
+
+    except Exception as exc:
+        logger.error("slug_exists_error", slug=slug, error=str(exc))
+        return False
+
+
 async def get_recent_posts(days: int = 7) -> list[PublishedPost]:
     """
     Retrieve posts published within the last ``days`` days.

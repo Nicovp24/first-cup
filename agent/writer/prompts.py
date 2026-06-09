@@ -102,6 +102,7 @@ PROMPT_SELECTION: str = """\
 Eres el editor jefe de FIRST CUP. Tienes una lista de artículos scrapeados.
 Tu tarea: elegir los {n} artículos MÁS RELEVANTES para publicar hoy como posts individuales.
 
+{recent_titles_block}
 Criterios (en orden de prioridad):
 1. Impacto real: lanzamientos, releases, papers, movimientos de industria con consecuencias concretas.
 2. Novedad: algo de las últimas 24-48h. Descarta análisis de semanas anteriores.

@@ -59,22 +59,17 @@ class MarkdownPublisher:
         output_dir.mkdir(parents=True, exist_ok=True)
         file_path = output_dir / f"{post.slug}.md"
 
+        if file_path.exists():
+            logger.warning("markdown_already_exists_skipped", slug=post.slug, path=str(file_path))
+            return file_path
+
         markdown_content = self.generate_markdown(post)
 
         try:
             file_path.write_text(markdown_content, encoding="utf-8")
-            logger.info(
-                "markdown_saved",
-                slug=post.slug,
-                path=str(file_path),
-            )
+            logger.info("markdown_saved", slug=post.slug, path=str(file_path))
         except OSError as exc:
-            logger.error(
-                "markdown_save_error",
-                slug=post.slug,
-                path=str(file_path),
-                error=str(exc),
-            )
+            logger.error("markdown_save_error", slug=post.slug, path=str(file_path), error=str(exc))
             raise
 
         return file_path

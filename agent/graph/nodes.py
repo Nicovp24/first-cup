@@ -20,7 +20,7 @@ from typing import Any
 import structlog
 from typing_extensions import TypedDict
 
-from agent.db.posts import PublishedPost, is_published_url, mark_scraped, save_post
+from agent.db.posts import PublishedPost, get_recent_posts, is_published_url, mark_scraped, save_post, slug_exists
 from agent.publisher.git_publisher import GitPublisher
 from agent.scraper.base import ScrapedItem
 from agent.scraper.github_api import GitHubAPIScraper
@@ -257,12 +257,21 @@ async def write_node(state: AgentState) -> dict[str, Any]:
         log.warning("write_node_skipped", reason="no scraped items")
         return {"written_posts": [], "errors": errors}
 
+    # Fetch recent titles so the selector avoids repeating topics
+    recent_titles: list[str] = []
+    try:
+        recent_posts = await get_recent_posts(days=7)
+        recent_titles = [p.title for p in recent_posts]
+        log.info("write_node_recent_titles", count=len(recent_titles))
+    except Exception as exc:
+        log.warning("write_node_recent_titles_error", error=str(exc))
+
     written_posts: list[PublishedPost] = []
     try:
         ai_client = _build_ai_client()
         writer = DigestWriter(client=ai_client)
         log.info("write_node_client", client=type(ai_client).__name__)
-        written_posts = await writer.write_digest(scraped_items)
+        written_posts = await writer.write_digest(scraped_items, recent_titles=recent_titles)
         log.info("write_node_done", post_count=len(written_posts))
     except Exception as exc:
         msg = f"DigestWriter.write_digest failed: {exc}"
@@ -309,17 +318,19 @@ async def publish_node(state: AgentState) -> dict[str, Any]:
         log.error("git_publish_error", error=str(exc))
         errors.append(msg)
 
-    # -- Persist to Supabase (even if git push partially failed) --
-    save_tasks = [save_post(post) for post in written_posts]
-    save_results = await asyncio.gather(*save_tasks, return_exceptions=True)
-
-    for post, result in zip(written_posts, save_results):
-        if isinstance(result, BaseException):
-            msg = f"save_post failed for slug '{post.slug}': {result}"
-            log.error("save_post_error", slug=post.slug, error=str(result))
+    # -- Persist to Supabase (skip slugs already saved to avoid double-inserts) --
+    for post in written_posts:
+        try:
+            already = await slug_exists(post.slug)
+            if already:
+                log.warning("save_post_skipped_duplicate_slug", slug=post.slug)
+                continue
+            post_id = await save_post(post)
+            log.info("post_persisted", slug=post.slug, post_id=post_id)
+        except Exception as exc:
+            msg = f"save_post failed for slug '{post.slug}': {exc}"
+            log.error("save_post_error", slug=post.slug, error=str(exc))
             errors.append(msg)
-        else:
-            log.info("post_persisted", slug=post.slug, post_id=result)
 
     log.info("publish_node_done", published_count=len(published_slugs))
 
