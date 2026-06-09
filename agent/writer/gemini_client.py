@@ -16,7 +16,7 @@ from agent.config import settings
 
 logger = structlog.get_logger(__name__)
 
-MODEL = "models/gemini-2.5-flash"
+MODEL = "models/gemini-1.5-flash"
 MAX_TOKENS = 4096
 _RETRY_ATTEMPTS = 5
 _BACKOFF_BASE = 20.0   # seconds; rate-limit errors need at least 15s+
