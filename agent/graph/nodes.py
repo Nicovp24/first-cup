@@ -97,14 +97,14 @@ def _build_ai_client():
 
 
 def _build_fallback_client():
-    """Return Claude or Gemini as fallback when Groq fails."""
+    """Return Gemini or Claude as fallback when Groq fails."""
     from agent.config import settings as _s
-    if _s.anthropic_api_key:
-        from agent.writer.claude_client import ClaudeClient
-        return ClaudeClient()
     if _s.gemini_api_key:
         from agent.writer.gemini_client import GeminiClient
         return GeminiClient()
+    if _s.anthropic_api_key:
+        from agent.writer.claude_client import ClaudeClient
+        return ClaudeClient()
     return None
 
 _AIClient = None  # kept for compat; actual client built per-run in write_node
