@@ -78,34 +78,27 @@ from agent.writer.writer import DigestWriter  # type: ignore[import]
 
 def _build_ai_client():
     """
-    Pick the best available AI client at runtime based on configured API keys.
-    Priority: Groq (free, fast) → Claude → Gemini.
+    Build a CompositeClient: Groq → Gemini → Claude per individual call.
+    Any client whose key is missing is simply omitted.
     """
     from agent.config import settings as _s
+    from agent.writer.composite_client import CompositeClient
+
+    clients = []
     if _s.groq_api_key:
         from agent.writer.groq_client import GroqClient
-        return GroqClient()
-    if _s.anthropic_api_key:
-        from agent.writer.claude_client import ClaudeClient
-        return ClaudeClient()
+        clients.append(GroqClient())
     if _s.gemini_api_key:
         from agent.writer.gemini_client import GeminiClient
-        return GeminiClient()
-    raise RuntimeError(
-        "No AI API key configured. Set GROQ_API_KEY, ANTHROPIC_API_KEY, or GEMINI_API_KEY."
-    )
-
-
-def _build_fallback_client():
-    """Return Gemini or Claude as fallback when Groq fails."""
-    from agent.config import settings as _s
-    if _s.gemini_api_key:
-        from agent.writer.gemini_client import GeminiClient
-        return GeminiClient()
+        clients.append(GeminiClient())
     if _s.anthropic_api_key:
         from agent.writer.claude_client import ClaudeClient
-        return ClaudeClient()
-    return None
+        clients.append(ClaudeClient())
+    if not clients:
+        raise RuntimeError(
+            "No AI API key configured. Set GROQ_API_KEY, GEMINI_API_KEY, or ANTHROPIC_API_KEY."
+        )
+    return CompositeClient(clients)
 
 _AIClient = None  # kept for compat; actual client built per-run in write_node
 
@@ -279,20 +272,16 @@ async def write_node(state: AgentState) -> dict[str, Any]:
         log.warning("write_node_recent_titles_error", error=str(exc))
 
     written_posts: list[PublishedPost] = []
-    for client_factory, label in [(_build_ai_client, "primary"), (_build_fallback_client, "fallback")]:
-        ai_client = client_factory()
-        if ai_client is None:
-            continue
-        try:
-            writer = DigestWriter(client=ai_client)
-            log.info("write_node_client", client=type(ai_client).__name__, role=label)
-            written_posts = await writer.write_digest(scraped_items, recent_titles=recent_titles)
-            log.info("write_node_done", post_count=len(written_posts))
-            break
-        except Exception as exc:
-            log.warning("write_node_client_failed", client=type(ai_client).__name__, error=str(exc))
-            if label == "fallback":
-                errors.append(f"All AI clients failed: {exc}")
+    try:
+        ai_client = _build_ai_client()
+        writer = DigestWriter(client=ai_client)
+        log.info("write_node_client", client=type(ai_client).__name__)
+        written_posts = await writer.write_digest(scraped_items, recent_titles=recent_titles)
+        log.info("write_node_done", post_count=len(written_posts))
+    except Exception as exc:
+        msg = f"write_digest failed: {exc}"
+        log.error("write_node_error", error=str(exc))
+        errors.append(msg)
 
     return {
         "written_posts": written_posts,
