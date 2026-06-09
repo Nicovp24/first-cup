@@ -65,7 +65,12 @@ class GroqClient:
                     resp = await client.post(_BASE_URL, json=payload, headers=headers)
 
                     if resp.status_code == 429:
-                        retry_after = int(resp.headers.get("retry-after", backoff))
+                        raw_wait = int(resp.headers.get("retry-after", backoff))
+                        # Cap at 60s — if Groq wants >60s it's a daily limit, fail fast
+                        if raw_wait > 60:
+                            log.warning("groq_daily_limit_exceeded", retry_after=raw_wait)
+                            raise RuntimeError(f"Groq daily limit exceeded (retry-after={raw_wait}s)")
+                        retry_after = raw_wait
                         log.warning("groq_rate_limit", retry_after=retry_after, attempt=attempt)
                         last_exc = RuntimeError(f"Groq 429 rate limit (attempt {attempt})")
                         if attempt < _RETRY_ATTEMPTS:
