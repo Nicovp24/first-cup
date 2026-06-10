@@ -475,26 +475,24 @@ const blogSchema = {
   }
 
   .ed-number {
-    font-size: 0.7rem;
+    font-size: 0.88rem;
     font-weight: 700;
     color: var(--spot);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
 
   .ed-date {
-    font-size: 0.65rem;
+    font-size: 0.88rem;
     color: var(--ink-soft);
-    letter-spacing: 0.06em;
-    text-transform: capitalize;
+    letter-spacing: 0.01em;
   }
 
   .ed-prev {
-    font-size: 0.65rem;
+    font-size: 0.88rem;
     font-weight: 700;
     color: var(--ink-soft);
     text-decoration: none;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.01em;
     border: 1px solid var(--rule);
     padding: 0.28rem 0.7rem;
     transition: color 0.15s, border-color 0.15s, background 0.15s;
@@ -571,7 +569,6 @@ const blogSchema = {
 
   .lead-title {
     font-family: var(--font-display);
-    font-style: italic;
     font-weight: 800;
     font-size: clamp(1.8rem, 3.2vw, 3rem);
     line-height: 1.08;
@@ -584,7 +581,6 @@ const blogSchema = {
   .lead-stand {
     font-size: 1rem;
     line-height: 1.65;
-    font-style: italic;
     color: var(--ink-soft);
   }
 
@@ -601,11 +597,11 @@ const blogSchema = {
   .lead-byline-sep { color: var(--rule); font-size: 0.8rem; }
 
   .lead-readon {
-    font-size: 0.66rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--spot);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     transition: color 0.15s;
   }
   .lead-link:hover .lead-readon { color: var(--spot-deep); }
@@ -627,9 +623,10 @@ const blogSchema = {
     justify-content: space-between;
   }
   #search-count {
-    font-size: 0.6rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.85rem;
     color: var(--ink-faint);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.01em;
   }
   .search-filter-row {
     display: flex;
@@ -640,9 +637,9 @@ const blogSchema = {
   .search-wrap { flex: 1; min-width: 160px; }
   .search-input {
     width: 100%;
-    font-size: 0.65rem;
-    font-family: var(--font-mono);
-    letter-spacing: 0.06em;
+    font-size: 0.9rem;
+    font-family: 'Times New Roman', Times, serif;
+    letter-spacing: 0.01em;
     color: var(--ink);
     background: var(--paper);
     border: 1px solid var(--rule);
@@ -656,18 +653,18 @@ const blogSchema = {
   .search-input::placeholder { color: var(--ink-faint); }
 
   .section-head {
-    font-size: 0.68rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--ink);
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.01em;
     display: flex;
     align-items: center;
     gap: 0.6rem;
   }
 
   .section-count {
-    font-size: 0.62rem;
+    font-size: 0.88rem;
     color: var(--spot);
     background: oklch(from var(--spot) l c h / .1);
     border: 1px solid oklch(from var(--spot) l c h / .22);
@@ -685,7 +682,8 @@ const blogSchema = {
   }
 
   .tf-btn {
-    font-size: 0.62rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.88rem;
     font-weight: 400;
     color: var(--ink-soft);
     background: none;
@@ -694,8 +692,7 @@ const blogSchema = {
     padding: 0.22rem 0.55rem;
     cursor: pointer;
     transition: color 0.15s, border-color 0.15s, background 0.15s;
-    letter-spacing: 0.05em;
-    text-transform: lowercase;
+    letter-spacing: 0.01em;
   }
   .tf-btn:hover {
     color: var(--spot);
@@ -782,12 +779,13 @@ const blogSchema = {
 
   .coupon-kicker {
     display: block;
-    font-size: 0.68rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.95rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    font-style: italic;
+    letter-spacing: 0.02em;
     color: var(--spot);
     margin-bottom: 0.75rem;
-    text-transform: uppercase;
   }
 
   .coupon-title {
@@ -831,9 +829,10 @@ const blogSchema = {
   .coupon-input::placeholder { color: var(--ink-faint); }
 
   .coupon-btn {
-    font-size: 0.82rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.02em;
     color: var(--paper-2);
     background: var(--spot);
     padding: 0.8rem 1.4rem;
@@ -842,7 +841,6 @@ const blogSchema = {
     transition: background 0.18s;
     white-space: nowrap;
     border-radius: 0;
-    text-transform: uppercase;
   }
   .coupon-btn:hover { background: var(--spot-deep); }
   .coupon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -866,8 +864,9 @@ const blogSchema = {
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 1.1rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.06em;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.88rem;
+    letter-spacing: 0.01em;
     color: var(--ink-faint);
   }
 
@@ -891,12 +890,12 @@ const blogSchema = {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    font-size: 0.72rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--ink-soft);
     text-decoration: none;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     transition: color 0.15s;
   }
   .foot-logo:hover { color: var(--ink); text-decoration: none; }
@@ -931,10 +930,10 @@ const blogSchema = {
   }
 
   .foot-col h4 {
-    font-size: 0.62rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.9rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: var(--ink-faint);
     margin-bottom: 0.2rem;
   }
@@ -954,10 +953,10 @@ const blogSchema = {
     gap: 0.5rem;
     padding: 1rem 0 1.75rem;
     border-top: 1px solid var(--rule);
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
     color: var(--ink-faint);
-    text-transform: uppercase;
   }
 
 

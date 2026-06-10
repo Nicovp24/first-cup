@@ -127,13 +127,14 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
   }
 
   .story-kicker {
-    font-size: 0.6rem;
+    font-size: 0.78rem;
   }
 
   .edition-chip {
-    font-size: 0.58rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.78rem;
     color: var(--ink-faint);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.02em;
     margin-left: auto;
   }
 
@@ -150,10 +151,9 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
   .story-card:hover .story-title { color: var(--spot); }
 
   .story-stand {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--ink-soft);
     line-height: 1.6;
-    font-style: italic;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -171,17 +171,18 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
   }
 
   .story-date {
-    font-size: 0.64rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.82rem;
     color: var(--ink-faint);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.01em;
   }
 
   .story-readon {
-    font-size: 0.64rem;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--spot);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     transition: color 0.15s;
   }
   .story-card:hover .story-readon { color: var(--spot-deep); }

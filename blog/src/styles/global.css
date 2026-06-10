@@ -375,7 +375,7 @@ html[data-theme="espresso"] .prose a:hover {
 }
 
 /* gz-mono utility */
-.gz-mono { font-family: var(--font-mono); }
+.gz-mono { font-family: 'Times New Roman', Times, serif; }
 
 /* ── Robot art ── */
 .robot-wrap {
