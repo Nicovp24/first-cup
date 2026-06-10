@@ -23,7 +23,7 @@ function toRoman(n: number): string {
 <div class="dateline" id="dateline">
   <div id="scroll-progress"></div>
   <div class="container dateline-inner">
-    <span class="dateline-left gz-mono">{dateStr}</span>
+    <span class="dateline-left">{dateStr}</span>
     <span class="dateline-center">
       <span class="live-pulse">
         <span class="live-dot" aria-hidden="true"></span>
@@ -31,13 +31,13 @@ function toRoman(n: number): string {
       </span>
     </span>
     <span class="dateline-right">
-      <a href="/" class={`dateline-link gz-mono${p==='/' ? ' active' : ''}`}>Inicio</a>
+      <a href="/" class={`dateline-link${p==='/' ? ' active' : ''}`}>Inicio</a>
       <span class="dateline-div" aria-hidden="true">·</span>
-      <a href="/subscribe" class={`dateline-link dateline-link--cta gz-mono${p==='/subscribe' ? ' active' : ''}`}>Suscribirse</a>
+      <a href="/subscribe" class={`dateline-link dateline-link--cta${p==='/subscribe' ? ' active' : ''}`}>Suscribirse</a>
       <span class="dateline-div" aria-hidden="true">·</span>
-      <a href="/bienvenido-a-first-cup" class={`dateline-link dateline-link--about gz-mono${p==='/bienvenido-a-first-cup' ? ' active' : ''}`}>☕ El Barista</a>
+      <a href="/bienvenido-a-first-cup" class={`dateline-link dateline-link--about${p==='/bienvenido-a-first-cup' ? ' active' : ''}`}>☕ El Barista</a>
       <span class="dateline-div" aria-hidden="true">·</span>
-      <div class="theme-switcher gz-mono" id="theme-toggle" role="group" aria-label="Cambiar tema">
+      <div class="theme-switcher" id="theme-toggle" role="group" aria-label="Cambiar tema">
         <button class="ts-btn" data-t="latte">LATTE</button>
         <button class="ts-btn" data-t="espresso">ESPRESSO</button>
       </div>
@@ -127,6 +127,7 @@ function toRoman(n: number): string {
   .dateline {
     background: var(--dl-bg);
     color: var(--dl-text);
+    font-family: 'Times New Roman', Times, serif;
     position: sticky;
     top: 0;
     z-index: 100;
