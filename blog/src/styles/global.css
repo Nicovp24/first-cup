@@ -160,30 +160,29 @@ img { max-width: 100%; height: auto; }
 
 .kicker {
   display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-style: italic;
+  letter-spacing: 0.04em;
   color: var(--spot);
 }
 
 .byline {
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
   color: var(--ink-soft);
 }
 
 .tag {
   display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 0.78rem;
   color: var(--ink-soft);
   border: 1px solid var(--rule);
   padding: 0.06rem 0.38rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
@@ -238,7 +237,6 @@ img { max-width: 100%; height: auto; }
   margin: 2.2rem 0;
   background: var(--paper-sink);
   color: var(--ink-soft);
-  font-style: italic;
   font-size: 1.06rem;
   line-height: 1.72;
   position: relative;
