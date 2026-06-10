@@ -60,20 +60,19 @@ def _slugify(text: str) -> str:
 
 
 def _serialize_items(items: list[ScrapedItem]) -> str:
+    # Sort by score descending and cap at 25 to keep the prompt small
+    top = sorted(items, key=lambda x: x.score or 0, reverse=True)[:25]
     rows: list[dict[str, Any]] = []
-    for idx, item in enumerate(items):
+    for idx, item in enumerate(top):
         row: dict[str, Any] = {
             "index": idx,
             "title": item.title,
             "url": item.url,
-            "summary": item.summary,
+            "summary": (item.summary or "")[:200],  # truncate long summaries
             "source": item.source,
             "score": item.score,
-            "published_at": item.published_at.isoformat(),
-            "tags": item.tags,
+            "published_at": item.published_at.isoformat()[:10],  # date only
         }
-        if item.extra:
-            row["extra"] = item.extra
         rows.append(row)
     return json.dumps(rows, ensure_ascii=False, indent=2)
 
