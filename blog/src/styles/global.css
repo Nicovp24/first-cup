@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,700;1,6..96,800;1,6..96,900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,700;1,6..96,800;1,6..96,900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
 /* ──────────────────────────────────────────────
    LATTE (light) — warm newspaper cream
@@ -86,8 +86,8 @@ html[data-theme="espresso"] {
    FONT STACK
 ────────────────────────────────────────────── */
 :root {
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Times New Roman', Times, serif;
+  --font-body:    'Times New Roman', Times, serif;
   --font-mono:    'JetBrains Mono', 'Courier New', monospace;
   --spring:       cubic-bezier(0.16, 1, 0.3, 1);
 }
