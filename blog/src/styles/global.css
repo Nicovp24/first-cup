@@ -161,10 +161,10 @@ img { max-width: 100%; height: auto; }
 .kicker {
   display: inline-block;
   font-family: 'Times New Roman', Times, serif;
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  font-style: italic;
-  letter-spacing: 0.04em;
+  font-style: normal;
+  letter-spacing: 0.01em;
   color: var(--spot);
 }
 
@@ -296,7 +296,7 @@ html[data-theme="espresso"] .prose a:hover {
 }
 
 .prose strong { color: var(--ink); font-weight: 700; }
-.prose em { font-style: italic; }
+.prose em { font-style: normal; }
 .prose hr {
   border: none;
   text-align: center;
@@ -327,7 +327,7 @@ html[data-theme="espresso"] .prose a:hover {
   text-align: center;
   letter-spacing: 0.04em;
   margin-top: 0.5rem;
-  font-style: italic;
+  font-style: normal;
 }
 
 /* ── Animations ── */
