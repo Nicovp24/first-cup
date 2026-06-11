@@ -265,7 +265,7 @@ async def write_node(state: AgentState) -> dict[str, Any]:
     # Fetch recent titles so the selector avoids repeating topics
     recent_titles: list[str] = []
     try:
-        recent_posts = await get_recent_posts(days=7)
+        recent_posts = await get_recent_posts(days=30)
         recent_titles = [p.title for p in recent_posts]
         log.info("write_node_recent_titles", count=len(recent_titles))
     except Exception as exc:

@@ -192,10 +192,11 @@ async def is_published_url(url: str) -> bool:
     try:
         def _query() -> list[dict]:
             client = get_client()
+            # source_urls is text[] — use cs (contains) with PostgreSQL array literal
             response = (
                 client.table("posts")
                 .select("id")
-                .contains("source_urls", [url])
+                .filter("source_urls", "cs", f'{{"{url}"}}')
                 .limit(1)
                 .execute()
             )

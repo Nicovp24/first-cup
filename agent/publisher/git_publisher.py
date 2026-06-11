@@ -1,13 +1,13 @@
 """
 agent/publisher/git_publisher.py
 
-Writes Markdown posts to the blog directory on disk.
-Git commit and push are handled externally (GitHub Actions workflow or local script).
+Writes Markdown posts to the blog directory on disk, then commits and pushes.
 """
 
 from __future__ import annotations
 
 import asyncio
+import subprocess
 from pathlib import Path
 
 import structlog
@@ -21,8 +21,7 @@ logger = structlog.get_logger(__name__)
 
 class GitPublisher:
     """
-    Writes Markdown posts to the blog posts directory.
-    Git operations (add/commit/push) are left to the caller environment.
+    Writes Markdown posts to the blog posts directory, then git add/commit/push.
     """
 
     def __init__(self) -> None:
@@ -32,7 +31,7 @@ class GitPublisher:
 
     async def publish_posts(self, posts: list[PublishedPost]) -> list[str]:
         """
-        Write Markdown files to disk and return the list of slugs saved.
+        Write Markdown files to disk, commit, push, and return list of slugs.
         """
         if not posts:
             logger.info("publish_posts_skipped", reason="empty post list")
@@ -51,6 +50,9 @@ class GitPublisher:
         staged_stems = {p.stem for p in saved_paths}
         slugs = [post.slug for post in posts if post.slug in staged_stems]
 
+        if saved_paths:
+            await asyncio.to_thread(self._git_commit_push, saved_paths, slugs)
+
         logger.info("publish_posts_done", count=len(slugs), slugs=slugs)
         return slugs
 
@@ -66,3 +68,23 @@ class GitPublisher:
             except OSError as exc:
                 logger.error("markdown_write_error", slug=post.slug, error=str(exc))
         return paths
+
+    def _git_commit_push(self, paths: list[Path], slugs: list[str]) -> None:
+        repo = str(self._repo_path)
+        date = slugs[0].split("-")[-1] if slugs else "unknown"
+
+        def run(cmd: list[str]) -> None:
+            result = subprocess.run(cmd, cwd=repo, capture_output=True, text=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"git {cmd[1]} failed: {result.stderr.strip()}")
+
+        try:
+            # Pull to avoid push rejections if remote has newer commits
+            subprocess.run(["git", "pull", "--rebase", "origin", "main"],
+                           cwd=repo, capture_output=True, text=True)
+            run(["git", "add"] + [str(p) for p in paths])
+            run(["git", "commit", "-m", f"feat: daily digest {date} — {len(slugs)} posts"])
+            run(["git", "push", "origin", "main"])
+            logger.info("git_push_ok", slugs=slugs)
+        except Exception as exc:
+            logger.error("git_push_error", error=str(exc))
