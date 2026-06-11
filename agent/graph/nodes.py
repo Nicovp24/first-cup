@@ -203,31 +203,39 @@ async def scrape_node(state: AgentState) -> dict[str, Any]:
         log.info("scrape_intrarun_dedup", removed=len(all_items) - len(run_deduped))
     all_items = run_deduped
 
-    # Deduplicate: skip URLs already published (not just scraped)
-    # This allows re-scraping the same sources every run — the AI editor
-    # picks the best stories and only published URLs are permanently skipped.
+    # Deduplicate: skip URLs already scraped in a previous run.
+    # is_duplicate checks the scraped_items table (simple eq query, always works).
+    # Once a URL is scraped once it is permanently skipped — this prevents
+    # popular repos (React, TensorFlow, VS Code…) from appearing every day.
+    from agent.db.posts import is_duplicate
     unique_items: list[ScrapedItem] = []
-    dedup_tasks = [is_published_url(item.url) for item in all_items]
+    new_items: list[ScrapedItem] = []
+    dedup_tasks = [is_duplicate(item.url) for item in all_items]
     duplicate_flags: list[bool | BaseException] = await asyncio.gather(
         *dedup_tasks, return_exceptions=True
     )
 
-    mark_tasks: list[Any] = []
     for item, flag in zip(all_items, duplicate_flags):
         if isinstance(flag, BaseException):
             log.error("dedup_check_error", url=item.url, error=str(flag))
             unique_items.append(item)
-            mark_tasks.append(mark_scraped(item))
+            new_items.append(item)
         elif not flag:
             unique_items.append(item)
-            mark_tasks.append(mark_scraped(item))
+            new_items.append(item)
         else:
-            log.debug("already_published_skipped", url=item.url)
+            log.debug("already_scraped_skipped", url=item.url)
 
-    # Fire-and-forget: mark scraped items concurrently
-    if mark_tasks:
-        mark_results = await asyncio.gather(*mark_tasks, return_exceptions=True)
-        for item, res in zip(unique_items, mark_results):
+    log.info("scrape_dedup_done",
+             total=len(all_items), new=len(new_items),
+             skipped=len(all_items) - len(new_items))
+
+    # Mark new items as scraped so they are skipped on future runs
+    if new_items:
+        mark_results = await asyncio.gather(
+            *[mark_scraped(item) for item in new_items], return_exceptions=True
+        )
+        for item, res in zip(new_items, mark_results):
             if isinstance(res, BaseException):
                 log.error("mark_scraped_error", url=item.url, error=str(res))
                 errors.append(f"mark_scraped failed for {item.url}: {res}")
