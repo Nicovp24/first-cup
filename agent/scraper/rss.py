@@ -23,10 +23,12 @@ logger = structlog.get_logger(__name__)
 
 RSS_FEEDS: list[str] = [
     "https://simonwillison.net/atom/everything/",
-    "https://www.deeplearning.ai/the-batch/feed/",
     "https://huggingface.co/blog/feed.xml",
-    "https://openai.com/blog/rss/",
-    "https://www.anthropic.com/rss.xml",
+    "https://techcrunch.com/category/artificial-intelligence/feed/",
+    "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",
+    "https://venturebeat.com/category/ai/feed/",
+    "https://feeds.arstechnica.com/arstechnica/technology-lab",
+    "https://www.wired.com/feed/category/business/latest/rss",
     "https://feeds.feedburner.com/TowardsDataScience",
 ]
 

@@ -59,9 +59,17 @@ def _slugify(text: str) -> str:
     return text
 
 
+_REPO_SOURCES = frozenset({"github_trending", "github_api"})
+_MAX_REPOS_IN_POOL = 2
+
+
 def _serialize_items(items: list[ScrapedItem]) -> str:
-    # Sort by score descending and cap at 15 to keep the prompt under Groq's 413 limit
-    top = sorted(items, key=lambda x: x.score or 0, reverse=True)[:15]
+    # Hard-cap repos at 2 so the LLM can never select more than 2 even if it ignores the prompt.
+    repos = [i for i in items if i.source in _REPO_SOURCES]
+    news  = [i for i in items if i.source not in _REPO_SOURCES]
+    repos_sorted = sorted(repos, key=lambda x: x.score or 0, reverse=True)[:_MAX_REPOS_IN_POOL]
+    news_sorted  = sorted(news,  key=lambda x: x.score or 0, reverse=True)[:15 - len(repos_sorted)]
+    top = news_sorted + repos_sorted
     rows: list[dict[str, Any]] = []
     for idx, item in enumerate(top):
         row: dict[str, Any] = {
@@ -407,8 +415,20 @@ class DigestWriter:
             if isinstance(i, (int, float)) and int(i) in selected
         ]
 
-        self._log.info("selection_ok", selected=selected, breaking=breaking)
-        return selected, breaking
+        # Hard-enforce max 2 repos regardless of what the LLM chose.
+        repo_count = 0
+        enforced: list[int] = []
+        for idx in selected:
+            if items[idx].source in _REPO_SOURCES:
+                if repo_count >= _MAX_REPOS_IN_POOL:
+                    self._log.warning("repo_cap_enforced", dropped_idx=idx, title=items[idx].title)
+                    continue
+                repo_count += 1
+            enforced.append(idx)
+        breaking = [i for i in breaking if i in enforced]
+
+        self._log.info("selection_ok", selected=enforced, breaking=breaking)
+        return enforced, breaking
 
     async def _write_article(
         self, item: ScrapedItem, is_breaking: bool = False
