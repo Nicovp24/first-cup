@@ -60,21 +60,20 @@ def _slugify(text: str) -> str:
 
 
 def _serialize_items(items: list[ScrapedItem]) -> str:
-    # Sort by score descending and cap at 25 to keep the prompt small
-    top = sorted(items, key=lambda x: x.score or 0, reverse=True)[:25]
+    # Sort by score descending and cap at 15 to keep the prompt under Groq's 413 limit
+    top = sorted(items, key=lambda x: x.score or 0, reverse=True)[:15]
     rows: list[dict[str, Any]] = []
     for idx, item in enumerate(top):
         row: dict[str, Any] = {
             "index": idx,
-            "title": item.title,
+            "title": item.title[:80],
             "url": item.url,
-            "summary": (item.summary or "")[:200],  # truncate long summaries
+            "summary": (item.summary or "")[:100],
             "source": item.source,
             "score": item.score,
-            "published_at": item.published_at.isoformat()[:10],  # date only
         }
         rows.append(row)
-    return json.dumps(rows, ensure_ascii=False, indent=2)
+    return json.dumps(rows, ensure_ascii=False, separators=(',', ':'))
 
 
 def _extract_json(text: str) -> dict | list:
@@ -368,7 +367,7 @@ class DigestWriter:
         items_json = _serialize_items(items)
 
         if recent_titles:
-            titles_list = "\n".join(f"  - {t}" for t in recent_titles[:30])
+            titles_list = "\n".join(f"  - {t}" for t in recent_titles[:15])
             recent_titles_block = (
                 f"TEMAS YA PUBLICADOS (últimos 7 días) — NO repitas ni cubras el mismo tema:\n"
                 f"{titles_list}\n\n"

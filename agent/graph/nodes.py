@@ -274,7 +274,7 @@ async def write_node(state: AgentState) -> dict[str, Any]:
     recent_titles: list[str] = []
     try:
         recent_posts = await get_recent_posts(days=30)
-        recent_titles = [p.title for p in recent_posts]
+        recent_titles = [p.title for p in recent_posts][:20]  # cap at 20 to limit prompt size
         log.info("write_node_recent_titles", count=len(recent_titles))
     except Exception as exc:
         log.warning("write_node_recent_titles_error", error=str(exc))
