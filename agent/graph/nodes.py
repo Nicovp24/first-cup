@@ -203,34 +203,37 @@ async def scrape_node(state: AgentState) -> dict[str, Any]:
         log.info("scrape_intrarun_dedup", removed=len(all_items) - len(run_deduped))
     all_items = run_deduped
 
-    # Deduplicate: skip URLs already scraped in a previous run.
-    # is_duplicate checks the scraped_items table (simple eq query, always works).
-    # Once a URL is scraped once it is permanently skipped — this prevents
-    # popular repos (React, TensorFlow, VS Code…) from appearing every day.
+    # Dedup strategy:
+    # - GitHub repos (source=github_trending/github_api): permanent block after first scrape.
+    #   These trend every day and are NOT news — once covered, never again.
+    # - News items (hackernews/rss/reddit/arxiv/devto/producthunt): never permanently blocked.
+    #   They rotate naturally; we only deduplicate within this run.
     from agent.db.posts import is_duplicate
-    unique_items: list[ScrapedItem] = []
-    new_items: list[ScrapedItem] = []
-    dedup_tasks = [is_duplicate(item.url) for item in all_items]
-    duplicate_flags: list[bool | BaseException] = await asyncio.gather(
-        *dedup_tasks, return_exceptions=True
-    )
 
-    for item, flag in zip(all_items, duplicate_flags):
-        if isinstance(flag, BaseException):
-            log.error("dedup_check_error", url=item.url, error=str(flag))
-            unique_items.append(item)
-            new_items.append(item)
-        elif not flag:
-            unique_items.append(item)
-            new_items.append(item)
-        else:
-            log.debug("already_scraped_skipped", url=item.url)
+    _REPO_SOURCES = {"github_trending", "github_api"}
+
+    github_items = [i for i in all_items if i.source in _REPO_SOURCES]
+    news_items   = [i for i in all_items if i.source not in _REPO_SOURCES]
+
+    # Check repos against DB — permanent block
+    repo_dedup = await asyncio.gather(
+        *[is_duplicate(item.url) for item in github_items], return_exceptions=True
+    )
+    new_repos = [
+        item for item, flag in zip(github_items, repo_dedup)
+        if not isinstance(flag, BaseException) and not flag
+    ]
+
+    # News items always pass (already deduped within-run above)
+    unique_items: list[ScrapedItem] = news_items + new_repos
+    new_items = unique_items  # all are "new" for mark_scraped purposes
 
     log.info("scrape_dedup_done",
-             total=len(all_items), new=len(new_items),
-             skipped=len(all_items) - len(new_items))
+             news=len(news_items), repos_new=len(new_repos),
+             repos_blocked=len(github_items) - len(new_repos),
+             total_unique=len(unique_items))
 
-    # Mark new items as scraped so they are skipped on future runs
+    # Mark ALL unique items as scraped (repos: permanent; news: for intra-run dedup record)
     if new_items:
         mark_results = await asyncio.gather(
             *[mark_scraped(item) for item in new_items], return_exceptions=True

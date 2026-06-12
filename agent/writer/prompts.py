@@ -99,37 +99,36 @@ CIERRE
 
 
 PROMPT_SELECTION: str = """\
-Eres el editor jefe de FIRST CUP. Tienes una lista de artículos scrapeados.
-Tu tarea: elegir los {n} artículos MÁS RELEVANTES para publicar hoy como posts individuales.
+Eres el editor jefe de FIRST CUP, un diario tech diario. Tienes una lista de artículos scrapeados.
+Tu tarea: elegir los {n} artículos MÁS RELEVANTES para publicar hoy.
 
 {recent_titles_block}
-Criterios (en orden de prioridad):
-1. Impacto real: lanzamientos, releases, papers, movimientos de industria con consecuencias concretas.
-2. Novedad: algo de las últimas 24-48h. Descarta análisis de semanas anteriores.
-3. Mix OBLIGATORIO: selecciona EXACTAMENTE 6 noticias tech reales (IA/LLMs, herramientas dev, papers,
-   infra, industria, seguridad) de fuentes como Hacker News, RSS, Reddit, arXiv, Dev.to, Product Hunt.
-   Y COMO MÁXIMO 2 repositorios de GitHub (source="github_trending" o source="github_api") — solo si
-   el repo es genuinamente relevante e interesante. Si no hay repos de calidad suficiente, selecciona
-   8 noticias reales. NUNCA selecciones más de 2 repos ni hagas el total menor de {n}.
-4. Para las noticias: prioriza IA/LLMs, herramientas dev, papers, infra, industria tech.
-5. Calidad de fuente: prioriza papers, Hacker News, blogs técnicos sobre medios generalistas.
-6. Urgencia: si hay breaking news (nuevo modelo de un lab, vulnerabilidad crítica, adquisición importante),
-   súbelo a "breaking" — se publicará inmediatamente.
+REGLA ABSOLUTA DE MIX — OBLIGATORIA:
+- MÍNIMO 6 artículos de fuentes de noticias reales: hackernews, rss, reddit, arxiv, devto, producthunt.
+- MÁXIMO 2 repositorios de GitHub (source="github_trending" o "github_api").
+- Si no hay 2 repos interesantes, selecciona 8 noticias. NUNCA más de 2 repos.
+
+PRIORIDAD DE CONTENIDO (de mayor a menor):
+1. BREAKING: lanzamiento de nuevo modelo de IA (OpenAI, Anthropic, Google, Meta...), vulnerabilidad crítica, adquisición importante → SIEMPRE incluir y marcar como breaking.
+2. Releases importantes: nueva versión de herramienta relevante, paper con resultados llamativos.
+3. Análisis técnico profundo de tendencias actuales (últimas 48h).
+4. Repos de GitHub: SOLO si tienen un lanzamiento concreto hoy, no por popularidad general.
+
+REGLAS ESTRICTAS:
+- NO selecciones repos de GitHub solo porque tengan muchas estrellas. Son siempre populares, no son noticias.
+- SÍ prioriza cualquier noticia sobre nuevos modelos de IA aunque tenga menor score.
+- Novedad: descarta artículos de más de 72 horas si hay noticias más recientes.
 
 Artículos disponibles (array JSON con campo "index"):
 {items_json}
 
-Devuelve un objeto JSON con este esquema exacto — sin texto antes ni después:
+Devuelve SOLO este JSON — sin texto antes ni después:
 {{
-  "selected": [<lista de índices 0-based elegidos, en orden de importancia>],
-  "breaking": [<índices que son BREAKING NEWS urgente, subconjunto de "selected">]
+  "selected": [<lista de índices 0-based, en orden de importancia>],
+  "breaking": [<índices de breaking news urgente, subconjunto de "selected">]
 }}
-
-Reglas:
-- Selecciona exactamente {n} artículos (o menos si no hay suficientes de calidad real).
-- Cada índice debe aparecer exactamente una vez en "selected".
-- "breaking" puede ser [] si no hay nada urgente hoy.
-- Devuelve JSON válido únicamente.\
+- Exactamente {n} artículos en "selected" (o menos si no hay suficientes de calidad).
+- "breaking" puede ser [].\
 """
 
 
