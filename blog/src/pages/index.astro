@@ -1016,6 +1016,10 @@ const blogSchema = {
 
 
   /* ── RESPONSIVE ── */
+  @media (min-width: 1440px) {
+    .posts-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
   @media (max-width: 860px) {
     .posts-grid { grid-template-columns: repeat(2, 1fr); }
     .lead-link  { grid-template-columns: 1fr; }
