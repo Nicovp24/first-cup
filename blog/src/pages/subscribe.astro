@@ -97,16 +97,10 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
             </div>
           </div>
 
-          <!-- Divider -->
-          <div class="plans-divider" aria-hidden="true">
-            <span class="pd-line"></span>
-            <span class="pd-or gz-mono">O</span>
-            <span class="pd-line"></span>
-          </div>
-
           <!-- Premium plan -->
           <div class="plan-card plan-premium">
-            <div class="plan-badge gz-mono">RECOMENDADO</div>
+            <div class="plan-glow" aria-hidden="true"></div>
+            <div class="plan-badge">⭐ Recomendado</div>
             <div class="plan-ornament plan-ornament--spot gz-mono" aria-hidden="true">— ✦ —</div>
             <div class="plan-tier gz-mono plan-tier--spot">Premium</div>
             <div class="plan-price">
@@ -137,8 +131,10 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
                   required
                   class="premium-input gz-mono"
                 />
-                <button type="submit" class="premium-btn gz-mono" id="premium-btn">
-                  <span class="premium-btn-text">Empezar plan Premium →</span>
+                <button type="submit" class="premium-btn" id="premium-btn">
+                  <span class="premium-btn-text">Empezar Premium
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" class="btn-arrow"><path d="M2.5 7h9M9 3.5L12.5 7 9 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
                   <span class="premium-btn-loading" hidden>Redirigiendo…</span>
                 </button>
               </form>
@@ -289,14 +285,11 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     align-items: center;
     gap: 0.75rem;
   }
-
   .header-rule-top {
-    width: 60px;
-    height: 3px;
+    width: 60px; height: 3px;
     background: linear-gradient(90deg, transparent, var(--spot), transparent);
     margin-bottom: 0.5rem;
   }
-
   .page-title {
     font-family: var(--font-display);
     font-size: clamp(2rem, 5vw, 3.2rem);
@@ -306,12 +299,10 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     letter-spacing: -0.022em;
   }
   .page-title em { font-style: normal; color: var(--spot); font-weight: 400; }
-
   .page-subtitle {
     font-size: 1rem;
     color: var(--ink-soft);
     line-height: 1.7;
-    font-style: normal;
   }
 
   /* ── Stats strip ── */
@@ -326,14 +317,12 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     padding: 1.4rem 0 1.5rem;
     margin-bottom: 4rem;
   }
-
   .stat-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.2rem;
   }
-
   .stat-num {
     font-family: var(--font-display);
     font-size: 1.75rem;
@@ -342,14 +331,12 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     line-height: 1;
     letter-spacing: -0.02em;
   }
-
   .stat-label {
     font-size: 0.6rem;
     color: var(--ink-faint);
     text-transform: uppercase;
     letter-spacing: 0.12em;
   }
-
   .stat-sep {
     color: var(--rule);
     font-size: 1.4rem;
@@ -357,67 +344,96 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     align-self: center;
   }
 
-  /* ── Plans wrap ── */
-  .plans-wrap {
-    margin-bottom: 5rem;
-    border-top: 3px double var(--ink);
-    border-bottom: 3px double var(--ink);
-  }
+  /* ── Plans ── */
+  .plans-wrap { margin-bottom: 5rem; }
 
   .plans-grid {
     display: grid;
-    grid-template-columns: 1fr 40px 1fr;
-    gap: 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
   }
 
-  /* Vertical divider */
-  .plans-divider {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 2rem 0;
-    border-left: 1px solid var(--rule);
-    border-right: 1px solid var(--rule);
-  }
-  .pd-line {
-    display: block;
-    width: 1px;
-    flex: 1;
-    background: var(--rule);
-  }
-  .pd-or {
-    font-size: 0.58rem;
-    font-weight: 700;
-    color: var(--ink-faint);
-    letter-spacing: 0.18em;
-  }
-
+  /* ── Plan card base ── */
   .plan-card {
     background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
     padding: 2.5rem 2.25rem;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    transition: transform 0.3s cubic-bezier(.16,1,.3,1), box-shadow 0.3s;
+    overflow: hidden;
+  }
+  .plan-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px oklch(0 0 0 / .08);
   }
 
+  /* ── Premium card ── */
   .plan-premium {
     background: var(--paper-sink);
+    border-color: oklch(from var(--spot) l c h / .4);
+    box-shadow:
+      0 0 0 1px oklch(from var(--spot) l c h / .12),
+      0 8px 24px oklch(from var(--spot) l c h / .1);
+  }
+  .plan-premium:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px oklch(from var(--spot) l c h / .3),
+      0 16px 40px oklch(from var(--spot) l c h / .18);
   }
 
+  /* Gradient glow overlay for premium */
+  .plan-glow {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      oklch(from var(--spot) l c h / .08) 0%,
+      transparent 55%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Accent top stripe on premium */
+  .plan-premium::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--spot), var(--spot-deep));
+    border-radius: 16px 16px 0 0;
+    z-index: 1;
+  }
+
+  /* Make sure content is above glow */
+  .plan-card > *:not(.plan-glow) { position: relative; z-index: 1; }
+
+  /* ── Plan badge ── */
   .plan-badge {
     position: absolute;
-    top: 0; left: 50%;
-    transform: translate(-50%, -50%);
+    top: -1px; right: 1.5rem;
     background: var(--spot);
     color: var(--paper);
-    font-size: 0.54rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.62rem;
     font-weight: 700;
-    letter-spacing: 0.18em;
-    padding: 0.22rem 0.9rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.9rem;
+    border-radius: 0 0 10px 10px;
     white-space: nowrap;
+    animation: badge-pop 0.5s cubic-bezier(.16,1,.3,1) both;
+    animation-delay: 200ms;
+  }
+  @keyframes badge-pop {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   .plan-ornament {
@@ -436,6 +452,7 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--ink-soft);
+    font-family: 'Inter', system-ui, sans-serif;
   }
   .plan-tier--spot { color: var(--spot); }
 
@@ -445,7 +462,6 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     border-bottom: 1px solid var(--rule);
     padding: 1.1rem 0;
   }
-
   .price-amount {
     display: block;
     font-family: var(--font-display);
@@ -456,7 +472,6 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     letter-spacing: -0.03em;
   }
   .price-amount--spot { color: var(--spot); }
-
   .price-cur {
     font-size: 1.6rem;
     font-weight: 700;
@@ -464,7 +479,6 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     letter-spacing: 0;
     margin-left: 2px;
   }
-
   .price-period {
     display: block;
     font-size: 0.62rem;
@@ -472,13 +486,13 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     letter-spacing: 0.14em;
     text-transform: uppercase;
     margin-top: 0.4rem;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   .plan-description {
     font-size: 0.875rem;
     color: var(--ink-soft);
     line-height: 1.68;
-    font-style: normal;
     text-align: center;
   }
 
@@ -491,7 +505,6 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     border-top: 1px solid var(--rule-soft);
     padding-top: 1.25rem;
   }
-
   .feature {
     display: flex;
     align-items: flex-start;
@@ -501,7 +514,6 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     line-height: 1.5;
   }
   .fc-empty { color: var(--ink-faint); }
-
   .fc {
     flex-shrink: 0;
     font-weight: 700;
@@ -514,6 +526,7 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
   .fc-spot { color: var(--spot); }
   .feature strong { color: var(--ink); font-weight: 700; }
 
+  /* ── Plan action area ── */
   .subscribe-label {
     font-size: 0.62rem;
     color: var(--ink-faint);
@@ -521,97 +534,135 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     letter-spacing: 0.1em;
     display: block;
     margin-bottom: 0.5rem;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   #premium-form {
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
+    gap: 0.6rem;
   }
 
   .premium-input {
-    font-size: 0.875rem;
+    font-size: 0.88rem;
+    font-family: 'Inter', system-ui, sans-serif;
     color: var(--ink);
     background: var(--paper);
-    border: 1px solid var(--ink);
-    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--rule);
+    padding: 0.72rem 1rem;
     outline: none;
-    border-radius: 0;
-    transition: border-color 0.12s;
+    border-radius: 10px;
     width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .premium-input:focus { border-color: var(--spot); }
+  .premium-input:focus {
+    border-color: oklch(from var(--spot) l c h / .7);
+    box-shadow: 0 0 0 3px oklch(from var(--spot) l c h / .14);
+  }
   .premium-input::placeholder { color: var(--ink-faint); }
 
+  /* ── Premium CTA button ── */
   .premium-btn {
-    display: block;
-    text-align: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
     background: var(--spot);
-    color: var(--paper-2);
+    color: var(--paper);
     font-weight: 700;
-    font-size: 0.76rem;
+    font-size: 0.82rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: 0.03em;
     padding: 0.9rem 1.5rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transition: background 0.18s;
     border: none;
+    border-radius: 10px;
     cursor: pointer;
     width: 100%;
-    border-radius: 0;
+    overflow: hidden;
+    transition: background 0.2s, transform 0.2s cubic-bezier(.16,1,.3,1), box-shadow 0.2s;
   }
-  .premium-btn:hover:not(:disabled) { background: var(--spot-deep); }
+  .premium-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, oklch(1 0 0 / .25) 50%, transparent 65%);
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(.16,1,.3,1);
+  }
+  .premium-btn:hover:not(:disabled) {
+    background: var(--spot-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px oklch(from var(--spot) l c h / .4);
+  }
+  .premium-btn:hover::before { transform: translateX(100%); }
   .premium-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
+  .premium-btn-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-arrow {
+    transition: transform 0.2s cubic-bezier(.16,1,.3,1);
+  }
+  .premium-btn:hover .btn-arrow { transform: translateX(3px); }
+
   .premium-error {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.76rem;
+    font-family: 'Inter', system-ui, sans-serif;
     color: oklch(0.55 0.22 28);
-    margin-top: 0.25rem;
   }
 
   .premium-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
     text-align: center;
-    font-size: 0.62rem;
+    font-size: 0.66rem;
+    font-family: 'Inter', system-ui, sans-serif;
     color: var(--ink-faint);
-    margin-top: 0.5rem;
-    letter-spacing: 0.06em;
+    margin-top: 0.25rem;
+    letter-spacing: 0.03em;
+  }
+  .premium-note::before {
+    content: '🔒';
+    font-size: 0.7rem;
   }
 
   /* ── FAQ ── */
   .faq-section { margin-bottom: 2rem; }
-
   .faq-header {
     padding-bottom: 0.6rem;
     border-bottom: 3px double var(--ink);
     margin-bottom: 1.5rem;
   }
-
   .faq-heading {
     font-size: 0.7rem;
     font-weight: 700;
     color: var(--ink);
     text-transform: uppercase;
     letter-spacing: 0.16em;
+    font-family: 'Inter', system-ui, sans-serif;
   }
-
   .faq-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border: 1px solid var(--rule);
-    border-top: none;
+    gap: 1rem;
   }
-
   .faq-item {
     background: var(--paper);
+    border: 1px solid var(--rule-soft);
+    border-radius: 12px;
     padding: 1.4rem 1.6rem;
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    transition: background 0.2s;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
   }
-  .faq-item:nth-child(even) { border-right: none; }
-  .faq-item:hover { background: var(--paper-sink); }
-
+  .faq-item:hover {
+    background: var(--paper-sink);
+    border-color: oklch(from var(--spot) l c h / .3);
+    transform: translateY(-2px);
+  }
   .faq-item h3 {
     font-family: var(--font-display);
     font-size: 1rem;
@@ -620,12 +671,10 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     margin-bottom: 0.55rem;
     line-height: 1.35;
   }
-
   .faq-item p {
     font-size: 0.875rem;
     color: var(--ink-soft);
     line-height: 1.65;
-    font-style: normal;
   }
 
   /* ── Footer ── */
@@ -634,16 +683,13 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     background: var(--paper-sink);
     padding: 0;
   }
-
   .foot-top {
     display: grid;
     grid-template-columns: 1.4fr 2fr;
     gap: 2.75rem;
     padding: 2.5rem 0 1.75rem;
   }
-
   .foot-brand-col { display: flex; flex-direction: column; gap: 0.75rem; }
-
   .foot-logo {
     display: inline-flex;
     align-items: center;
@@ -655,9 +701,9 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     letter-spacing: 0.08em;
     text-transform: uppercase;
     transition: color 0.15s;
+    font-family: 'Inter', system-ui, sans-serif;
   }
   .foot-logo:hover { color: var(--ink); text-decoration: none; }
-
   .footer-fc {
     width: 26px; height: 20px;
     background: var(--ink); color: var(--paper);
@@ -666,27 +712,23 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     border-radius: 2px;
     flex-shrink: 0;
   }
-
   .foot-tag {
     font-size: 0.9rem;
     line-height: 1.55;
     color: var(--ink-soft);
     max-width: 38ch;
   }
-
   .foot-cols {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
   }
-
   .foot-col {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.55rem;
   }
-
   .foot-col h4 {
     font-size: 0.62rem;
     font-weight: 700;
@@ -694,8 +736,8 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     text-transform: uppercase;
     color: var(--ink-faint);
     margin-bottom: 0.2rem;
+    font-family: 'Inter', system-ui, sans-serif;
   }
-
   .foot-col a, .foot-col span {
     font-size: 0.9rem;
     color: var(--ink-soft);
@@ -703,7 +745,6 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     transition: color 0.15s;
   }
   .foot-col a:hover { color: var(--spot); text-decoration: none; }
-
   .foot-base {
     display: flex;
     justify-content: space-between;
@@ -715,34 +756,21 @@ const SITE = (Astro.site?.toString() ?? 'https://first-cup-kappa.vercel.app').re
     letter-spacing: 0.1em;
     color: var(--ink-faint);
     text-transform: uppercase;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   @media (max-width: 800px) {
-    .plans-grid {
-      grid-template-columns: 1fr;
-    }
-    .plans-divider {
-      flex-direction: row;
-      padding: 0 2rem;
-      height: 40px;
-      border-left: none;
-      border-right: none;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-    }
-    .pd-line { flex: 1; width: auto; height: 1px; }
-    .plan-card { padding: 2rem 1.5rem; }
-    .plan-badge { top: 0; transform: translate(-50%, -50%); }
+    .plans-grid { grid-template-columns: 1fr; }
+    .plan-card  { padding: 2rem 1.5rem; }
     .faq-grid   { grid-template-columns: 1fr; }
-    .faq-item   { border-right: none; }
     .foot-top   { grid-template-columns: 1fr; gap: 1.75rem; }
     .foot-cols  { grid-template-columns: repeat(3, 1fr); }
   }
 
   @media (max-width: 640px) {
-    .stats-strip { gap: 1rem; }
-    .foot-cols   { grid-template-columns: 1fr 1fr; }
-    .plan-card   { padding: 1.75rem 1.25rem; }
-    .price-amount { font-size: 2.75rem; }
+    .stats-strip    { gap: 1rem; }
+    .foot-cols      { grid-template-columns: 1fr 1fr; }
+    .plan-card      { padding: 1.75rem 1.25rem; }
+    .price-amount   { font-size: 2.75rem; }
   }
 </style>
