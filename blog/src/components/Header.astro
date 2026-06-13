@@ -31,16 +31,8 @@ function toRoman(n: number): string {
     <span class="dateline-left">{dateStr}</span>
 
     <span class="dateline-center">
-      <span class="live-pulse">
-        <span class="live-dot" aria-hidden="true"></span>
-        En prensa
-      </span>
-    </span>
-
-    <span class="dateline-right">
       <a href="/" class={`nav-link${p==='/' ? ' active' : ''}`}>Inicio</a>
       <a href="/bienvenido-a-first-cup" class={`nav-link${p==='/bienvenido-a-first-cup' ? ' active' : ''}`}>El Barista</a>
-
       <a href="/subscribe" class={`cta-btn${p==='/subscribe' ? ' active' : ''}`} aria-label="Suscribirse a First Cup">
         <span class="cta-shimmer"></span>
         <span class="cta-label">Suscribirse</span>
@@ -48,7 +40,9 @@ function toRoman(n: number): string {
           <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
+    </span>
 
+    <span class="dateline-right">
       <!-- iOS-style toggle -->
       <label class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
         <span class="toggle-label toggle-label--left">Latte</span>
@@ -192,37 +186,18 @@ function toRoman(n: number): string {
     font-size: 0.78rem;
   }
 
-  .dateline-center { text-align: center; }
-
-  .live-pulse {
-    display: inline-flex;
+  .dateline-center {
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: oklch(from var(--dl-text) l c h / .55);
+    justify-content: center;
+    gap: 1.25rem;
   }
 
-  .live-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--spot);
-    flex-shrink: 0;
-    animation: blip 2.4s ease-in-out infinite;
-  }
-  @keyframes blip {
-    0%,100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--spot) 60%, transparent); }
-    60%     { box-shadow: 0 0 0 6px transparent; }
-  }
-
-  /* ── Nav links ── */
+  /* ── Toggle-only right slot ── */
   .dateline-right {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 1.25rem;
   }
 
   .nav-link {
@@ -388,13 +363,12 @@ function toRoman(n: number): string {
 
   /* ── Responsive ── */
   @media (max-width: 720px) {
-    .dateline-center { display: none; }
-    .dateline-left   { display: none; }
-    .dateline-inner  { grid-template-columns: 1fr auto; }
-    .dateline-right  { gap: 0.8rem; }
+    .dateline-left  { display: none; }
+    .dateline-inner { grid-template-columns: 1fr auto; }
+    .dateline-center { gap: 0.8rem; }
   }
   @media (max-width: 480px) {
-    .nav-link:not([href="/subscribe"]) { display: none; }
+    .nav-link { display: none; }
     .toggle-label { display: none; }
   }
 
