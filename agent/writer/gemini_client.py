@@ -54,14 +54,28 @@ class GeminiClient:
             except Exception as exc:
                 log.warning("gemini_request_error", error=str(exc), attempt=attempt)
                 last_exc = exc
-                # Extract retry_delay from 429 grpc detail if available
+                err_str = str(exc)
+
+                # Daily quota exhausted — retrying won't help until tomorrow
+                _DAILY_QUOTA_MARKERS = (
+                    "PerDay",
+                    "GenerateRequestsPerDay",
+                    "RESOURCE_EXHAUSTED",
+                )
+                if any(m in err_str for m in _DAILY_QUOTA_MARKERS):
+                    log.warning("gemini_daily_quota_exceeded_no_retry")
+                    break
+
+                # Per-minute rate limit — extract suggested wait and retry
                 import re as _re
-                m = _re.search(r"retry_delay\s*\{\s*seconds:\s*(\d+)", str(exc))
-                wait = int(m.group(1)) + 5 if m else backoff
+                m = _re.search(r"retry_delay\s*\{\s*seconds:\s*(\d+)", err_str)
+                wait = int(m.group(1)) + 2 if m else backoff
+                # Cap wait so we fail fast and let Claude take over
+                wait = min(wait, 30)
                 if attempt < _RETRY_ATTEMPTS:
                     log.info("gemini_retry_backoff", wait_seconds=wait)
                     await asyncio.sleep(wait)
-                    backoff = min(backoff * 2, 120)
+                    backoff = min(backoff * 2, 60)
 
         self._log.error("gemini_all_retries_failed", attempts=_RETRY_ATTEMPTS, error=str(last_exc))
         raise last_exc  # type: ignore[misc]
