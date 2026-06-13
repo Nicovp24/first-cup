@@ -116,6 +116,7 @@ const blogSchema = {
               <!-- Eyebrow row -->
               <div class="lead-eyebrow">
                 <span class="kicker">{featured.data.tags[0] ?? 'Digest'}</span>
+                <span class="lead-edition gz-mono">Edición #{String(totalEditions).padStart(3,'0')}</span>
               </div>
 
               <!-- Two-column: image left, text right -->
@@ -126,6 +127,7 @@ const blogSchema = {
                         onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=900&q=80'" />
                     : <div class="lead-img-placeholder gz-mono">#{String(totalEditions).padStart(3,'0')}</div>
                   }
+                  <div class="lead-img-overlay" aria-hidden="true"></div>
                 </div>
 
                 <div class="lead-content">
@@ -136,7 +138,7 @@ const blogSchema = {
                       {featured.data.date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </time>
                     <span class="lead-byline-sep gz-mono" aria-hidden="true">·</span>
-                    <span class="lead-readon gz-mono">Leer artículo →</span>
+                    <span class="lead-readon">Leer artículo →</span>
                   </div>
                 </div>
               </a>
@@ -510,25 +512,40 @@ const blogSchema = {
   }
 
   /* ── LEAD — horizontal newspaper layout ── */
+  /* ── FEATURED / LEAD ── */
   .lead-wrap {
     padding-bottom: 3rem;
-    border-bottom: 3px double var(--ink);
     margin-bottom: 3rem;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .lead-wrap::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, var(--spot) 0%, oklch(from var(--spot) l c h / 0) 80%);
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
   }
 
   .lead-eyebrow {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--rule);
+    margin-bottom: 1.5rem;
+  }
+
+  .lead-edition {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .lead-link {
     display: grid;
-    grid-template-columns: 44% 1fr;
-    gap: 2.5rem;
+    grid-template-columns: 48% 1fr;
+    gap: 3rem;
     align-items: start;
     text-decoration: none;
     color: inherit;
@@ -537,12 +554,15 @@ const blogSchema = {
 
   .lead-img {
     overflow: hidden;
-    border: 1px solid var(--rule);
-    border-top: 2px solid var(--ink);
-    aspect-ratio: 4/3;
+    border-radius: 12px;
+    aspect-ratio: 16/10;
     width: 100%;
-    flex-shrink: 0;
     position: relative;
+    box-shadow: 0 4px 24px oklch(0 0 0 / .08);
+    transition: box-shadow 0.45s var(--spring);
+  }
+  .lead-link:hover .lead-img {
+    box-shadow: 0 10px 48px oklch(0 0 0 / .16);
   }
   .lead-img img {
     width: 100%; height: 100%;
@@ -550,7 +570,19 @@ const blogSchema = {
     transition: transform 0.65s var(--spring);
     display: block;
   }
-  .lead-link:hover .lead-img img { transform: scale(1.035); }
+  .lead-link:hover .lead-img img { transform: scale(1.04); }
+
+  .lead-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 40%,
+      oklch(0 0 0 / .38) 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+  }
 
   .lead-img-placeholder {
     width: 100%; height: 100%;
@@ -563,29 +595,33 @@ const blogSchema = {
     color: var(--rule);
     letter-spacing: 0.06em;
     min-height: 260px;
+    border-radius: inherit;
   }
 
   .lead-content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
     padding-top: 0.25rem;
   }
 
   .lead-title {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(1.8rem, 3.2vw, 3rem);
-    line-height: 1.08;
-    letter-spacing: -0.025em;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
     color: var(--ink);
+    font-feature-settings: "kern" 1, "liga" 1;
     transition: color 0.2s;
   }
   .lead-link:hover .lead-title { color: var(--spot); }
 
   .lead-stand {
-    font-size: 1rem;
-    line-height: 1.65;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.75;
     color: var(--ink-soft);
   }
 
@@ -594,22 +630,35 @@ const blogSchema = {
     align-items: center;
     gap: 0.75rem;
     flex-wrap: wrap;
-    padding: 0.65rem 0;
+    padding-top: 1rem;
+    margin-top: auto;
     border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
   }
 
   .lead-byline-sep { color: var(--rule); font-size: 0.8rem; }
 
   .lead-readon {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
     color: var(--spot);
-    letter-spacing: 0.01em;
-    transition: color 0.15s;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.3em 0.95em;
+    border: 1px solid oklch(from var(--spot) l c h / .35);
+    border-radius: 20px;
+    background: oklch(from var(--spot) l c h / .07);
+    transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
   }
-  .lead-link:hover .lead-readon { color: var(--spot-deep); }
+  .lead-link:hover .lead-readon {
+    background: var(--spot);
+    border-color: var(--spot);
+    color: oklch(1 0 0);
+    box-shadow: 0 2px 12px oklch(from var(--spot) l c h / .35);
+  }
 
 
   /* ── GRID OF POSTS ── */
