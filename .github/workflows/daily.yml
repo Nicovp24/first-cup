@@ -1,0 +1,55 @@
+name: Daily Agent
+
+on:
+  schedule:
+    # 06:00 UTC = 07:00 Madrid (invierno CET) / 08:00 (verano CEST)
+    - cron: '0 6 * * *'
+  # Permite lanzarlo manualmente desde GitHub → Actions → "Run workflow"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BLOG_GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure git
+        run: |
+          git config --global user.email "agent@first-cup.es"
+          git config --global user.name "First Cup Agent"
+          git remote set-url origin https://x-access-token:${{ secrets.BLOG_GITHUB_TOKEN }}@github.com/${{ secrets.BLOG_GITHUB_REPO }}.git
+
+      - name: Run agent
+        env:
+          GROQ_API_KEY:         ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY:    ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:         ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GITHUB_TOKEN:         ${{ secrets.BLOG_GITHUB_TOKEN }}
+          BLOG_GITHUB_TOKEN:    ${{ secrets.BLOG_GITHUB_TOKEN }}
+          BLOG_GITHUB_REPO:     ${{ secrets.BLOG_GITHUB_REPO }}
+          BLOG_REPO_PATH:       ${{ github.workspace }}/blog
+          REDDIT_CLIENT_ID:     ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          TELEGRAM_BOT_TOKEN:   ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID:  ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          RESEND_API_KEY:       ${{ secrets.RESEND_API_KEY }}
+          TIMEZONE:             Europe/Madrid
+        run: python -m agent.main

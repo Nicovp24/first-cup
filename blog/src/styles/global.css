@@ -388,8 +388,8 @@ html[data-theme="espresso"] .prose a:hover {
   opacity: 0.28;
 }
 
-/* gz-mono utility */
-.gz-mono { font-family: 'Times New Roman', Times, serif; }
+/* gz-mono utility — UI labels, meta, buttons */
+.gz-mono { font-family: 'Inter', system-ui, sans-serif; }
 
 /* ── Robot art ── */
 .robot-wrap {

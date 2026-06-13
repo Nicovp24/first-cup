@@ -413,15 +413,16 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 500;
     color: var(--ink-soft);
     margin-bottom: 2rem;
-    transition: color 0.15s;
+    transition: color 0.18s, gap 0.18s;
     text-decoration: none;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
-  .back-link:hover { color: var(--spot); text-decoration: none; }
+  .back-link:hover { color: var(--spot); gap: 0.6rem; text-decoration: none; }
 
   /* ── Layout: article + sidebar ── */
   .layout {
@@ -459,11 +460,14 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
 
   .eyebrow-tag { font-size: 0.62rem; }
   .edition-chip {
-    font-size: 0.6rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
     color: var(--ink-faint);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     border: 1px solid var(--rule);
-    padding: 0.1rem 0.45rem;
+    border-radius: 20px;
+    padding: 0.18rem 0.65rem;
     white-space: nowrap;
   }
 
@@ -509,18 +513,26 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   }
 
   .byline-author {
-    font-size: 0.7rem;
-    font-weight: 700;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
     color: var(--ink);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.01em;
   }
 
   .byline-sep { color: var(--rule); font-size: 0.8rem; }
 
+  .byline {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+  }
+
   .read-time {
-    font-size: 0.66rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.72rem;
     color: var(--ink-faint);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.01em;
   }
 
   /* ── Share ── */
@@ -541,19 +553,27 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   .share-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-    font-size: 0.62rem;
+    gap: 0.35rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
     color: var(--ink-soft);
-    background: none;
+    background: var(--paper-2);
     border: 1px solid var(--rule);
-    padding: 0.22rem 0.55rem;
+    padding: 0.3rem 0.75rem;
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
+    transition: color 0.18s, border-color 0.18s, background 0.18s, box-shadow 0.18s;
     text-decoration: none;
-    letter-spacing: 0.05em;
-    border-radius: 2px;
+    border-radius: 20px;
+    white-space: nowrap;
   }
-  .share-btn:hover { color: var(--spot); border-color: oklch(from var(--spot) l c h / .4); text-decoration: none; }
+  .share-btn:hover {
+    color: var(--spot);
+    border-color: oklch(from var(--spot) l c h / .5);
+    background: oklch(from var(--spot) l c h / .07);
+    box-shadow: 0 2px 8px oklch(from var(--spot) l c h / .15);
+    text-decoration: none;
+  }
 
   /* ── Prose content ── */
   .article-content {
@@ -565,15 +585,16 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   .sources-section {
     background: var(--paper-sink);
     border: 1px solid var(--rule);
-    border-left: 3px solid var(--spot);
+    border-radius: 10px;
     padding: 1.25rem 1.5rem;
     margin-bottom: 2.5rem;
   }
 
   .sources-title {
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.62rem;
     font-weight: 700;
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     text-transform: uppercase;
     letter-spacing: 0.12em;
     margin-bottom: 0.9rem;
@@ -591,17 +612,20 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   .source-link:hover .source-domain { color: var(--spot); }
 
   .source-num {
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.6rem;
+    font-weight: 600;
     color: var(--spot);
     background: oklch(from var(--spot) l c h / .1);
     border: 1px solid oklch(from var(--spot) l c h / .2);
-    border-radius: 2px;
-    padding: 0.04rem 0.28rem;
+    border-radius: 20px;
+    padding: 0.05rem 0.4rem;
     flex-shrink: 0;
     min-width: 1.4rem;
     text-align: center;
   }
   .source-domain {
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--ink);
@@ -609,6 +633,7 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     transition: color 0.15s;
   }
   .source-url {
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.65rem;
     color: var(--ink-faint);
     overflow: hidden;
@@ -626,7 +651,8 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     flex-direction: column;
     gap: 0;
     border: 1px solid var(--rule);
-    border-top: 3px double var(--ink);
+    border-radius: 12px;
+    overflow: hidden;
   }
 
   .sidebar-section {
@@ -636,6 +662,7 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   .sidebar-section:last-child { border-bottom: none; }
 
   .sidebar-head {
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.58rem;
     font-weight: 700;
     color: var(--ink-faint);
@@ -645,6 +672,7 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   }
 
   .sidebar-edition {
+    font-family: var(--font-display);
     font-size: 1.4rem;
     font-weight: 800;
     color: var(--spot);
@@ -661,6 +689,7 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     gap: 0.3rem;
   }
   .sidebar-sources a {
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.8rem;
     color: var(--ink-soft);
     text-decoration: none;
@@ -671,37 +700,50 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   .sidebar-cta-mini { background: oklch(from var(--spot) l c h / .05); }
 
   .sidebar-cta-text {
-    font-size: 0.7rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.78rem;
     color: var(--ink-soft);
-    letter-spacing: 0.04em;
     margin-bottom: 0.65rem;
     line-height: 1.5;
   }
 
   .sidebar-cta-btn {
+    position: relative;
     display: block;
     text-align: center;
     background: var(--spot);
-    color: var(--paper-2);
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 0.55rem 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    color: var(--paper);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.6rem 0.75rem;
+    letter-spacing: 0.02em;
     text-decoration: none;
-    transition: background 0.18s;
-    border-radius: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   }
-  .sidebar-cta-btn:hover { background: var(--spot-deep); text-decoration: none; }
+  .sidebar-cta-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, transparent 35%, oklch(1 0 0 / .2) 50%, transparent 65%);
+    transform: translateX(-100%);
+    transition: transform 0.45s cubic-bezier(.16,1,.3,1);
+  }
+  .sidebar-cta-btn:hover {
+    background: var(--spot-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px oklch(from var(--spot) l c h / .35);
+    text-decoration: none;
+  }
+  .sidebar-cta-btn:hover::before { transform: translateX(100%); }
 
   /* ── Post nav ── */
   .post-nav {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
+    gap: 0.75rem;
     margin-bottom: 0;
-    border: 1px solid var(--ink);
-    border-top: 3px double var(--ink);
   }
 
   .nav-post {
@@ -710,23 +752,30 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     gap: 0.3rem;
     padding: 1.1rem 1.4rem;
     text-decoration: none;
-    transition: background 0.2s;
-    border-right: 1px solid var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
   }
-  .nav-post:last-child { border-right: none; }
-  .nav-post:hover { background: var(--paper-sink); text-decoration: none; }
+  .nav-post:hover {
+    background: var(--paper-sink);
+    border-color: oklch(from var(--spot) l c h / .4);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
   .nav-next { text-align: right; }
 
   .nav-dir {
-    font-size: 0.6rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.62rem;
+    font-weight: 600;
     color: var(--spot);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
   }
 
   .nav-ptitle {
     font-family: var(--font-display);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: var(--ink-soft);
     line-height: 1.35;
@@ -761,9 +810,10 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
 
   .coupon-kicker {
     display: block;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.1em;
     color: var(--spot);
     margin-bottom: 0.75rem;
     text-transform: uppercase;
@@ -796,38 +846,67 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   }
 
   .coupon-input {
-    font-size: 0.875rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.88rem;
     color: var(--ink);
     background: var(--paper);
-    border: 1px solid var(--ink);
-    padding: 0.8rem 1rem;
+    border: 1px solid var(--rule);
+    padding: 0.8rem 1.1rem;
     min-width: 240px;
     outline: none;
-    transition: border-color 0.12s;
-    border-radius: 0;
+    border-radius: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .coupon-input:focus { border-color: var(--spot); }
+  .coupon-input:focus {
+    border-color: oklch(from var(--spot) l c h / .7);
+    box-shadow: 0 0 0 3px oklch(from var(--spot) l c h / .14);
+  }
   .coupon-input::placeholder { color: var(--ink-faint); }
 
   .coupon-btn {
+    position: relative;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.82rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--paper-2);
+    letter-spacing: 0.03em;
+    color: var(--paper);
     background: var(--spot);
-    padding: 0.8rem 1.4rem;
+    padding: 0.8rem 1.6rem;
     border: none;
     cursor: pointer;
-    transition: background 0.18s;
+    border-radius: 10px;
     white-space: nowrap;
-    border-radius: 0;
-    text-transform: uppercase;
+    overflow: hidden;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   }
-  .coupon-btn:hover { background: var(--spot-deep); }
+  .coupon-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, transparent 35%, oklch(1 0 0 / .22) 50%, transparent 65%);
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(.16,1,.3,1);
+  }
+  .coupon-btn:hover:not(:disabled) {
+    background: var(--spot-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px oklch(from var(--spot) l c h / .35);
+  }
+  .coupon-btn:hover::before { transform: translateX(100%); }
   .coupon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .coupon-error { margin-top: 0.6rem; font-size: 0.75rem; color: oklch(0.55 0.22 28); }
-  .coupon-done  { margin-top: 0.75rem; font-size: 0.82rem; color: var(--spot-deep); padding: 0.5rem 0; }
+  .coupon-error {
+    margin-top: 0.6rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.75rem;
+    color: oklch(0.55 0.22 28);
+  }
+  .coupon-done {
+    margin-top: 0.75rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.82rem;
+    color: var(--spot-deep);
+    padding: 0.5rem 0;
+  }
 
   .coupon-fine {
     display: flex;
@@ -835,8 +914,9 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 1.1rem;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.65rem;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.03em;
     color: var(--ink-faint);
   }
 
@@ -981,13 +1061,14 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.2s, border-color 0.2s, transform 0.25s var(--spring), opacity 0.2s;
+    transition: color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.25s var(--spring), opacity 0.2s;
     z-index: 200;
-    border-radius: 2px;
+    border-radius: 10px;
   }
   .btt:hover, .focus-fab:hover {
     color: var(--spot);
     border-color: oklch(from var(--spot) l c h / .4);
+    box-shadow: 0 4px 12px oklch(from var(--spot) l c h / .2);
     transform: scale(1.08);
   }
 
