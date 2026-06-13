@@ -9,43 +9,53 @@ interface Props {
   featured?: boolean;
   editionNum?: number;
   cover?: string;
+  breaking?: boolean;
 }
 
-const { title, slug, date, description, tags, index, featured = false, editionNum, cover } = Astro.props;
+const { title, slug, date, description, tags, index, featured = false, editionNum, cover, breaking = false } = Astro.props;
 const d = date.toLocaleDateString('es-ES', { day:'numeric', month:'short', year:'numeric' });
 const iso = date.toISOString();
-const delay = (index ?? 0) * 50;
+const delay = (index ?? 0) * 60;
 const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` : null;
 ---
 
 <article
-  class:list={['story-card', { 'story-card--has-img': !!cover }]}
+  class:list={['story-card', { 'story-card--has-img': !!cover, 'story-card--breaking': breaking }]}
   style={`animation-delay:${delay}ms`}
   data-tags={tags.join(',')}
   data-title={title.toLowerCase()}
 >
+  <div class="story-glow" aria-hidden="true"></div>
+
   <a href={`/${slug}`} class="story-link">
 
     {cover && (
       <div class="story-img">
         <img src={cover} alt="" loading="lazy" decoding="async"
           onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=900&q=80'" />
+        {breaking && <span class="breaking-badge" aria-label="Noticia urgente">⚡ Breaking</span>}
       </div>
     )}
 
     <div class="story-body">
       <div class="story-top">
+        {breaking && !cover && <span class="breaking-badge breaking-badge--inline" aria-label="Noticia urgente">⚡ Breaking</span>}
         {tags.slice(0,2).map(t => <span class="kicker story-kicker">{t}</span>)}
-        {edition && <span class="edition-chip gz-mono">{edition}</span>}
+        {edition && <span class="edition-chip">{edition}</span>}
       </div>
 
       <h2 class="story-title">{title}</h2>
 
-      <p class="story-stand">{description.length > 100 ? description.slice(0, 100) + '…' : description}</p>
+      <p class="story-stand">{description.length > 110 ? description.slice(0, 110) + '…' : description}</p>
 
       <div class="story-foot">
-        <time class="story-date gz-mono rel-time" datetime={iso}>{d}</time>
-        <span class="story-readon gz-mono">Leer →</span>
+        <time class="story-date rel-time" datetime={iso}>{d}</time>
+        <span class="story-readon">
+          Leer
+          <svg class="readon-arrow" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M2 6.5h9M8 3L11 6.5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
       </div>
     </div>
 
@@ -68,36 +78,84 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
 </script>
 
 <style>
+  /* ── Base card ── */
   .story-card {
     position: relative;
     opacity: 0;
     animation: fade-up .55s var(--spring) both;
     animation-play-state: paused;
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
     background: var(--paper);
-    transition: background 0.2s, box-shadow 0.25s;
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    transition:
+      transform 0.3s cubic-bezier(.16,1,.3,1),
+      box-shadow 0.3s cubic-bezier(.16,1,.3,1),
+      border-color 0.3s;
+    overflow: hidden;
   }
   .story-card.in-view { animation-play-state: running; }
-  .story-card:hover {
-    background: var(--paper-sink);
-    box-shadow: inset 0 2px 0 var(--spot);
+
+  /* Gradient glow layer — UIverse-style border glow on hover */
+  .story-glow {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      oklch(from var(--spot) l c h / .0) 0%,
+      oklch(from var(--spot) l c h / .0) 100%
+    );
+    z-index: 0;
+    transition: opacity 0.35s;
+    pointer-events: none;
+    opacity: 0;
   }
 
+  .story-card:hover {
+    transform: translateY(-4px);
+    border-color: oklch(from var(--spot) l c h / .55);
+    box-shadow:
+      0 0 0 1px oklch(from var(--spot) l c h / .18),
+      0 8px 24px oklch(from var(--spot) l c h / .12),
+      0 2px 6px oklch(0 0 0 / .08);
+  }
+  .story-card:hover .story-glow {
+    opacity: 1;
+    background: linear-gradient(
+      135deg,
+      oklch(from var(--spot) l c h / .12) 0%,
+      transparent 50%
+    );
+  }
+
+  /* Breaking variant — always has a spot-colored left border */
+  .story-card--breaking {
+    border-left: 3px solid var(--spot);
+  }
+  .story-card--breaking:hover {
+    box-shadow:
+      0 0 0 1px oklch(from var(--spot) l c h / .3),
+      0 8px 28px oklch(from var(--spot) l c h / .2),
+      0 2px 6px oklch(0 0 0 / .1);
+  }
+
+  /* ── Inner link ── */
   .story-link {
     display: flex;
     flex-direction: column;
     height: 100%;
     text-decoration: none;
     color: inherit;
+    position: relative;
+    z-index: 1;
   }
   .story-link:hover { text-decoration: none; }
 
+  /* ── Cover image ── */
   .story-img {
-    margin: 0;
     height: 200px;
     overflow: hidden;
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule-soft);
     flex-shrink: 0;
     position: relative;
     background: var(--paper-sink);
@@ -106,52 +164,91 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
     width: 100%; height: 100%;
     object-fit: cover;
     object-position: center 30%;
-    transition: transform 0.55s var(--spring);
+    transition: transform 0.6s cubic-bezier(.16,1,.3,1);
     display: block;
   }
-  .story-card:hover .story-img img { transform: scale(1.04); }
+  .story-card:hover .story-img img { transform: scale(1.06); }
 
+  /* ── Breaking badge ── */
+  .breaking-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: var(--spot);
+    color: #fff;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    animation: badge-pulse 2.5s ease-in-out infinite;
+  }
+  .breaking-badge--inline {
+    position: static;
+    border-radius: 3px;
+    margin-right: 2px;
+  }
+  @keyframes badge-pulse {
+    0%,100% { box-shadow: 0 0 0 0 oklch(from var(--spot) l c h / .5); }
+    50%     { box-shadow: 0 0 0 5px oklch(from var(--spot) l c h / .0); }
+  }
+
+  /* ── Body ── */
   .story-body {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
-    padding: 1.25rem 1.4rem 1.4rem;
+    gap: 0.6rem;
+    padding: 1.2rem 1.35rem 1.35rem;
     flex: 1;
   }
 
   .story-top {
     display: flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.4rem;
     flex-wrap: wrap;
   }
 
   .story-kicker {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
+    padding: 2px 7px;
+    border-radius: 2px;
+    border: 1px solid oklch(from var(--spot) l c h / .35);
+    background: oklch(from var(--spot) l c h / .07);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .story-card:hover .story-kicker {
+    background: oklch(from var(--spot) l c h / .12);
+    border-color: oklch(from var(--spot) l c h / .5);
   }
 
   .edition-chip {
     font-family: 'Times New Roman', Times, serif;
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     color: var(--ink-faint);
     letter-spacing: 0.02em;
     margin-left: auto;
   }
 
+  /* ── Title ── */
   .story-title {
     font-family: var(--font-display);
-    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    font-size: clamp(1.05rem, 1.7vw, 1.22rem);
     font-weight: 700;
     color: var(--ink);
     line-height: 1.28;
     letter-spacing: -0.012em;
-    transition: color 0.18s;
+    transition: color 0.2s;
     flex: 1;
   }
   .story-card:hover .story-title { color: var(--spot); }
 
+  /* ── Stand ── */
   .story-stand {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: var(--ink-soft);
     line-height: 1.6;
     display: -webkit-box;
@@ -160,6 +257,7 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
     overflow: hidden;
   }
 
+  /* ── Footer ── */
   .story-foot {
     display: flex;
     align-items: center;
@@ -171,19 +269,24 @@ const edition = editionNum != null ? `#${String(editionNum).padStart(3, '0')}` :
   }
 
   .story-date {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 0.82rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.76rem;
     color: var(--ink-faint);
     letter-spacing: 0.01em;
   }
 
   .story-readon {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 0.82rem;
-    font-weight: 700;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
     color: var(--spot);
     letter-spacing: 0.01em;
-    transition: color 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: gap 0.2s cubic-bezier(.16,1,.3,1), color 0.2s;
   }
-  .story-card:hover .story-readon { color: var(--spot-deep); }
+  .story-card:hover .story-readon { gap: 7px; }
+  .readon-arrow { transition: transform 0.2s cubic-bezier(.16,1,.3,1); }
+  .story-card:hover .readon-arrow { transform: translateX(2px); }
 </style>

@@ -161,29 +161,42 @@ img { max-width: 100%; height: auto; }
 .kicker {
   display: inline-block;
   font-family: 'Times New Roman', Times, serif;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 700;
   font-style: normal;
   letter-spacing: 0.01em;
   color: var(--spot);
+  padding: 2px 8px;
+  border-radius: 2px;
+  border: 1px solid oklch(from var(--spot) l c h / .35);
+  background: oklch(from var(--spot) l c h / .07);
 }
 
 .byline {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 0.86rem;
-  letter-spacing: 0.02em;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
   color: var(--ink-soft);
 }
 
 .tag {
   display: inline-block;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 0.78rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 500;
   color: var(--ink-soft);
-  border: 1px solid var(--rule);
-  padding: 0.06rem 0.38rem;
-  letter-spacing: 0.02em;
+  border: 1px solid var(--rule-soft);
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.01em;
   white-space: nowrap;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  cursor: default;
+}
+.tag:hover {
+  border-color: oklch(from var(--spot) l c h / .5);
+  background: oklch(from var(--spot) l c h / .07);
+  color: var(--spot);
 }
 
 /* ── Prose ── */
