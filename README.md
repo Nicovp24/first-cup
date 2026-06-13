@@ -1,33 +1,33 @@
-# First Cup ☕
+# First Cup
 
-**First Cup** es un diario tech autónomo en español. Un agente de IA rastrea cientos de fuentes cada día, redacta artículos de 700-1000 palabras con Claude y los publica automáticamente en [first-cup.es](https://first-cup.es). Los suscriptores reciben el digest por email. Hay un plan gratuito y uno Premium con Stripe.
+**First Cup** es un diario tech autónomo en español. Un agente de IA rastrea fuentes cada día, redacta artículos editoriales con LLMs y los publica automáticamente en [first-cup.es](https://first-cup.es). Los suscriptores reciben el digest por email; hay un plan gratuito y uno Premium.
 
 ---
 
-## Cómo funciona — visión general
+## Arquitectura
 
 ```
-GitHub Actions (cron 07:00 y 15:00 Madrid)
-              │
-              ▼
-   ┌──────────────────────────────┐
-   │       LangGraph Pipeline     │
-   │                              │
-   │  scrape → write → publish    │
-   │       → notify → email       │
-   └──────────────────────────────┘
-        │          │         │
-        ▼          ▼         ▼
-   Supabase    blog/src/   Telegram
-   (posts,     content/    (canal)
-   scraped,    posts/*.md
-   subs)           │
-                   ▼
-             git push → Vercel
-             (redeploy automático)
-                   │
-                   ▼
-            first-cup.es 🌐
+cron (07:00 Madrid)
+        │
+        ▼
+┌─────────────────────────────────┐
+│        LangGraph Pipeline       │
+│                                 │
+│  scrape → write → publish       │
+│         → notify → email        │
+└─────────────────────────────────┘
+      │           │           │
+      ▼           ▼           ▼
+  Supabase    blog/src/    Telegram
+  (posts,     content/     (canal)
+  scraped,    posts/*.md
+  subs)           │
+                  ▼
+            git push → Vercel
+            (redeploy automático)
+                  │
+                  ▼
+           first-cup.es
 ```
 
 ---
@@ -36,102 +36,88 @@ GitHub Actions (cron 07:00 y 15:00 Madrid)
 
 | Capa | Tecnología |
 |------|-----------|
-| Orquestación | LangGraph 0.2 |
-| LLM principal | Groq (`llama-3.3-70b-versatile`, gratuito y rápido) |
-| LLM fallback | Claude Sonnet 4.6 → Gemini |
-| Scraping | feedparser · httpx · BeautifulSoup4 · lxml |
+| Orquestación | LangGraph |
+| LLM primario | Groq (`llama-3.3-70b-versatile`) |
+| LLM fallback 1 | Google Gemini 2.0 Flash |
+| LLM fallback 2 | Anthropic Claude Sonnet |
+| Scraping | httpx · feedparser · BeautifulSoup4 · lxml |
 | Base de datos | Supabase (PostgreSQL) |
-| Blog | Astro 4 · `output: hybrid` · Vercel serverless |
-| Publicación | GitPython → GitHub → Vercel redeploy |
+| Blog | Astro · `output: hybrid` · Vercel serverless |
+| Publicación | subprocess git → GitHub → Vercel redeploy |
 | Email | Resend (confirmación + digest diario) |
 | Pagos | Stripe Checkout + webhooks |
 | Notificaciones | Telegram Bot API |
-| Scheduling | GitHub Actions cron |
 | Config | pydantic-settings |
-| Logs | structlog (JSON estructurado) |
+| Logs | structlog |
 | Runtime | Python 3.12 |
 
 ---
 
-## Pipeline paso a paso
+## Pipeline
 
 ### 1. `scrape` — Rastreo paralelo
 
-Ejecuta todos los scrapers en paralelo con `asyncio.gather`. Fuentes:
+Todos los scrapers corren en paralelo con `asyncio.gather`:
 
-| Scraper | Fuente | Qué obtiene |
-|---------|--------|-------------|
-| `HackerNewsScraper` | HN Algolia API | Top stories del día |
-| `GitHubTrendingScraper` | github.com/trending | Repos trending (HTML) |
-| `GitHubAPIScraper` | GitHub Search API | Repos con más stars recientes |
-| `RSSScraper` | 7 feeds (Simon Willison, HuggingFace, TechCrunch…) | Artículos del día |
+| Scraper | Fuente | Contenido |
+|---------|--------|-----------|
+| `HackerNewsScraper` | HN Algolia API | Top stories del día (≥50 puntos) |
+| `GitHubTrendingScraper` | github.com/trending | Repos trending diarios |
+| `GitHubAPIScraper` | GitHub Search API | Repos con actividad reciente |
+| `RSSScraper` | TechCrunch AI, The Verge AI, VentureBeat, Ars Technica, Wired, HuggingFace Blog, Simon Willison | Artículos de las últimas 24h |
 | `RedditScraper` | Reddit OAuth2 | Posts top de r/MachineLearning, r/LocalLLaMA, r/Python… |
-| `ArXivScraper` | ArXiv Atom | Papers de cs.AI, cs.LG recientes |
+| `ArXivScraper` | ArXiv Atom | Papers cs.AI / cs.LG recientes |
 | `DevToScraper` | Dev.to API | Artículos trending |
 | `ProductHuntScraper` | Product Hunt GraphQL | Productos del día |
 
-**Deduplicación:** Se compara cada URL contra la tabla `published_posts` de Supabase. URLs ya publicadas se descartan. Dentro del mismo run, duplicados entre scrapers también se eliminan.
+**Deduplicación en dos capas:**
+
+- **GitHub repos** (`github_trending`, `github_api`): bloqueados permanentemente después del primer scrape via tabla `scraped_items`. Los repos trendan todos los días — una vez cubiertos, nunca vuelven a entrar.
+- **Noticias** (resto de fuentes): nunca bloqueadas permanentemente. Rotan de forma natural; sólo se deduplican dentro del mismo run.
 
 ### 2. `write` — Redacción con IA
 
 `DigestWriter` hace dos llamadas al LLM:
 
-1. **Selección editorial**: El LLM recibe todos los items scrapeados en JSON (con título, resumen, fuente, score, stars de GitHub, lenguaje, forks, topics) y selecciona los N mejores según relevancia e impacto (N = `STORIES_PER_RUN`, por defecto 6).
+**Selección editorial** — el LLM recibe los items en JSON y elige los 8 mejores. Regla absoluta en código y en prompt:
+- Máximo 2 repositorios de GitHub por run, sin excepción
+- Mínimo 6 artículos de fuentes de noticias reales
+- Prioridad 1: lanzamientos de modelos de IA (siempre breaking)
 
-2. **Redacción por artículo**: Por cada item seleccionado, escribe un artículo en español de 700-1000 palabras con esta estructura:
-   - Hook periodístico (1 párrafo)
-   - Contexto y antecedentes
-   - Análisis técnico en profundidad
-   - Implicaciones para la industria
-   - Limitaciones y puntos críticos
-   - Blockquote destacado
-   - "Ver también" con 2-3 enlaces relevantes
-   - Bottom line (1 frase)
+El límite de 2 repos se aplica en dos puntos del código: antes de serializar los items (el LLM solo ve 2 repos en el pool) y después de la selección (cualquier repo adicional que el LLM elija se descarta).
 
-   También genera: título SEO, descripción meta, tags en español, imagen de portada (OG image de GitHub para repos, o imagen del artículo original).
+**Redacción** — por cada item seleccionado, escribe un artículo en español de ~600 palabras:
+- Apertura periodística (hecho más importante primero)
+- 3-4 secciones con `##` headers
+- Blockquote con cita real del README, paper o release notes
+- Bottom line en negrita
+- "Ver también" con enlaces
 
-**Prioridad de cliente IA:** Groq (gratis, rápido) → Claude (pago) → Gemini (pago).
+También genera: título SEO, descripción meta, tags en español, y keywords para imagen de portada.
 
-### 3. `publish` — Publicación en el blog
+### 3. `publish` — Publicación
 
-`GitPublisher` escribe cada artículo como un archivo `.md` en `blog/src/content/posts/` con frontmatter Astro-compatible:
+`GitPublisher` escribe cada artículo como `.md` en `blog/src/content/posts/` con frontmatter Astro-compatible, luego hace `git pull --rebase` + `git add` + `git commit` + `git push`. Vercel detecta el push y redespliega. Los posts también se guardan en Supabase.
 
+Frontmatter ejemplo:
 ```yaml
 ---
-title: "Título del artículo"
-description: "Meta description SEO"
-date: 2026-06-07T07:00:00Z
-tags: ["IA", "GitHub", "Python"]
-cover: "https://opengraph.github.com/repo/owner/repo"
-source_urls: ["https://github.com/owner/repo"]
+title: "Claude Fable 5: el modelo más proactivo de Anthropic"
+description: "Anthropic lanza Fable 5, su modelo con razonamiento extendido..."
+date: 2026-06-12T07:00:00Z
+tags: ["IA", "Anthropic", "LLMs"]
+cover: "https://images.unsplash.com/photo-..."
+source_urls: ["https://www.anthropic.com/news/fable-5"]
 ---
 ```
 
-Luego hace `git add`, `git commit` y `git push` al repositorio. Vercel detecta el push y redespliega automáticamente. Los posts también se guardan en Supabase (`posts` table).
-
 ### 4. `notify` — Telegram
 
-Envía un mensaje por cada post al canal de Telegram configurado. No-op si `TELEGRAM_BOT_TOKEN` no está definido.
+Envía un mensaje por post al canal configurado. No-op si `TELEGRAM_BOT_TOKEN` no está definido.
 
 ### 5. `email` — Newsletter
 
-`EmailNewsletter` consulta la tabla `subscribers` (solo `confirmed=true` y `unsubscribed_at IS NULL`), construye un email HTML estilo periódico por cada post y los envía vía **Resend batch API**. Cada email incluye un enlace de cancelación personalizado con el `confirm_token` del suscriptor.
-
----
-
-## Blog (Astro)
-
-El blog en `blog/` es una aplicación Astro 4 con:
-
-- **`output: hybrid`**: páginas estáticas + rutas API serverless en Vercel
-- **Tema dual**: Latte (crema) / Espresso (oscuro) con toggle
-- **Ediciones**: los posts se agrupan por día. Cada día es una edición numerada (`#001`, `#002`…). La home muestra la última; `/edicion/N` las anteriores.
-- **API routes** (todas serverless en Vercel):
-  - `POST /api/subscribe` — guarda email en Supabase, envía email de confirmación con token único
-  - `GET /api/confirm?token=...` — marca `confirmed=true`
-  - `GET /api/unsubscribe?token=...` — marca `unsubscribed_at=now()`
-  - `POST /api/checkout` — crea Stripe Checkout Session y devuelve URL
-  - `POST /api/stripe-webhook` — verifica firma HMAC-SHA256, actualiza tier en Supabase
+Envía el digest a suscriptores confirmados vía Resend. Incluye los artículos completos más "shots" (items scrapeados no seleccionados para artículo). Cada email lleva un enlace de baja personalizado.
 
 ---
 
@@ -141,65 +127,45 @@ El blog en `blog/` es una aplicación Astro 4 con:
 nexus-digest/
 ├── agent/
 │   ├── config.py                  # Settings singleton (pydantic-settings)
-│   ├── main.py                    # Entry point: run_agent() + run_breaking_news()
+│   ├── main.py                    # Entry point
 │   ├── graph/
-│   │   ├── graph.py               # LangGraph pipeline (scrape→write→publish→notify→email)
-│   │   └── nodes.py               # Nodos del pipeline + AgentState TypedDict
+│   │   ├── graph.py               # LangGraph: scrape→write→publish→notify→email
+│   │   └── nodes.py               # Nodos del pipeline + AgentState
 │   ├── scraper/
 │   │   ├── base.py                # ScraperBase + ScrapedItem dataclass
-│   │   ├── hackernews.py          # HN Algolia API
-│   │   ├── github_trending.py     # GitHub trending (HTML scraping)
-│   │   ├── github_api.py          # GitHub Search API
-│   │   ├── arxiv.py               # ArXiv Atom feed
-│   │   ├── reddit.py              # Reddit OAuth2
-│   │   ├── rss.py                 # feedparser multi-feed
-│   │   ├── devto.py               # Dev.to API
-│   │   └── producthunt.py         # Product Hunt GraphQL
+│   │   ├── hackernews.py
+│   │   ├── github_trending.py
+│   │   ├── github_api.py
+│   │   ├── arxiv.py
+│   │   ├── reddit.py
+│   │   ├── rss.py                 # feedparser multi-feed (8 fuentes)
+│   │   ├── devto.py
+│   │   └── producthunt.py
 │   ├── writer/
-│   │   ├── groq_client.py         # Groq API (prioritario, gratuito)
-│   │   ├── claude_client.py       # Anthropic SDK wrapper
-│   │   ├── gemini_client.py       # Google Gemini wrapper
-│   │   ├── prompts.py             # Prompts en español (editor + artículo)
-│   │   └── writer.py              # DigestWriter: selección + redacción
+│   │   ├── composite_client.py    # Groq → Gemini → Claude fallback
+│   │   ├── groq_client.py
+│   │   ├── gemini_client.py
+│   │   ├── claude_client.py
+│   │   ├── prompts.py             # Prompts en español
+│   │   └── writer.py             # DigestWriter: selección + redacción + límite repos
 │   ├── publisher/
 │   │   ├── markdown.py            # Genera frontmatter Astro
-│   │   └── git_publisher.py       # GitPython: commit + push
+│   │   └── git_publisher.py       # subprocess git commit + push
 │   ├── notifier/
-│   │   ├── telegram.py            # Telegram Bot API
-│   │   └── email_newsletter.py    # Resend batch + HTML template
+│   │   ├── telegram.py
+│   │   ├── email_newsletter.py    # Resend batch + HTML template
+│   │   └── linkedin.py
 │   └── db/
-│       ├── posts.py               # CRUD: posts + scraped_items
-│       └── subscribers.py         # CRUD: subscribers (confirm, tier, unsubscribe)
-├── blog/                          # Astro 4 blog
-│   ├── src/
-│   │   ├── pages/
-│   │   │   ├── index.astro        # Homepage con ediciones
-│   │   │   ├── [slug].astro       # Post individual
-│   │   │   ├── edicion/[num].astro # Ediciones anteriores
-│   │   │   ├── subscribe.astro    # Página de suscripción (free + premium)
-│   │   │   ├── confirmed.astro    # Página post-confirmación
-│   │   │   ├── unsubscribed.astro # Página post-cancelación
-│   │   │   ├── success.astro      # Página post-pago Stripe
-│   │   │   └── api/
-│   │   │       ├── subscribe.ts   # POST: guarda suscriptor + email confirmación
-│   │   │       ├── confirm.ts     # GET: confirma suscriptor
-│   │   │       ├── unsubscribe.ts # GET: cancela suscriptor
-│   │   │       ├── checkout.ts    # POST: crea Stripe Checkout Session
-│   │   │       └── stripe-webhook.ts # POST: webhook Stripe (HMAC verify)
-│   │   ├── components/
-│   │   │   ├── Header.astro       # Dateline bar + masthead + tema toggle
-│   │   │   ├── PostCard.astro     # Card de post para el grid
-│   │   │   ├── SubscribeForm.astro # Formulario de suscripción inline
-│   │   │   └── SEO.astro          # Meta tags + OG + JSON-LD
-│   │   ├── content/
-│   │   │   └── posts/*.md         # Posts generados por el agente
-│   │   └── styles/global.css      # Tokens CSS oklch + temas latte/espresso
-│   └── astro.config.mjs
+│       ├── posts.py               # CRUD: posts + scraped_items + dedup
+│       └── subscribers.py         # CRUD: subscribers
+├── blog/                          # Astro blog
+│   └── src/
+│       ├── pages/                 # index, [slug], edicion/[num], api/*
+│       ├── components/            # Header, PostCard, SubscribeForm, SEO
+│       ├── content/posts/         # .md generados por el agente
+│       └── styles/global.css      # Tokens oklch + temas latte/espresso
 ├── supabase/
-│   └── schema.sql                 # Tablas: scraped_items, posts, subscribers
-├── .github/
-│   └── workflows/
-│       └── daily-agent.yml        # Cron 07:00 + 15:00 Madrid · manual dispatch
+│   └── schema.sql
 ├── requirements.txt
 └── .env.example
 ```
@@ -208,10 +174,8 @@ nexus-digest/
 
 ## Base de datos (Supabase)
 
-Tres tablas principales:
-
 ```sql
-scraped_items   -- URLs vistas por el agente (deduplicación)
+scraped_items   -- URLs vistas por el agente (deduplicación repos)
   id, url, title, source, scraped_at
 
 posts           -- Posts publicados
@@ -222,7 +186,7 @@ subscribers     -- Lista de suscriptores
   stripe_id, subscribed_at, unsubscribed_at
 ```
 
-RLS activado. El agente usa `SUPABASE_SERVICE_KEY` (bypassa RLS). El blog usa `SUPABASE_SERVICE_KEY` también desde las API routes.
+RLS activado. El agente y las API routes usan `SUPABASE_SERVICE_KEY`.
 
 ---
 
@@ -245,7 +209,7 @@ cp .env.example .env
 # 4. Base de datos
 # Ejecutar supabase/schema.sql en el SQL editor de Supabase
 
-# 5. Ejecutar el agente una vez
+# 5. Ejecutar el agente
 python -m agent.main
 
 # 6. Blog local
@@ -258,95 +222,78 @@ cd blog && npm install && npm run dev
 
 | Variable | Requerida | Descripción |
 |----------|-----------|-------------|
-| `GROQ_API_KEY` | ✅ (o Anthropic/Gemini) | LLM principal (gratuito) |
-| `ANTHROPIC_API_KEY` | — | Fallback LLM |
-| `GEMINI_API_KEY` | — | Fallback LLM |
+| `GROQ_API_KEY` | ✅ (o Gemini/Anthropic) | LLM primario — gratis en [console.groq.com](https://console.groq.com) |
+| `GEMINI_API_KEY` | — | LLM fallback 1 — gratis en [aistudio.google.com](https://aistudio.google.com) |
+| `ANTHROPIC_API_KEY` | — | LLM fallback 2 |
 | `SUPABASE_URL` | ✅ | `https://xxxx.supabase.co` |
-| `SUPABASE_KEY` | ✅ | Anon key de Supabase |
+| `SUPABASE_KEY` | ✅ | Anon key |
 | `SUPABASE_SERVICE_KEY` | ✅ | Service role key (escribe en DB) |
 | `BLOG_GITHUB_REPO` | ✅ | `Nicovp24/first-cup` |
-| `BLOG_GITHUB_TOKEN` | ✅ | PAT con permisos Contents: Write |
-| `BLOG_REPO_PATH` | — | Ruta local al repo (CI: workspace) |
+| `BLOG_GITHUB_TOKEN` | ✅ | PAT con Contents: Write |
+| `BLOG_REPO_PATH` | — | Ruta local al repo (default: `/app/blog`) |
 | `BLOG_POSTS_SUBDIR` | — | `blog/src/content/posts` |
-| `RESEND_API_KEY` | ✅ | Envío de emails |
-| `EMAIL_FROM` | ✅ | `First Cup <hola@first-cup.es>` |
-| `STRIPE_SECRET_KEY` | ✅ | Clave secreta de Stripe |
-| `STRIPE_WEBHOOK_SECRET` | ✅ | Signing secret del webhook |
-| `STRIPE_PREMIUM_PRICE_ID` | ✅ | `price_...` del plan Premium |
 | `REDDIT_CLIENT_ID` | — | OAuth2 Reddit |
 | `REDDIT_CLIENT_SECRET` | — | OAuth2 Reddit |
+| `RESEND_API_KEY` | — | Envío de emails |
+| `EMAIL_FROM` | — | `First Cup <hola@first-cup.es>` |
 | `TELEGRAM_BOT_TOKEN` | — | Token de @BotFather |
-| `TELEGRAM_CHANNEL_ID` | — | ID del canal público |
-| `STORIES_PER_RUN` | — | Posts por ejecución (default: 6) |
+| `TELEGRAM_CHANNEL_ID` | — | ID del canal (ej. `@firstcup_dev`) |
+| `STRIPE_SECRET_KEY` | — | Plan Premium |
+| `STRIPE_WEBHOOK_SECRET` | — | Signing secret del webhook |
+| `STRIPE_PREMIUM_PRICE_ID` | — | `price_...` del plan Premium |
+| `STORIES_PER_RUN` | — | Posts por ejecución (default: `8`) |
 | `TIMEZONE` | — | `Europe/Madrid` |
-
----
-
-## GitHub Actions secrets necesarios
-
-Los mismos que las variables de entorno, más:
-
-| Secret | Valor |
-|--------|-------|
-| `GH_TOKEN` | PAT clásico con scope `repo` |
-| `BLOG_GITHUB_TOKEN` | PAT fino con Contents: Write en el repo |
-| `BLOG_GITHUB_REPO` | `Nicovp24/first-cup` |
 
 ---
 
 ## Deployment
 
-| Servicio | URL | Para qué |
-|----------|-----|----------|
-| Vercel | `first-cup.es` | Hosting del blog (serverless) |
-| Supabase | `xxxx.supabase.co` | Base de datos |
-| Resend | resend.com | Envío de emails desde `@first-cup.es` |
-| Stripe | dashboard.stripe.com | Pagos del plan Premium (5€/mes) |
-| GitHub Actions | `.github/workflows/` | Ejecuta el agente a las 07:00 y 15:00 Madrid |
-
-El cron de GitHub Actions está en UTC:
-- `0 5 * * *` → 07:00 Madrid (UTC+2 verano)
-- `0 13 * * *` → 15:00 Madrid
+| Servicio | Para qué |
+|----------|----------|
+| Vercel | Hosting del blog (serverless, redeploy automático en push) |
+| Supabase | Base de datos |
+| Resend | Emails desde `@first-cup.es` |
+| Stripe | Pagos plan Premium |
+| cron-job.org | Disparo diario del agente vía HTTP trigger |
 
 ---
 
 ## Flujo de suscripción
 
 ```
-Usuario introduce email
+email introducido en /subscribe
         │
         ▼
 POST /api/subscribe
-  → Guarda en Supabase (confirmed=false, confirm_token=uuid)
-  → Envía email de confirmación con link único
+  → Supabase: confirmed=false, genera confirm_token
+  → Resend: email de confirmación con link único
         │
-        ▼ (usuario hace clic en el link)
+        ▼ (clic en el link)
 GET /api/confirm?token=...
-  → PATCH Supabase: confirmed=true
+  → Supabase: confirmed=true
   → Redirige a /confirmed
         │
         ▼ (agente ejecuta email_node)
 EmailNewsletter.send_digest()
-  → Consulta subscribers WHERE confirmed=true AND unsubscribed_at IS NULL
-  → Envía digest por Resend a cada suscriptor
-  → Link personalizado de cancelación por email
+  → subscribers WHERE confirmed=true AND unsubscribed_at IS NULL
+  → Resend batch: digest HTML + link de baja personalizado
 ```
 
-## Flujo Premium (Stripe)
+## Flujo Premium
 
 ```
-Usuario introduce email en plan Premium
+email introducido en plan Premium
         │
         ▼
 POST /api/checkout
-  → Crea Stripe Checkout Session (mode=subscription, 5€/mes)
-  → Devuelve URL de Stripe
+  → Stripe Checkout Session (mode=subscription)
+  → Devuelve URL de pago
         │
-        ▼ (usuario completa el pago)
+        ▼ (pago completado)
 POST /api/stripe-webhook
-  → Verifica firma HMAC-SHA256 (Web Crypto API, sin SDK)
-  → checkout.session.completed → tier='premium' en Supabase
-  → customer.subscription.deleted → tier='free' en Supabase
+  → Verifica firma HMAC-SHA256
+  → checkout.session.completed → tier='premium'
+  → customer.subscription.deleted → tier='free'
 ```
 
 ---
