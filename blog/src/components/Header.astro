@@ -19,7 +19,7 @@ function toRoman(n: number): string {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,700;1,6..96,900&family=Inter:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
 
 <script defer src="/_vercel/insights/script.js"></script>
 
@@ -500,11 +500,12 @@ function toRoman(n: number): string {
   }
 
   .nameplate-text {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Bodoni Moda', 'Times New Roman', Times, serif;
     font-weight: 900;
+    font-style: italic;
     font-size: clamp(2.75rem, 8.5vw, 6rem);
     line-height: 0.92;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
     color: var(--ink);
     text-decoration: none;
     transition: color 0.2s;
@@ -519,10 +520,10 @@ function toRoman(n: number): string {
     border-top: 1px solid var(--ink);
     border-bottom: 3px double var(--ink);
     text-align: center;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 0.92rem;
-    font-style: normal;
-    letter-spacing: 0.04em;
+    font-family: 'Spectral', 'Times New Roman', Times, serif;
+    font-size: 0.94rem;
+    font-style: italic;
+    letter-spacing: 0.02em;
     color: var(--ink-soft);
   }
   .fleuron { color: var(--spot); font-size: 0.75rem; }

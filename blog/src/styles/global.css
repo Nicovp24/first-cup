@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
 
 /* ──────────────────────────────────────────────
    LATTE (light) — warm newspaper cream
@@ -86,8 +86,8 @@ html[data-theme="espresso"] {
    FONT STACK
 ────────────────────────────────────────────── */
 :root {
-  --font-display: 'Times New Roman', Times, serif;
-  --font-body:    'Times New Roman', Times, serif;
+  --font-display: 'Spectral', 'Times New Roman', Times, serif;
+  --font-body:    'Spectral', 'Times New Roman', Times, serif;
   --font-mono:    'JetBrains Mono', 'Courier New', monospace;
   --spring:       cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -161,16 +161,17 @@ img { max-width: 100%; height: auto; }
 
 .kicker {
   display: inline-block;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
   font-style: normal;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
   color: var(--spot);
-  padding: 2px 8px;
-  border-radius: 2px;
+  padding: 3px 9px;
+  border-radius: 20px;
   border: 1px solid oklch(from var(--spot) l c h / .35);
   background: oklch(from var(--spot) l c h / .07);
+  text-transform: uppercase;
 }
 
 .byline {
@@ -202,23 +203,24 @@ img { max-width: 100%; height: auto; }
 
 /* ── Prose ── */
 .prose {
-  font-size: 1rem;
-  line-height: 1.82;
+  font-size: 1.05rem;
+  line-height: 1.88;
   color: var(--ink);
   font-family: var(--font-body);
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 .prose > * + * { margin-top: 1.65rem; }
 
 /* Drop cap on first paragraph */
 .prose > p:first-of-type::first-letter {
-  font-family: var(--font-display);
-  font-size: 3.6em;
-  font-weight: 900;
-  line-height: 0.86;
+  font-family: 'Spectral', 'Times New Roman', Times, serif;
+  font-size: 3.8em;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 0.82;
   float: left;
-  margin: 0.05em 0.14em 0 0;
+  margin: 0.04em 0.12em 0 0;
   color: var(--spot);
-  padding: 0 0.04em;
 }
 
 .prose h1, .prose h2, .prose h3 {

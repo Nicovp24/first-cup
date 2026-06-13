@@ -393,12 +393,12 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   /* ── Hero cover ── */
   .hero-cover {
     width: 100%;
-    height: clamp(220px, 38vw, 420px);
+    height: clamp(240px, 40vw, 480px);
     overflow: hidden;
     border-top: 3px solid var(--ink);
-    border-bottom: 1px solid var(--rule);
     margin-bottom: 0;
     background: var(--paper-sink);
+    position: relative;
   }
   .hero-cover img {
     width: 100%;
@@ -406,6 +406,14 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     object-fit: cover;
     object-position: center 35%;
     display: block;
+  }
+  .hero-cover::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(to top, var(--paper) 0%, transparent 100%);
+    pointer-events: none;
   }
 
   /* ── Back link ── */
@@ -427,8 +435,8 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   /* ── Layout: article + sidebar ── */
   .layout {
     display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 3.5rem;
+    grid-template-columns: 1fr 240px;
+    gap: 4rem;
     align-items: start;
     margin-bottom: 3rem;
   }
@@ -438,9 +446,8 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
 
   .article-header {
     margin-bottom: 2.5rem;
-    padding-bottom: 0;
     border-top: 4px solid var(--ink);
-    padding-top: 1.5rem;
+    padding-top: 2rem;
   }
 
   .article-eyebrow {
@@ -448,7 +455,7 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
   }
 
   .eyebrow-tags {
@@ -458,7 +465,8 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     flex-wrap: wrap;
   }
 
-  .eyebrow-tag { font-size: 0.62rem; }
+  .eyebrow-tag { font-size: 0.68rem; }
+
   .edition-chip {
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.62rem;
@@ -467,30 +475,35 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     letter-spacing: 0.05em;
     border: 1px solid var(--rule);
     border-radius: 20px;
-    padding: 0.18rem 0.65rem;
+    padding: 0.22rem 0.72rem;
     white-space: nowrap;
   }
 
   .article-title {
     font-family: var(--font-display);
     font-style: normal;
-    font-size: clamp(2rem, 4.5vw, 3.4rem);
-    font-weight: 800;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
     color: var(--ink);
-    line-height: 1.06;
-    letter-spacing: -0.025em;
-    margin-bottom: 1.25rem;
+    line-height: 1.07;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    font-feature-settings: "kern" 1, "liga" 1;
   }
 
   .article-stand {
-    font-size: 1.1rem;
+    font-family: var(--font-body);
+    font-size: 1.18rem;
+    font-style: italic;
+    font-weight: 400;
     color: var(--ink-soft);
     line-height: 1.65;
-    font-style: normal;
-    margin-bottom: 1.5rem;
-    max-width: 62ch;
-    padding-left: 1rem;
+    margin-bottom: 1.75rem;
+    max-width: 65ch;
+    padding: 1rem 1.35rem;
     border-left: 3px solid var(--spot);
+    background: oklch(from var(--spot) l c h / .04);
+    border-radius: 0 8px 8px 0;
   }
 
   .article-byline {
@@ -499,16 +512,16 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
-    padding: 0.75rem 0;
-    border-top: 3px double var(--ink);
+    padding: 0.8rem 0;
+    border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   .byline-left {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.55rem;
     flex-wrap: wrap;
   }
 
@@ -520,19 +533,25 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
     letter-spacing: 0.01em;
   }
 
-  .byline-sep { color: var(--rule); font-size: 0.8rem; }
+  .byline-sep { color: var(--rule-soft); font-size: 0.8rem; }
 
   .byline {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.76rem;
-    color: var(--ink-soft);
+    font-size: 0.75rem;
+    color: var(--ink-faint);
   }
 
   .read-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.72rem;
     color: var(--ink-faint);
-    letter-spacing: 0.01em;
+    background: var(--paper-sink);
+    border: 1px solid var(--rule-soft);
+    border-radius: 20px;
+    padding: 0.18rem 0.6rem;
   }
 
   /* ── Share ── */
@@ -578,7 +597,7 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   /* ── Prose content ── */
   .article-content {
     margin-bottom: 3rem;
-    max-width: 68ch;
+    max-width: 70ch;
   }
 
   /* ── Sources ── */
@@ -802,7 +821,8 @@ const twitterShare = `https://twitter.com/intent/tweet?text=${encodeURIComponent
   }
 
   .coupon-inner {
-    border: 2px dashed var(--ink);
+    border: 2px dashed oklch(from var(--ink) l c h / .4);
+    border-radius: 16px;
     padding: 3rem 3.5rem;
     text-align: center;
     background: var(--paper-sink);
