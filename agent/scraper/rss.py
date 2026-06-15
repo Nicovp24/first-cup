@@ -22,14 +22,22 @@ from .base import ScraperBase, ScrapedItem
 logger = structlog.get_logger(__name__)
 
 RSS_FEEDS: list[str] = [
+    # ── AI / Research ──────────────────────────────────────────────
     "https://simonwillison.net/atom/everything/",
     "https://huggingface.co/blog/feed.xml",
+    "https://feeds.feedburner.com/TowardsDataScience",
+    # ── Tech news ──────────────────────────────────────────────────
     "https://techcrunch.com/category/artificial-intelligence/feed/",
     "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",
     "https://venturebeat.com/category/ai/feed/",
     "https://feeds.arstechnica.com/arstechnica/technology-lab",
     "https://www.wired.com/feed/category/business/latest/rss",
-    "https://feeds.feedburner.com/TowardsDataScience",
+    # ── Open source / repos — where people actually find projects ──
+    "https://lobste.rs/rss",                        # Lobsters: curated tech, mejor que HN para repos
+    "https://changelog.com/news.rss",               # The Changelog: open source noticias
+    "https://console.dev/tools/rss.xml",            # Console.dev: dev tools curados
+    "https://github.blog/feed/",                    # GitHub blog: anuncios oficiales
+    "https://tldr.tech/api/rss/tech",               # TLDR Tech: newsletter dev muy seguida
 ]
 
 _ARTICLES_PER_FEED = 3

@@ -31,12 +31,22 @@ _TOKEN_EXPIRY_BUFFER_SECS = 60  # refresh token this many seconds before expiry
 
 
 SUBREDDITS: list[str] = [
+    # ── AI / ML ───────────────────────────────────────
     "MachineLearning",
     "LocalLLaMA",
-    "Python",
-    "webscraping",
-    "programming",
     "artificial",
+    # ── Repos / proyectos ─────────────────────────────
+    "coolgithubprojects",   # el mejor sub para descubrir repos
+    "opensource",
+    # ── Lenguajes ─────────────────────────────────────
+    "Python",
+    "rust",
+    "golang",
+    "typescript",
+    # ── Dev general ───────────────────────────────────
+    "programming",
+    "webdev",
+    "devops",
 ]
 
 
