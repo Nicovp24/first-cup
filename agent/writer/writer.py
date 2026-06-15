@@ -60,15 +60,15 @@ def _slugify(text: str) -> str:
 
 
 _REPO_SOURCES = frozenset({"github_trending", "github_api"})
-_MAX_REPOS_IN_POOL = 2
+_MAX_REPOS_IN_POOL = 3
 
 
 def _serialize_items(items: list[ScrapedItem]) -> str:
-    # Hard-cap repos at 2 so the LLM can never select more than 2 even if it ignores the prompt.
+    # Hard-cap repos at 3 so the LLM can never select more than 3 even if it ignores the prompt.
     repos = [i for i in items if i.source in _REPO_SOURCES]
     news  = [i for i in items if i.source not in _REPO_SOURCES]
     repos_sorted = sorted(repos, key=lambda x: x.score or 0, reverse=True)[:_MAX_REPOS_IN_POOL]
-    news_sorted  = sorted(news,  key=lambda x: x.score or 0, reverse=True)[:15 - len(repos_sorted)]
+    news_sorted  = sorted(news,  key=lambda x: x.score or 0, reverse=True)[:25 - len(repos_sorted)]
     top = news_sorted + repos_sorted
     rows: list[dict[str, Any]] = []
     for idx, item in enumerate(top):
