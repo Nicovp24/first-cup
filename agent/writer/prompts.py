@@ -104,9 +104,9 @@ Tu tarea: elegir los {n} artículos MÁS RELEVANTES para publicar hoy.
 
 {recent_titles_block}
 REGLA ABSOLUTA DE MIX — OBLIGATORIA:
-- MÍNIMO 6 artículos de fuentes de noticias reales: hackernews, rss, reddit, arxiv, devto, producthunt.
-- MÁXIMO 2 repositorios de GitHub (source="github_trending" o "github_api").
-- Si no hay 2 repos interesantes, selecciona 8 noticias. NUNCA más de 2 repos.
+- MÍNIMO {min_news} artículos de fuentes de noticias reales: hackernews, rss, reddit, arxiv, devto, producthunt.
+- MÁXIMO {max_repos} repositorios de GitHub (source="github_trending" o "github_api").
+- Si no hay repos interesantes, selecciona {n} noticias. NUNCA más de {max_repos} repos.
 
 PRIORIDAD DE CONTENIDO (de mayor a menor):
 1. BREAKING: lanzamiento de nuevo modelo de IA (OpenAI, Anthropic, Google, Meta...), vulnerabilidad crítica, adquisición importante → SIEMPRE incluir y marcar como breaking.

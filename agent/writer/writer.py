@@ -386,6 +386,8 @@ class DigestWriter:
         prompt = PROMPT_SELECTION.format(
             items_json=items_json,
             n=n,
+            min_news=n - _MAX_REPOS_IN_POOL,
+            max_repos=_MAX_REPOS_IN_POOL,
             recent_titles_block=recent_titles_block,
         )
 
