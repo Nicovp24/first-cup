@@ -118,6 +118,8 @@ REGLAS ESTRICTAS:
 - NO selecciones repos de GitHub solo porque tengan muchas estrellas. Son siempre populares, no son noticias.
 - SÍ prioriza cualquier noticia sobre nuevos modelos de IA aunque tenga menor score.
 - Novedad: descarta artículos de más de 72 horas si hay noticias más recientes.
+- NUNCA selecciones dos artículos sobre el mismo tema, proyecto o empresa dentro de la misma selección.
+- Si hay pocas noticias de calidad, incluye las mejores disponibles aunque sean de calidad media. Siempre {n}.
 
 Artículos disponibles (array JSON con campo "index"):
 {items_json}
@@ -127,7 +129,7 @@ Devuelve SOLO este JSON — sin texto antes ni después:
   "selected": [<lista de índices 0-based, en orden de importancia>],
   "breaking": [<índices de breaking news urgente, subconjunto de "selected">]
 }}
-- Exactamente {n} artículos en "selected" (o menos si no hay suficientes de calidad).
+- SIEMPRE exactamente {n} artículos en "selected". Sin excepciones.
 - "breaking" puede ser [].\
 """
 
