@@ -1,4 +1,4 @@
-# First Cup
+# First Cup ☕
 
 **First Cup** es un diario tech autónomo en español. Un agente de IA rastrea fuentes cada día, redacta artículos editoriales con LLMs y los publica automáticamente en [first-cup.es](https://first-cup.es). Los suscriptores reciben el digest por email; hay un plan gratuito y uno Premium.
 
