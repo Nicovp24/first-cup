@@ -53,7 +53,15 @@ class Settings(BaseSettings):
     )
 
     # ------------------------------------------------------------------
-    # Groq (primary LLM — free tier, 14 400 req/day)
+    # Cerebras (primary LLM — free tier, 60k TPM)
+    # ------------------------------------------------------------------
+    cerebras_api_key: str | None = Field(
+        default=None,
+        description="Cerebras API key. Get one free at https://cloud.cerebras.ai/",
+    )
+
+    # ------------------------------------------------------------------
+    # Groq (secondary LLM — free tier, 6k TPM)
     # ------------------------------------------------------------------
     groq_api_key: str | None = Field(
         default=None,

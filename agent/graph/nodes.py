@@ -78,13 +78,16 @@ from agent.writer.writer import DigestWriter  # type: ignore[import]
 
 def _build_ai_client():
     """
-    Build a CompositeClient: Groq → Gemini → Claude per individual call.
+    Build a CompositeClient: Cerebras → Groq → Gemini → Claude per individual call.
     Any client whose key is missing is simply omitted.
     """
     from agent.config import settings as _s
     from agent.writer.composite_client import CompositeClient
 
     clients = []
+    if _s.cerebras_api_key:
+        from agent.writer.cerebras_client import CerebrasClient
+        clients.append(CerebrasClient())
     if _s.groq_api_key:
         from agent.writer.groq_client import GroqClient
         clients.append(GroqClient())
