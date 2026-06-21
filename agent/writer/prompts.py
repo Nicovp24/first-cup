@@ -109,16 +109,20 @@ REGLA ABSOLUTA DE MIX — OBLIGATORIA:
 - Si no hay repos interesantes, selecciona {n} noticias. NUNCA más de {max_repos} repos.
 
 PRIORIDAD DE CONTENIDO (de mayor a menor):
-1. BREAKING: lanzamiento de nuevo modelo de IA (OpenAI, Anthropic, Google, Meta...), vulnerabilidad crítica, adquisición importante → SIEMPRE incluir y marcar como breaking.
-2. Releases importantes: nueva versión de herramienta relevante, paper con resultados llamativos.
-3. Análisis técnico profundo de tendencias actuales (últimas 48h).
-4. Repos de GitHub: SOLO si tienen un lanzamiento concreto hoy, no por popularidad general.
+1. BREAKING: lanzamiento de nuevo modelo de IA (OpenAI, Anthropic, Google, Meta, Mistral…), vulnerabilidad crítica (CVE alto impacto), adquisición importante → SIEMPRE incluir y marcar como breaking.
+2. Papers con resultados que cambian el estado del arte (ArXiv, NeurIPS, ICML, ICLR) — con métricas concretas.
+3. Releases importantes de herramientas con muchos usuarios: nueva versión de PyTorch, LangChain, vLLM, Transformers, llama.cpp, etc.
+4. Análisis técnico en profundidad de ingenieros senior reconocidos (Pragmatic Engineer, Lilian Weng, Simon Willison, Latent Space).
+5. Noticias de negocio con impacto en el ecosistema: funding >$100M, regulación con efecto inmediato, caída de infraestructura.
+6. Repos de GitHub: SOLO si tienen un lanzamiento concreto hoy con tracción real (>500 stars en 24h), no por popularidad acumulada.
 
 REGLAS ESTRICTAS:
-- NO selecciones repos de GitHub solo porque tengan muchas estrellas. Son siempre populares, no son noticias.
-- SÍ prioriza cualquier noticia sobre nuevos modelos de IA aunque tenga menor score.
-- Novedad: descarta artículos de más de 72 horas si hay noticias más recientes.
+- DESCARTA contenido genérico de TechCrunch/The Verge que no tenga cifras concretas ni impacto técnico real.
+- NO selecciones repos de GitHub solo porque tengan muchas estrellas históricas — sin novedad concreta hoy, fuera.
+- SÍ prioriza papers y análisis técnicos aunque su score sea bajo. El impacto > popularidad.
+- Novedad: descarta artículos de más de 72 horas si hay noticias más recientes disponibles.
 - NUNCA selecciones dos artículos sobre el mismo tema, proyecto o empresa dentro de la misma selección.
+- PREFIERE variedad de categorías: al menos 2 de {IA/modelos, infra/dev tools, seguridad/datos, negocio/industria}.
 - Si hay pocas noticias de calidad, incluye las mejores disponibles aunque sean de calidad media. Siempre {n}.
 
 Artículos disponibles (array JSON con campo "index"):
