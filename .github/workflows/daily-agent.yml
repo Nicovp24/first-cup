@@ -17,9 +17,9 @@ on:
         default: false
         type: boolean
       stories:
-        description: 'Number of stories to publish (default: 6)'
+        description: 'Number of stories to publish (default: 10)'
         required: false
-        default: '6'
+        default: '10'
         type: string
       breaking_only:
         description: 'Only publish breaking news (afternoon mode)'
@@ -53,6 +53,7 @@ jobs:
 
       - name: Run agent
         env:
+          CEREBRAS_API_KEY:       ${{ secrets.CEREBRAS_API_KEY }}
           GROQ_API_KEY:           ${{ secrets.GROQ_API_KEY }}
           GEMINI_API_KEY:         ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
@@ -72,7 +73,7 @@ jobs:
           DAILY_RUN_HOUR:         '7'
           DAILY_RUN_MINUTE:       '0'
           TIMEZONE:               Europe/Madrid
-          STORIES_PER_RUN:        ${{ github.event.inputs.stories || '6' }}
+          STORIES_PER_RUN:        ${{ github.event.inputs.stories || '10' }}
           BREAKING_ONLY:          ${{ github.event.schedule == '0 13 * * *' || github.event.inputs.breaking_only == 'true' }}
           WEEKLY_SUMMARY:         ${{ github.event.schedule == '0 8 * * 0' }}
           TELEGRAM_BOT_TOKEN:        ${{ secrets.TELEGRAM_BOT_TOKEN }}
