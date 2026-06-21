@@ -23,26 +23,27 @@ logger = structlog.get_logger(__name__)
 
 RSS_FEEDS: list[str] = [
     # ── AI / Research ──────────────────────────────────────────────
-    "https://simonwillison.net/atom/everything/",
-    "https://huggingface.co/blog/feed.xml",
-    "https://feeds.feedburner.com/TowardsDataScience",
-    # ── Tech news ──────────────────────────────────────────────────
+    "https://simonwillison.net/atom/everything/",        # LLM tracking, imprescindible
+    "https://huggingface.co/blog/feed.xml",              # HF releases
+    "https://www.technologyreview.com/feed/",            # MIT Tech Review
+    # ── Tech news con sustancia ────────────────────────────────────
     "https://techcrunch.com/category/artificial-intelligence/feed/",
-    "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",
     "https://venturebeat.com/category/ai/feed/",
     "https://feeds.arstechnica.com/arstechnica/technology-lab",
-    "https://www.wired.com/feed/category/business/latest/rss",
-    # ── Open source / repos — where people actually find projects ──
-    "https://lobste.rs/rss",                        # Lobsters: curated tech, mejor que HN para repos
-    "https://changelog.com/news.rss",               # The Changelog: open source noticias
-    "https://console.dev/tools/rss.xml",            # Console.dev: dev tools curados
-    "https://github.blog/feed/",                    # GitHub blog: anuncios oficiales
-    "https://tldr.tech/api/rss/tech",               # TLDR Tech: newsletter dev muy seguida
+    "https://www.wired.com/feed/tag/ai/latest/rss",
+    # ── Dev / open source ──────────────────────────────────────────
+    "https://lobste.rs/rss",                             # Lobsters: curated tech
+    "https://github.blog/feed/",                         # GitHub blog oficial
+    "https://tldr.tech/api/rss/tech",                    # TLDR Tech
+    "https://thenewstack.io/feed/",                      # The New Stack: infra/cloud
+    # ── Seguridad ──────────────────────────────────────────────────
+    "https://krebsonsecurity.com/feed/",                 # Krebs: seguridad
+    "https://www.schneier.com/blog/atom.xml",            # Schneier on Security
 ]
 
-_ARTICLES_PER_FEED = 3
+_ARTICLES_PER_FEED = 5
 _SUMMARY_MAX_CHARS = 300
-_LOOKBACK_HOURS = 24
+_LOOKBACK_HOURS = 48
 
 
 class RSSScraper(ScraperBase):

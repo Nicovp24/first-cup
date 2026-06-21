@@ -58,11 +58,13 @@ class HackerNewsScraper(ScraperBase):
         # Unix timestamp for 24 hours ago
         timestamp_24h = int(time.time()) - int(timedelta(hours=24).total_seconds())
 
-        params: dict[str, str] = {
-            "tags": "story",
-            "numericFilters": f"points>{self._min_points},created_at_i>{timestamp_24h}",
-            "hitsPerPage": str(self._top_n),
-        }
+        # Build URL manually — httpx encodes > as %3E which Algolia rejects with 400
+        url = (
+            f"{_HN_ALGOLIA_URL}"
+            f"?tags=story"
+            f"&numericFilters=points>{self._min_points},created_at_i>{timestamp_24h}"
+            f"&hitsPerPage={self._top_n}"
+        )
 
         self._log.debug(
             "hn_query_params",
@@ -71,7 +73,7 @@ class HackerNewsScraper(ScraperBase):
         )
 
         try:
-            data = await self._fetch_json(_HN_ALGOLIA_URL, params=params)
+            data = await self._fetch_json(url)
         except Exception as exc:
             self._log.error("fetch_failed", source="hackernews", detail=str(exc))
             return []

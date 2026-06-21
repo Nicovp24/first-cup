@@ -122,7 +122,7 @@ REGLAS ESTRICTAS:
 - SÍ prioriza papers y análisis técnicos aunque su score sea bajo. El impacto > popularidad.
 - Novedad: descarta artículos de más de 72 horas si hay noticias más recientes disponibles.
 - NUNCA selecciones dos artículos sobre el mismo tema, proyecto o empresa dentro de la misma selección.
-- PREFIERE variedad de categorías: al menos 2 de {IA/modelos, infra/dev tools, seguridad/datos, negocio/industria}.
+- PREFIERE variedad de categorías: al menos 2 de estas áreas: IA/modelos, infra/dev tools, seguridad/datos, negocio/industria.
 - Si hay pocas noticias de calidad, incluye las mejores disponibles aunque sean de calidad media. Siempre {n}.
 
 Artículos disponibles (array JSON con campo "index"):

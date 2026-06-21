@@ -23,27 +23,6 @@ MAX_TOKENS = 8192
 # ---------------------------------------------------------------------------
 # Content sources
 # ---------------------------------------------------------------------------
-RSS_FEEDS: List[str] = [
-    # ── AI / ML research & practitioner feeds ──────────────────────────────
-    "https://simonwillison.net/atom/everything/",       # Simon Willison – LLM tracking
-    "https://huggingface.co/blog/feed.xml",             # HuggingFace releases
-    "https://www.anthropic.com/rss.xml",                # Anthropic blog
-    "https://openai.com/blog/rss.xml",                  # OpenAI blog
-    "https://deepmind.google/blog/rss/feed.xml",        # Google DeepMind
-    "https://ai.meta.com/blog/feed/",                   # Meta AI
-    "https://newsletter.pragmaticengineer.com/feed",    # The Pragmatic Engineer
-    "https://www.latent.space/feed",                    # Latent Space
-    "https://lilianweng.github.io/lil-log/feed.xml",   # Lilian Weng (OpenAI)
-    # ── Industry & business ─────────────────────────────────────────────────
-    "https://techcrunch.com/category/artificial-intelligence/feed/",
-    "https://feeds.arstechnica.com/arstechnica/technology-lab",
-    "https://www.wired.com/feed/tag/ai/latest/rss",
-    "https://www.technologyreview.com/feed/",           # MIT Technology Review
-    # ── Dev / open-source ───────────────────────────────────────────────────
-    "https://github.blog/feed/",
-    "https://thenewstack.io/feed/",
-    "https://www.infoq.com/ai-ml-data-eng/rss/",
-]
 
 SUBREDDITS: List[str] = [
     "MachineLearning",
