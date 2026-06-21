@@ -22,9 +22,10 @@ logger = structlog.get_logger(__name__)
 _BASE_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama-3.3-70b-versatile"
 MAX_TOKENS = 8192
-_RETRY_ATTEMPTS = 4
+_RETRY_ATTEMPTS = 8
 _BACKOFF_BASE = 10.0
 _TIMEOUT = 60.0
+_DAILY_LIMIT_THRESHOLD = 600  # retry-after > 10 min = daily limit, give up
 
 
 class GroqClient:
@@ -73,15 +74,15 @@ class GroqClient:
 
                 if resp.status_code == 429:
                     raw_wait = int(resp.headers.get("retry-after", backoff))
-                    if raw_wait > 60:
-                        # Daily limit hit — fail immediately, don't retry
+                    if raw_wait > _DAILY_LIMIT_THRESHOLD:
+                        # True daily limit — no point waiting hours
                         last_exc = RuntimeError(f"Groq daily limit exceeded (retry-after={raw_wait}s)")
                         log.warning("groq_daily_limit_exceeded", retry_after=raw_wait)
                         break
+                    # TPM limit resets in ~60s — just wait and retry
                     log.warning("groq_rate_limit", retry_after=raw_wait, attempt=attempt)
                     last_exc = RuntimeError(f"Groq 429 rate limit (attempt {attempt})")
-                    if attempt < _RETRY_ATTEMPTS:
-                        await asyncio.sleep(raw_wait)
+                    await asyncio.sleep(raw_wait + 2)  # +2s buffer
                     continue
 
                 try:

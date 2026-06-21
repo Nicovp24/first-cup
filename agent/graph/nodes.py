@@ -78,26 +78,25 @@ from agent.writer.writer import DigestWriter  # type: ignore[import]
 
 def _build_ai_client():
     """
-    Build a CompositeClient: Claude → Gemini → Groq per individual call.
-    Claude is primary because Groq's 6k TPM free tier causes silent article
-    failures after ~2 articles. Any client whose key is missing is omitted.
+    Build a CompositeClient: Groq → Gemini → Claude per individual call.
+    Any client whose key is missing is simply omitted.
     """
     from agent.config import settings as _s
     from agent.writer.composite_client import CompositeClient
 
     clients = []
-    if _s.anthropic_api_key:
-        from agent.writer.claude_client import ClaudeClient
-        clients.append(ClaudeClient())
-    if _s.gemini_api_key:
-        from agent.writer.gemini_client import GeminiClient
-        clients.append(GeminiClient())
     if _s.groq_api_key:
         from agent.writer.groq_client import GroqClient
         clients.append(GroqClient())
+    if _s.gemini_api_key:
+        from agent.writer.gemini_client import GeminiClient
+        clients.append(GeminiClient())
+    if _s.anthropic_api_key:
+        from agent.writer.claude_client import ClaudeClient
+        clients.append(ClaudeClient())
     if not clients:
         raise RuntimeError(
-            "No AI API key configured. Set ANTHROPIC_API_KEY, GEMINI_API_KEY, or GROQ_API_KEY."
+            "No AI API key configured. Set GROQ_API_KEY, GEMINI_API_KEY, or ANTHROPIC_API_KEY."
         )
     return CompositeClient(clients)
 
