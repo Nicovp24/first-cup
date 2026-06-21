@@ -18,7 +18,7 @@ from agent.config import settings
 logger = structlog.get_logger(__name__)
 
 _BASE_URL = "https://api.cerebras.ai/v1/chat/completions"
-MODEL = "llama3.3-70b"
+MODEL = "gpt-oss-120b"
 MAX_TOKENS = 8192
 _RETRY_ATTEMPTS = 6
 _BACKOFF_BASE = 10.0
